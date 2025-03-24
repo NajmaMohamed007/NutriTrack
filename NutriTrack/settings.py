@@ -18,8 +18,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
-
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-d^n(^b5n%_l(r#tm2$!3+qokebxw+p6ob^f!$374u7ka8hmeut'
 
@@ -56,7 +54,7 @@ ROOT_URLCONF = 'NutriTrack.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],  # Ensure templates directory is included
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -117,11 +115,16 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_URL = '/static/'
+
+# Define where Django should look for static files in development
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR,'NutriTrack/static/')
+    os.path.join(BASE_DIR, 'static'),
 ]
+
+# Only needed for production; remove or comment out during development
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
