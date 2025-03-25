@@ -15,11 +15,6 @@
             font-family: Arial, sans-serif;
         }
 
-        .container {
-            max-width: 900px;
-            margin: auto;
-        }
-
         .header-title {
             font-size: 2.5rem;
             font-weight: 700;
@@ -34,11 +29,6 @@
             justify-content: center;
             gap: 15px;
             margin-top: 20px;
-        }
-
-        .logo {
-            max-width: 120px;
-            height: auto;
         }
 
         .text-logo {
@@ -119,68 +109,80 @@
 
 <body>
     <div class="container text-center">
-        <!-- Logo Section -->
+        <!-- Title Section -->
         <div class="logo-container">
             <span class="text-logo"> ✰ NUTRI TRACK ✰ </span>
         </div>
 
-        <form class="mb-4">
+        <form method="POST" class="mb-4">
+            {% csrf_token %}
             <div class="input-group input-group-lg">
                 <input type="text" name="query" class="form-control inputstyle" placeholder="Search for calories in your food..." required>
                 <button class="btn whoop" type="submit">Find Calories</button>
             </div>
         </form>
+
         <a href="{% url 'about' %}" class="about-link">About</a>
 
-        <div class="alert alert-warning mt-3">Oh no! Something went wrong. Please try again later.</div>
-        
-        <h2>Granola has a total of <strong>100 Calories</strong></h2>
-        <img src="{% static 'images/shocked.png' %}" class="img-responsive" />
+        {% if api %}
+            {% if api == "oops! There was an error" %}
+                <div class="alert alert-warning mt-3">Oh no! Something went wrong. Please try again later.</div>
+            {% else %}
+                <h2>{{ api.0.name | capfirst }} has a total of <strong>{{ api.0.calories }} Calories</strong></h2>
+                
+                {% if api.0.calories > 200 %}
+                    <img src="{% static 'images/shocked.png' %}" class="img-fluid" />
+                {% endif %}
 
-        
-        <div class="alert alert-danger mt-3">
-            This food contains a high amount of sodium. High sodium causes severe dehydration and water retention.
-        </div>
-        
-        <div class="caloriescont mt-4">
-            <h3 class="mb-3">Nutritional Values</h3>
-            <ul class="nutrition-list">
-                <li>Serving Size: <span>100g</span></li>
-                <li>Carbohydrates: <span>25g</span></li>
-                <li>Cholesterol: <span>0mg</span></li>
-                <li>Saturated Fat: <span>1g</span></li>
-                <li>Total Fat: <span>5g</span></li>
-                <li>Fiber: <span>4g</span></li>
-                <li>Potassium: <span>150mg</span></li>
-                <li>Protein: <span>3g</span></li>
-                <li>Sodium: <span>200mg</span></li>
-                <li>Sugar: <span>8g</span></li>
-            </ul>
-        </div>
+                {% if api.0.sodium_mg > 1000 %}
+                    <div class="alert alert-danger mt-3">
+                        This food contains a high amount of sodium. High sodium causes severe dehydration and water retention.
+                    </div>
+                {% endif %}
 
-        <h3 class="mt-4">To burn 100 calories, you will have to:</h3>
-        <div class="activity-section">
-            <div class="activity-card">
-                <img src="{% static 'images/running.png' %}" alt="Jogging">
-                <h5>Jog</h5>
-                <p>Jog for <strong>20</strong> minutes.</p>
-            </div>
-            <div class="activity-card">
-                <img src="{% static 'images/yoga.png' %}" alt="Power Yoga">
-                <h5>Do Power Yoga</h5>
-                <p>Power Yoga for <strong>50</strong> minutes.</p>
-            </div>
-            <div class="activity-card">
-                <img src="{% static 'images/weightlifter.png' %}" alt="Gym Workout">
-                <h5>Lift Weights</h5>
-                <p>Gym workout for <strong>40</strong> minutes.</p>
-            </div>
-            <div class="activity-card">
-                <img src="{% static 'images/walking.png' %}" alt="Brisk Walking">
-                <h5>Brisk Walk</h5>
-                <p>Walk for <strong>1</strong> Hour.</p>
-            </div>
-        </div>
+                {% if api.0.sugar_g > 100 %}
+                    <div class="alert alert-danger mt-3">
+                        This food contains a high amount of sugar. Sugar causes insulin spikes and is a major cause of obesity.
+                    </div>
+                {% endif %}
+
+                <div class="caloriescont mt-4">
+                    <h3 class="mb-3">Nutritional Values (per 100g)</h3>
+                    <ul class="nutrition-list">
+                        <li>Serving Size: <span>100g</span></li>
+                        <li>Carbohydrates: <span>{{ api.0.carbohydrates_total_g }}g</span></li>
+                        <li>Cholesterol: <span>{{ api.0.cholesterol_mg }}mg</span></li>
+                        <li>Saturated Fat: <span>{{ api.0.fat_saturated_g }}g</span></li>
+                        <li>Total Fat: <span>{{ api.0.fat_total_g }}g</span></li>
+                        <li>Fiber: <span>{{ api.0.fiber_g }}g</span></li>
+                        <li>Potassium: <span>{{ api.0.potassium_mg }}mg</span></li>
+                        <li>Protein: <span>{{ api.0.protein_g }}g</span></li>
+                        <li>Sodium: <span>{{ api.0.sodium_mg }}mg</span></li>
+                        <li>Sugar: <span>{{ api.0.sugar_g }}g</span></li>
+                    </ul>
+                </div>
+
+                <h3 class="mt-4">To burn {{ api.0.calories }} calories, you will have to:</h3>
+                <div class="activity-section">
+                    <div class="activity-card">
+                        <img src="{% static 'images/running.png' %}" alt="Jogging">
+                        <h5>Jog</h5>
+                    </div>
+                    <div class="activity-card">
+                        <img src="{% static 'images/yoga.png' %}" alt="Power Yoga">
+                        <h5>Do Power Yoga</h5>
+                    </div>
+                    <div class="activity-card">
+                        <img src="{% static 'images/weightlifter.png' %}" alt="Gym Workout">
+                        <h5>Lift Weights</h5>
+                    </div>
+                    <div class="activity-card">
+                        <img src="{% static 'images/walking.png' %}" alt="Brisk Walking">
+                        <h5>Brisk Walk</h5>
+                    </div>
+                </div>
+            {% endif %}
+        {% endif %}
     </div>
 </body>
 

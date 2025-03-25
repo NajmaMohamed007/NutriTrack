@@ -13,13 +13,16 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 import os
 
+# Add your Nutrition API key here for secure access
+NUTRITION_API_KEY = 'afOS7OCePWnFhZJcVhJhag==YWgVwbaWh1rNIOO7'
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # Quick-start development settings - unsuitable for production
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-d^n(^b5n%_l(r#tm2$!3+qokebxw+p6ob^f!$374u7ka8hmeut'
+SECRET_KEY = 'django-insecure-d^n(^b5n%_l(afOS7OCePWnFhZJcVhJhag==YWgVwbaWh1rNIOO7'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -36,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'counter',
+    'counter',  # Add the 'counter' app here
 ]
 
 MIDDLEWARE = [
@@ -130,3 +133,6 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Additional settings for the 'counter' app
+COUNTER_DEFAULT_VALUE = 0  # Default starting value for counter
