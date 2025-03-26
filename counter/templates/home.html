@@ -130,17 +130,17 @@
             {% else %}
                 <h2>{{ api.0.name | capfirst }} has a total of <strong>{{ api.0.calories }} Calories</strong></h2>
                 
-                {% if api.0.calories > 200 %}
+                {% if api.0.calories > 500 %}
                     <img src="{% static 'images/shocked.png' %}" class="img-fluid" />
                 {% endif %}
 
-                {% if api.0.sodium_mg > 1000 %}
+                {% if api.0.sodium_mg > 50 %}
                     <div class="alert alert-danger mt-3">
                         This food contains a high amount of sodium. High sodium causes severe dehydration and water retention.
                     </div>
                 {% endif %}
 
-                {% if api.0.sugar_g > 100 %}
+                {% if api.0.sugar_g > 50 %}
                     <div class="alert alert-danger mt-3">
                         This food contains a high amount of sugar. Sugar causes insulin spikes and is a major cause of obesity.
                     </div>

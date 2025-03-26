@@ -1,35 +1,42 @@
 from django.shortcuts import render
 import json
 import requests
-from django.conf import settings  # To use Django settings for API key
+from django.conf import settings
+import urllib.parse  # Import for encoding queries
 
 # Home view
 def home(request):
-    data = None  # Initialize data variable
-    query = request.GET.get('query', '').strip()  # Get user input safely and strip whitespace
+    data = []
+    query = ""
+
+    if request.method == "POST":  # Handle POST request
+        query = request.POST.get('query', '').strip()
+    else:
+        query = request.GET.get('query', '').strip()
 
     if not query:
-        query = '1lb brisket and fries'  # Default query
+        query = "brisket, fries"  # Default query
 
-    # API request to get nutrition data
-    api_url = f'https://api.api-ninjas.com/v1/nutrition?query={query}'
-    headers = {'X-Api-Key': settings.NUTRITION_API_KEY}  # Correct header format
+    foods = query.split(",")  # Allow multiple foods separated by commas
 
-    try:
-        response = requests.get(api_url, headers=headers)
-        response.raise_for_status()  # Raise an error for bad responses (4xx, 5xx)
+    for food in foods:
+        food = urllib.parse.quote(food.strip())  # Encode food name
+        api_url = f"https://api.api-ninjas.com/v1/nutrition?query={food}"
+        headers = {'X-Api-Key': settings.NUTRITION_API_KEY}
 
-        if response.status_code == 200:
-            data = response.json()
-            if not data:
-                data = [{"name": "Unknown Food", "calories": "N/A"}]
-        else:
-            data = [{"name": "Error", "calories": "N/A", "message": response.text}]  # Handle error responses
+        try:
+            response = requests.get(api_url, headers=headers)
+            response.raise_for_status()
+            result = response.json()
 
-    except requests.exceptions.RequestException as e:
-        data = [{"name": "Error", "calories": "N/A", "message": str(e)}]  # Handle request errors
+            if result:
+                data.extend(result)  # Append results to the data list
+            else:
+                data.append({"name": food, "calories": "N/A"})
+        except requests.exceptions.RequestException as e:
+            data.append({"name": "Error", "calories": "N/A", "message": str(e)})
 
-    return render(request, 'home.html', {'api': data})  # Pass the API data to the template
+    return render(request, 'home.html', {'api': data, 'query': query})
 
 # About view
 def about(request):
