@@ -2,14 +2,18 @@ from django.shortcuts import render
 import json
 import requests
 from django.conf import settings
-import urllib.parse  # Import for encoding queries
+import urllib.parse
 
-# Home view
+# Landing Page View
+def home_page(request):
+    return render(request, 'home_page.html')  # This renders the landing page
+
+# Home view (existing)
 def home(request):
     data = []
     query = ""
 
-    if request.method == "POST":  # Handle POST request
+    if request.method == "POST":
         query = request.POST.get('query', '').strip()
     else:
         query = request.GET.get('query', '').strip()
@@ -30,7 +34,7 @@ def home(request):
             result = response.json()
 
             if result:
-                data.extend(result)  # Append results to the data list
+                data.extend(result)
             else:
                 data.append({"name": food, "calories": "N/A"})
         except requests.exceptions.RequestException as e:
@@ -38,6 +42,6 @@ def home(request):
 
     return render(request, 'home.html', {'api': data, 'query': query})
 
-# About view
+# About view (existing)
 def about(request):
     return render(request, 'about.html')

@@ -1,0 +1,10 @@
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Calculate</button>
+</form>
+
+{% if result %}
+    <p>To reach your target weight in {{ result.time_frame }} days, you need to eat {{ result.caloric_intake }} calories per day.</p>
+    <p>To achieve this, your daily calorie deficit or surplus will be {{ result.daily_caloric_change }} calories.</p>
+{% endif %}

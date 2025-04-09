@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nutri Track</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffe6f2;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            cursor: url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css'), auto; /* Custom cursor */
+        }
+
+        .container {
+            text-align: center;
+            padding: 20px;
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            color: #d63384;
+            margin-bottom: 20px;
+            font-size: 3rem;
+        }
+
+        .start-button {
+            background-color: #d63384;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .start-button:hover {
+            background-color: #a81e63;
+            transform: scale(1.1);
+        }
+
+        .start-button:focus {
+            outline: none;
+        }
+
+        /* Custom cursor when hovering over the button */
+        .start-button:hover {
+            cursor: url('https://cdn.iconscout.com/icon/free/png-256/cursor-2127016-1795974.png'), auto;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Welcome to Nutri Track!</h1>
+        <a href="{% url 'home' %}" class="start-button">Start Your Journey</a>
+    </div>
+
+</body>
+</html>

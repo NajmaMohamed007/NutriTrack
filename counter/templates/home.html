@@ -1,3 +1,4 @@
+{% load custom_filters %}
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -167,18 +168,22 @@
                     <div class="activity-card">
                         <img src="{% static 'images/running.png' %}" alt="Jogging">
                         <h5>Jog</h5>
+                        <p>Jog for <strong>{{ api.0.calories|div:378|mul:60|floatformat:0 }}</strong> minutes.</p>
                     </div>
                     <div class="activity-card">
                         <img src="{% static 'images/yoga.png' %}" alt="Power Yoga">
                         <h5>Do Power Yoga</h5>
+                        <p>Power Yoga for <strong>{{ api.0.calories|div:223|mul:60|floatformat:0 }}</strong> minutes.</p>
                     </div>
                     <div class="activity-card">
                         <img src="{% static 'images/weightlifter.png' %}" alt="Gym Workout">
                         <h5>Lift Weights</h5>
+                        <p>Gym workout for <strong>{{ api.0.calories|div:483|mul:60|floatformat:0 }}</strong> minutes.</p>
                     </div>
                     <div class="activity-card">
                         <img src="{% static 'images/walking.png' %}" alt="Brisk Walking">
                         <h5>Brisk Walk</h5>
+                        <p>Brisk walk for <strong>{{ api.0.calories|div:294|mul:60|floatformat:0 }}</strong> minutes.</p>
                     </div>
                 </div>
             {% endif %}
