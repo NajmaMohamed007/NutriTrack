@@ -1,68 +1,161 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Nutri Track Journey</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <title>About Nutri Track ✨</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Sofia&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            --primary-pink: #ff66a3;
+            --secondary-pink: #ffb6d8;
+            --dark-pink: #d63384;
+            --light-pink: #fff5f9;
+            --white: #ffffff;
+        }
+        
         body {
-            font-family: Arial, sans-serif;
-            background-color: #ffe6f2;
-            color: #333;
+            font-family: 'Arial Rounded MT Bold', 'Arial', sans-serif;
+            background-color: var(--light-pink);
+            color: var(--dark-pink);
             margin: 0;
             padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            min-height: 100vh;
         }
-        .container {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-            max-width: 600px;
-            text-align: center;
+        
+        .cute-container {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 20px rgba(214, 51, 132, 0.1);
+            max-width: 700px;
+            margin: 50px auto;
+            border: 2px solid var(--white);
         }
+        
         h1 {
-            font-family: 'Playfair Display', serif;
-            color: #d63384;
+            font-family: "Sofia", cursive;
+            color: var(--primary-pink);
+            text-shadow: 0 0 5px rgba(255, 102, 163, 0.3);
+            font-size: 3.5rem;
+            margin-bottom: 30px;
         }
+        
         p {
-            font-size: 1.1rem;
-            line-height: 1.6;
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 20px;
         }
+        
         .highlight {
-            color: #d63384;
+            color: var(--dark-pink);
             font-weight: bold;
+            background-color: rgba(255, 182, 216, 0.3);
+            padding: 2px 5px;
+            border-radius: 5px;
         }
-        .back-link {
-            display: block;
-            margin-top: 20px;
-            font-size: 1rem;
+        
+        .back-btn {
+            background-color: var(--primary-pink);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 12px 30px;
             font-weight: bold;
-            color: #d63384;
+            font-size: 1.1rem;
+            margin-top: 30px;
+            box-shadow: 0 4px 0 var(--dark-pink);
+            transition: all 0.3s;
             text-decoration: none;
+            display: inline-block;
         }
-        .back-link:hover {
-            text-decoration: underline;
+        
+        .back-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 0 var(--dark-pink);
+            color: white;
+        }
+        
+        .back-btn:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 0 var(--dark-pink);
+        }
+        
+        .food-icon {
+            font-size: 2rem;
+            margin: 0 10px;
+            color: var(--primary-pink);
+        }
+        
+        .divider {
+            border-top: 2px dashed var(--secondary-pink);
+            margin: 30px 0;
+        }
+        
+        .feature-box {
+            background: linear-gradient(135deg, #ffccdd 0%, var(--secondary-pink) 100%);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 2px solid var(--white);
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>My Nutri Track Journey</h1>
-        <p>
-            My journey with food and health has been a rollercoaster. I used to struggle with understanding what I was eating,
-            often consuming meals without realizing their nutritional value. Over time, I realized that <span class="highlight">knowledge is power</span>—especially when it comes to nutrition.
-        </p>
-        <p>
-            That’s why I created Nutri Track. It's not just an app; it's a reflection of my personal experience with
-            tracking calories, making informed food choices, and learning about what fuels my body.
-        </p>
-        <a href="{% url 'home' %}" class="back-link">← Back to Home</a>
+    <nav class="navbar navbar-expand-lg" style="background-color: var(--secondary-pink);">
+        <div class="container-fluid">
+            <a href="{% url 'home' %}" class="nav-logo d-flex align-items-center">
+                <img src="{% static 'images/logo.png' %}" alt="Nutri Track Logo" style="height: 40px; margin-right: 10px;">
+                ✨ Nutri Track ✨
+            </a>
+        </div>
+    </nav>
 
+    <div class="container">
+        <div class="cute-container text-center">
+            <h1>About Nutri Track <i class="fas fa-heart food-icon"></i></h1>
+            
+            <p>
+                My journey with food and health has been a rollercoaster <i class="fas fa-rainbow food-icon"></i>. 
+                I used to struggle with understanding nutrition, often eating without knowing what fueled my body.
+            </p>
+            
+            <div class="feature-box">
+                <p>
+                    That's when I realized <span class="highlight">knowledge is power</span>—especially when it comes to 
+                    what we eat. Nutri Track was born from my passion to make nutrition tracking 
+                    <span class="highlight">simple, fun, and accessible</span> for everyone!
+                </p>
+            </div>
+            
+            <div class="divider"></div>
+            
+            <h3><i class="fas fa-star food-icon"></i> Why I Created This <i class="fas fa-star food-icon"></i></h3>
+            <p>
+                I wanted to create a tool that doesn't just count calories, but helps you 
+                <span class="highlight">understand your food</span> and how it affects your body and energy levels.
+            </p>
+            
+            <p>
+                Whether you're trying to eat healthier, lose weight, or just be more mindful, 
+                Nutri Track is here to support your journey <i class="fas fa-hands-helping food-icon"></i>
+            </p>
+            
+            <a href="{% url 'home' %}" class="back-btn">
+                <i class="fas fa-home"></i> Back to Home
+            </a>
+        </div>
     </div>
+
+    <footer style="background-color: var(--secondary-pink); color: white; text-align: center; padding: 20px 0; margin-top: 50px;">
+        <div class="container">
+            <p>© {% now "Y" %} Nutri Track | Made with <i class="fas fa-heart" style="color: var(--dark-pink);"></i></p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
