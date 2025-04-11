@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="cute-form-container">
+    <h2>✨ Complete Your Profile ✨</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="cute-btn">Save Profile</button>
+    </form>
+</div>
+{% endblock %}

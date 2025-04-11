@@ -1,10 +1,414 @@
-<form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Calculate</button>
-</form>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% if result %}
-    <p>To reach your target weight in {{ result.time_frame }} days, you need to eat {{ result.caloric_intake }} calories per day.</p>
-    <p>To achieve this, your daily calorie deficit or surplus will be {{ result.daily_caloric_change }} calories.</p>
-{% endif %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>✨ Calorie Calculator | Nutri Track ✨</title>
+    
+    <!-- CDN Links -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Playfair+Display:wght@700&family=Sofia&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+    
+    <style>
+        :root {
+            --primary-pink: #ff66a3;
+            --secondary-pink: #ffb6d8;
+            --dark-pink: #d63384;
+            --light-pink: #fff5f9;
+            --white: #ffffff;
+            --sparkle: #fffacd;
+        }
+        
+        body {
+            background-color: var(--light-pink);
+            color: var(--dark-pink);
+            font-family: 'Arial Rounded MT Bold', 'Arial', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-image: radial-gradient(circle at 10% 20%, rgba(255,230,240,0.8) 0%, rgba(255,255,255,0) 50%);
+        }
+        
+        .container {
+            max-width: 900px;
+            flex: 1;
+        }
+        
+        /* ===== CUTE HEADER ===== */
+        .calculator-header {
+            text-align: center;
+            margin: 2rem 0 3rem;
+            position: relative;
+        }
+        
+        .calculator-title {
+            .calculator-title {
+    font-family: "Sofia", cursive;
+    font-size: 3.5rem;
+    background: linear-gradient(135deg, var(--primary-pink) 0%, var(--dark-pink) 100%);
+    background-clip: text; /* Standard property */
+    -webkit-background-clip: text; /* Vendor prefix for WebKit browsers */
+    -webkit-text-fill-color: transparent;
+    -moz-background-clip: text; /* Vendor prefix for Firefox */
+    -moz-text-fill-color: transparent;
+    text-shadow: 0 2px 4px rgba(214, 51, 132, 0.2);
+    margin-bottom: 0.5rem;
+    position: relative;
+    display: inline-block;
+}
+        }
+        
+        .calculator-title::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, var(--primary-pink), transparent);
+            border-radius: 50%;
+        }
+        
+        .calculator-subtitle {
+            font-family: "Pacifico", cursive;
+            font-size: 1.5rem;
+            color: var(--dark-pink);
+            margin-top: 1rem;
+        }
+        
+        /* ===== CUTE CALCULATOR CARD ===== */
+        .calculator-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 25px;
+            padding: 2.5rem;
+            box-shadow: 0 10px 30px rgba(214, 51, 132, 0.15);
+            border: 2px solid var(--white);
+            backdrop-filter: blur(5px);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .calculator-card::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background-image: radial-gradient(circle, var(--sparkle) 0%, transparent 70%);
+            opacity: 0.3;
+            animation: sparkle 8s linear infinite;
+        }
+        
+        @keyframes sparkle {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* ===== CUTE FORM ELEMENTS ===== */
+        .input-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        
+        .input-group label {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            display: block;
+            color: var(--dark-pink);
+            font-size: 1.1rem;
+        }
+        
+        .input-group input, 
+        .input-group select {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            border: 3px solid var(--secondary-pink);
+            border-radius: 20px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background-color: var(--white);
+            color: var(--dark-pink);
+        }
+        
+        .input-group input:focus, 
+        .input-group select:focus {
+            border-color: var(--primary-pink);
+            box-shadow: 0 0 0 3px rgba(255, 102, 163, 0.3);
+            outline: none;
+        }
+        
+        /* ===== CUTE BUTTON ===== */
+        .calculate-btn {
+            background-color: var(--primary-pink);
+            color: var(--white);
+            border: none;
+            border-radius: 30px;
+            padding: 1rem 2.5rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 1rem;
+            box-shadow: 0 4px 0 var(--dark-pink),
+                        0 0 10px rgba(255, 102, 163, 0.5);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .calculate-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 0 var(--dark-pink),
+                        0 0 15px rgba(255, 102, 163, 0.7);
+        }
+        
+        .calculate-btn:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 0 var(--dark-pink);
+        }
+        
+        .calculate-btn::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+            z-index: -1;
+        }
+        
+        .calculate-btn:hover::before {
+            transform: translateX(100%);
+        }
+        
+        /* ===== CUTE RESULTS ===== */
+        .result-container {
+            background: linear-gradient(135deg, rgba(255, 204, 221, 0.9) 0%, var(--secondary-pink) 100%);
+            padding: 2rem;
+            border-radius: 20px;
+            margin-top: 2rem;
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+            border: 2px dashed var(--white);
+            position: relative;
+        }
+        
+        .result-container::after {
+            content: "❤️";
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            font-size: 2rem;
+            transform: rotate(15deg);
+        }
+        
+        .result-title {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--dark-pink);
+            font-weight: bold;
+            text-align: center;
+        }
+        
+        .result-value {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--dark-pink);
+            margin: 1rem 0;
+            text-align: center;
+            text-shadow: 0 2px 3px rgba(214, 51, 132, 0.2);
+            animation: pulse 2s infinite;
+        }
+        
+        .result-description {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: var(--dark-pink);
+            text-align: center;
+        }
+        
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        /* ===== RESPONSIVE ADJUSTMENTS ===== */
+        @media (max-width: 768px) {
+            .calculator-title {
+                font-size: 2.5rem;
+            }
+            
+            .calculator-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .calculator-card {
+                padding: 1.5rem;
+            }
+            
+            .result-value {
+                font-size: 2.2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+   <!-- CUTE NAVBAR -->
+<nav class="navbar navbar-expand-lg" style="background-color: var(--secondary-pink); padding: 15px 30px; box-shadow: 0 4px 15px rgba(214, 51, 132, 0.1); position: sticky; top: 0; z-index: 1000;">
+    <div class="container-fluid">
+        <a href="{% url 'home' %}" class="nav-logo d-flex align-items-center" style="font-family: 'Sofia', cursive; font-size: 2.5rem; color: var(--white); text-shadow: 0 0 5px var(--primary-pink), 0 0 10px var(--primary-pink); transition: all 0.3s;">
+            <img src="{% static 'images/logo.png' %}" alt="Nutri Track Logo" style="height: 40px; margin-right: 10px;">
+            ✨ Nutri Track ✨
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <i class="fas fa-bars" style="color: white;"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <div class="nav-links ms-auto">
+                <a href="{% url 'home' %}" style="color: var(--white); font-weight: bold; padding: 8px 15px; border-radius: 20px; transition: all 0.3s; margin: 0 5px;"><i class="fas fa-home"></i> Home</a>
+                <a href="{% url 'about' %}" style="color: var(--white); font-weight: bold; padding: 8px 15px; border-radius: 20px; transition: all 0.3s; margin: 0 5px;"><i class="fas fa-info-circle"></i> About</a>
+                <a href="{% url 'tips' %}" style="color: var(--white); font-weight: bold; padding: 8px 15px; border-radius: 20px; transition: all 0.3s; margin: 0 5px;"><i class="fas fa-lightbulb"></i> Tips</a>
+                <a href="{% url 'calculator' %}" style="color: var(--white); font-weight: bold; padding: 8px 15px; border-radius: 20px; transition: all 0.3s; margin: 0 5px;"><i class="fas fa-calculator"></i> Calculator</a>
+            </div>
+        </div>
+    </div>
+</nav>
+        <!-- CUTE HEADER -->
+        <div class="calculator-header animate__animated animate__fadeInDown">
+            <div class="d-flex justify-content-center align-items-center">
+                <h1 class="calculator-title m-0">Calorie Calculator</h1>
+            </div>
+            <p class="calculator-subtitle animate__animated animate__fadeIn animate__delay-1s">
+                Find your perfect calorie balance ✨
+            </p>
+        </div>
+        
+        <!-- CUTE CALCULATOR CARD -->
+        <div class="calculator-card animate__animated animate__fadeIn">
+            <form id="calorieForm">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <label for="age"><i class="fas fa-birthday-cake me-2"></i>Age (years)</label>
+                            <input type="number" id="age" min="15" max="120" required>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="gender"><i class="fas fa-venus-mars me-2"></i>Gender</label>
+                            <select id="gender" required>
+                                <option value="">Select gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <label for="weight"><i class="fas fa-weight me-2"></i>Weight (kg)</label>
+                            <input type="number" id="weight" min="30" max="300" step="0.1" required>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="height"><i class="fas fa-ruler-vertical me-2"></i>Height (cm)</label>
+                            <input type="number" id="height" min="100" max="250" required>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label for="activity"><i class="fas fa-running me-2"></i>Activity Level</label>
+                    <select id="activity" required>
+                        <option value="">Select activity level</option>
+                        <option value="1.2">Sedentary (little or no exercise)</option>
+                        <option value="1.375">Lightly active (light exercise 1-3 days/week)</option>
+                        <option value="1.55">Moderately active (moderate exercise 3-5 days/week)</option>
+                        <option value="1.725">Very active (hard exercise 6-7 days/week)</option>
+                        <option value="1.9">Extra active (very hard exercise & physical job)</option>
+                    </select>
+                </div>
+                
+                <div class="text-center mt-4">
+                    <button type="button" class="calculate-btn" onclick="calculateCalories()">
+                        <i class="fas fa-calculator me-2"></i> Calculate My Calories
+                    </button>
+                </div>
+            </form>
+            
+            <!-- CUTE RESULTS -->
+            <div id="resultContainer" class="result-container">
+                <h3 class="result-title"><i class="fas fa-chart-pie me-2"></i>Your Daily Calorie Needs:</h3>
+                <div class="result-value" id="calorieResult">0 calories/day</div>
+                <div class="result-description">
+                    <p>This estimate is based on the Mifflin-St Jeor equation and helps you maintain your current weight.</p>
+                    <p class="mb-0"><strong>Weight loss:</strong> Subtract 300-500 calories</p>
+                    <p><strong>Weight gain:</strong> Add 300-500 calories</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function calculateCalories() {
+            // Get input values
+            const age = parseFloat(document.getElementById('age').value);
+            const weight = parseFloat(document.getElementById('weight').value);
+            const height = parseFloat(document.getElementById('height').value);
+            const gender = document.getElementById('gender').value;
+            const activity = parseFloat(document.getElementById('activity').value);
+            
+            // Validate inputs
+            if (!age || !weight || !height || !gender || !activity) {
+                alert("Please fill in all fields to get your calorie calculation!");
+                return;
+            }
+            
+            // Calculate BMR (Mifflin-St Jeor Equation)
+            let bmr;
+            if (gender === "male") {
+                bmr = (10 * weight) + (6.25 * height) - (5 * age) + 5;
+            } else {
+                bmr = (10 * weight) + (6.25 * height) - (5 * age) - 161;
+            }
+            
+            // Calculate TDEE (Total Daily Energy Expenditure)
+            const tdee = Math.round(bmr * activity);
+            
+            // Display result with animation
+            const resultElement = document.getElementById('calorieResult');
+            const resultContainer = document.getElementById('resultContainer');
+            
+            resultElement.textContent = tdee + ' calories/day';
+            resultContainer.style.display = 'block';
+            
+            // Add celebration effect
+            resultElement.classList.add('animate__animated', 'animate__tada');
+            setTimeout(() => {
+                resultElement.classList.remove('animate__animated', 'animate__tada');
+            }, 1000);
+            
+            // Scroll to result
+            resultContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    </script>
+</body>
+</html>

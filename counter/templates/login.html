@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="cute-form-container">
+    <h2>✨ Welcome Back! ✨</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="cute-btn">Log In</button>
+    </form>
+    <p>New here? <a href="{% url 'signup' %}">Create an account</a></p>
+</div>
+{% endblock %}

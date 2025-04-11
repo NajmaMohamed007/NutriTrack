@@ -1,0 +1,196 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Nutrition Tips - Nutri Track</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Playfair+Display:wght@700&family=Sofia&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <style>
+        :root {
+            --primary-pink: #ff66a3;
+            --secondary-pink: #ffb6d8;
+            --dark-pink: #d63384;
+            --light-pink: #fff5f9;
+            --white: #ffffff;
+        }
+        
+        /* ===== CUTE NAVBAR ===== */
+        .navbar {
+            background-color: var(--secondary-pink);
+            padding: 15px 30px;
+            box-shadow: 0 4px 15px rgba(214, 51, 132, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .nav-logo {
+            font-family: "Sofia", cursive;
+            font-size: 2.5rem;
+            color: var(--white);
+            text-shadow: 0 0 5px var(--primary-pink), 0 0 10px var(--primary-pink);
+            transition: all 0.3s;
+        }
+        
+        .nav-logo:hover {
+            transform: scale(1.05);
+        }
+        
+        .nav-links a {
+            color: var(--white);
+            font-weight: bold;
+            padding: 8px 15px;
+            border-radius: 20px;
+            transition: all 0.3s;
+            margin: 0 5px;
+        }
+        
+        .nav-links a:hover {
+            background-color: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+            text-shadow: 0 0 5px rgba(255,255,255,0.5);
+        }
+        
+        body {
+            background-color: var(--light-pink);
+            color: var(--dark-pink);
+            font-family: 'Arial Rounded MT Bold', 'Arial', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            flex: 1;
+            padding-bottom: 50px;
+        }
+
+        .text-logo {
+            font-family: "Sofia", cursive;
+            font-size: 3rem;
+            text-align: center;
+            color: var(--primary-pink);
+            text-shadow: 0 0 10px var(--secondary-pink);
+            margin: 40px 0 20px;
+        }
+
+        .tip-card {
+            background-color: var(--white);
+            border: 2px solid #ffccdd;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 20px rgba(214, 51, 132, 0.1);
+            margin-bottom: 20px;
+            transition: transform 0.3s;
+        }
+
+        .tip-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .tip-card h5 {
+            color: var(--primary-pink);
+            font-weight: bold;
+        }
+
+        .tip-card p {
+            font-size: 1.1rem;
+            color: var(--dark-pink);
+        }
+
+        .back-btn {
+            background-color: var(--primary-pink);
+            color: var(--white);
+            border: none;
+            border-radius: 30px;
+            padding: 12px 30px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-top: 30px;
+            box-shadow: 0 4px 0 var(--dark-pink);
+            transition: all 0.3s;
+        }
+        
+        .back-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 0 var(--dark-pink);
+            background-color: #ff4d94;
+            color: var(--white);
+        }
+        
+        .back-btn:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 0 var(--dark-pink);
+        }
+
+        footer {
+            background-color: var(--secondary-pink);
+            color: var(--white);
+            text-align: center;
+            padding: 20px 0;
+            margin-top: auto;
+        }
+    </style>
+</head>
+<body>
+    <!-- CUTE NAVBAR -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a href="{% url 'home' %}" class="nav-logo d-flex align-items-center">
+                <img src="{% static 'images/logo.png' %}" alt="Nutri Track Logo" style="height: 40px; margin-right: 10px;">
+                ✨ Nutri Track ✨
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <i class="fas fa-bars" style="color: white;"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="nav-links ms-auto">
+                    <a href="{% url 'home' %}"><i class="fas fa-home"></i> Home</a>
+                    <a href="{% url 'about' %}"><i class="fas fa-info-circle"></i> About</a>
+                    <a href="{% url 'tips' %}"><i class="fas fa-lightbulb"></i> Tips</a>
+                    <a href="{% url 'calculator' %}"><i class="fas fa-calculator"></i> Calculator</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5 animate__animated animate__fadeIn">
+        <div class="text-logo">✨ Healthy Tips ✨</div>
+
+        <div class="tip-card">
+            <h5><i class="fas fa-leaf"></i> Eat Whole Foods</h5>
+            <p>Stick to unprocessed foods like fruits, vegetables, whole grains, and lean proteins. Your body will thank you.</p>
+        </div>
+
+        <div class="tip-card">
+            <h5><i class="fas fa-tint"></i> Stay Hydrated</h5>
+            <p>Drink at least 2 liters of water a day. Dehydration can make you feel tired and even mess with your hunger cues.</p>
+        </div>
+
+        <div class="tip-card">
+            <h5><i class="fas fa-utensils"></i> Don't Skip Meals</h5>
+            <p>Eat balanced meals regularly to keep your metabolism steady and avoid over-snacking.</p>
+        </div>
+
+        <div class="tip-card">
+            <h5><i class="fas fa-search"></i> Read Labels</h5>
+            <p>Watch out for hidden sugars and sodium in packaged food. A quick scan can go a long way.</p>
+        </div>
+
+        <div class="text-center">
+            <a href="{% url 'home' %}" class="back-btn"><i class="fas fa-home"></i> Back to Home</a>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>© {% now "Y" %} Nutri Track | Made with <i class="fas fa-heart"></i></p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -304,25 +304,26 @@
 </head>
 
 <body>
-    <!-- CUTE NAVBAR -->
-    <nav class="navbar navbar-expand-lg">
-        <div class="container-fluid">
-            <a href="{% url 'home' %}" class="nav-logo d-flex align-items-center">
-                <img src="{% static 'images/logo.png' %}" alt="Nutri Track Logo" style="height: 40px; margin-right: 10px;">
-                ✨ Nutri Track ✨
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <i class="fas fa-bars" style="color: white;"></i>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <div class="nav-links ms-auto">
-                    <a href="{% url 'home' %}"><i class="fas fa-home"></i> Home</a>
-                    <a href="{% url 'about' %}"><i class="fas fa-info-circle"></i> About</a>
-                    <a href="#" data-bs-toggle="modal" data-bs-target="#tipsModal"><i class="fas fa-lightbulb"></i> Tips</a>
+        <!-- CUTE NAVBAR -->
+        <nav class="navbar navbar-expand-lg">
+            <div class="container-fluid">
+                <a href="{% url 'home' %}" class="nav-logo d-flex align-items-center">
+                    <img src="{% static 'images/logo.png' %}" alt="Nutri Track Logo" style="height: 40px; margin-right: 10px;">
+                    ✨ Nutri Track ✨
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <i class="fas fa-bars" style="color: white;"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <div class="nav-links ms-auto">
+                        <a href="{% url 'home' %}"><i class="fas fa-home"></i> Home</a>
+                        <a href="{% url 'about' %}"><i class="fas fa-info-circle"></i> About</a>
+                        <a href="{% url 'tips' %}"><i class="fas fa-lightbulb"></i> Tips</a>
+                        <a href="{% url 'calculator' %}"><i class="fas fa-calculator"></i> Calculator</a>
+                    </div>
                 </div>
             </div>
-        </div>
-    </nav>
+        </nav>
 
     <div class="container text-center py-4">
         <!-- CUTE TITLE -->
@@ -346,7 +347,7 @@
             </form>
             
             <p class="search-instruction animate__animated animate__fadeIn animate__delay-1s">
-                Try: "apple", "chicken breast", or "pasta with tomato sauce"
+                Try: "Apple", "Chicken Breast", or "Tomato"
             </p>
         </div>
 
@@ -447,42 +448,6 @@
         {% endif %}
     </div>
 
-    <!-- CUTE FOOTER -->
-    <footer class="animate__animated animate__fadeInUp">
-        <div class="container">
-            <div class="footer-links mb-3">
-                <a href="{% url 'home' %}"><i class="fas fa-home"></i> Home</a>
-                <a href="{% url 'about' %}"><i class="fas fa-info-circle"></i> About</a>
-                <a href="#"><i class="fas fa-question-circle"></i> FAQ</a>
-                <a href="#"><i class="fas fa-envelope"></i> Contact</a>
-            </div>
-            <p class="mb-0">© {% now "Y" %} Nutri Track. All rights reserved.</p>
-        </div>
-    </footer>
-
-    <!-- TIPS MODAL -->
-    <div class="modal fade" id="tipsModal" tabindex="-1" aria-labelledby="tipsModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content" style="border-radius: 20px; border: 3px solid var(--secondary-pink);">
-                <div class="modal-header" style="background-color: var(--secondary-pink); color: white; border-radius: 17px 17px 0 0;">
-                    <h5 class="modal-title" id="tipsModalLabel"><i class="fas fa-lightbulb"></i> Nutrition Tips</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body text-start">
-                    <ul class="list-unstyled">
-                        <li class="mb-3"><i class="fas fa-check-circle text-success me-2"></i> Drink plenty of water throughout the day</li>
-                        <li class="mb-3"><i class="fas fa-check-circle text-success me-2"></i> Include protein in every meal</li>
-                        <li class="mb-3"><i class="fas fa-check-circle text-success me-2"></i> Choose whole grains over refined grains</li>
-                        <li class="mb-3"><i class="fas fa-check-circle text-success me-2"></i> Eat a variety of colorful fruits and vegetables</li>
-                        <li class="mb-3"><i class="fas fa-check-circle text-success me-2"></i> Limit added sugars and processed foods</li>
-                    </ul>
-                </div>
-                <div class="modal-footer" style="border-top: none;">
-                    <button type="button" class="btn whoop" data-bs-dismiss="modal">Got it!</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <script>
         // Portion size calculator
@@ -499,12 +464,12 @@
             document.getElementById('portionAmount').textContent = portionSize;
             
             const calculatedValues = {
-                "Calories": nutritionData.calories * multiplier,
-                "Carbs": nutritionData.carbs * multiplier,
-                "Protein": nutritionData.protein * multiplier,
-                "Fat": nutritionData.fat * multiplier,
-                "Fiber": nutritionData.fiber * multiplier,
-                "Sugar": nutritionData.sugar * multiplier
+            "Calories": (nutritionData.calories || 0) * multiplier,
+            "Carbs": (nutritionData.carbs || 0) * multiplier,
+            "Protein": (nutritionData.protein || 0) * multiplier,
+            "Fat": (nutritionData.fat || 0) * multiplier,
+            "Fiber": (nutritionData.fiber || 0) * multiplier,
+            "Sugar": (nutritionData.sugar || 0) * multiplier
             };
             
             let html = '';
@@ -526,3 +491,4 @@
             }
         });
     </script>
+    
