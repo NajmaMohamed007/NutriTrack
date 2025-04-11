@@ -16,6 +16,7 @@ import os
 # Add your Nutrition API key here for secure access
 NUTRITION_API_KEY = 'afOS7OCePWnFhZJcVhJhag==YWgVwbaWh1rNIOO7'
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -137,7 +138,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Additional settings for the 'counter' app
 COUNTER_DEFAULT_VALUE = 0  # Default starting value for counter
 
-AUTH_USER_MODEL = 'your_app.CustomUser'  # Add this to settings.py
+AUTH_USER_MODEL = 'counter.CustomUser'
+
 
 # Add these settings for authentication
 LOGIN_URL = 'login'
@@ -147,3 +149,4 @@ LOGOUT_REDIRECT_URL = 'home'
 # For profile pictures
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+

@@ -2,12 +2,12 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from .forms import CustomUserCreationForm, ProfileForm
 import requests
 from django.conf import settings
 import urllib.parse
 from difflib import get_close_matches
-from .forms import CustomUserCreationForm, ProfileForm
-from .models import CustomUser
+
 
 # Sample valid food terms
 VALID_FOODS = [
@@ -16,27 +16,26 @@ VALID_FOODS = [
     "pizza", "lettuce", "grapes", "oatmeal", "egg", "cucumber", "potato"
 ]
 
-# Authentication Views
 def signup_view(request):
     if request.method == 'POST':
-        form = CustomUserCreationForm(request.POST)
+        form = CustomUserCreationForm(request.POST, request.FILES)
         if form.is_valid():
             user = form.save()
             login(request, user)
-            messages.success(request, "Account created successfully! Complete your profile.")
+            messages.success(request, "Account created successfully!")
             return redirect('profile_setup')
     else:
         form = CustomUserCreationForm()
     return render(request, 'registration/signup.html', {'form': form})
 
+
 def login_view(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
+        username = request.POST.get('username')  # Using .get() to avoid KeyError
+        password = request.POST.get('password')  # Using .get() to avoid KeyError
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            messages.success(request, f"Welcome back, {user.username}!")
             return redirect('dashboard')
         else:
             messages.error(request, "Invalid username or password.")
@@ -45,13 +44,12 @@ def login_view(request):
 @login_required
 def logout_view(request):
     logout(request)
-    messages.success(request, "You've been logged out.")
     return redirect('home')
 
 @login_required
 def profile_setup_view(request):
     if request.method == 'POST':
-        form = ProfileForm(request.POST, instance=request.user)
+        form = ProfileForm(request.POST, request.FILES, instance=request.user)
         if form.is_valid():
             form.save()
             messages.success(request, "Profile updated successfully!")
@@ -60,15 +58,9 @@ def profile_setup_view(request):
         form = ProfileForm(instance=request.user)
     return render(request, 'profile/setup.html', {'form': form})
 
-# Core Application Views
 @login_required
 def dashboard_view(request):
-    # Get user's recent food entries (you'll need to implement this model)
-    recent_foods = []  # Replace with actual query
-    return render(request, 'dashboard.html', {
-        'user': request.user,
-        'recent_foods': recent_foods
-    })
+    return render(request, 'dashboard.html', {'user': request.user})
 
 def home_page_view(request):
     return render(request, 'home_page.html')
@@ -80,6 +72,7 @@ def home_view(request):
     invalid_inputs = []
     suggestions = []
 
+    # Get query from POST or GET request
     if request.method == "POST":
         query = request.POST.get('query', '').strip()
     else:
@@ -87,7 +80,8 @@ def home_view(request):
 
     if query:
         foods = query.split(",")
-
+        
+        # Iterate over foods to get their nutrition information
         for food in foods:
             original_food = food.strip()
             encoded_food = urllib.parse.quote(original_food)
@@ -96,35 +90,36 @@ def home_view(request):
 
             try:
                 response = requests.get(api_url, headers=headers)
-                response.raise_for_status()
+                response.raise_for_status()  # Raise an exception for HTTP errors
                 result = response.json()
 
+                print(f"API response for {original_food}: {result}")  # Print the response for debugging
                 if result:
                     data.extend(result)
-                    # Save to user's history if logged in
-                    if request.user.is_authenticated:
-                        pass  # Implement food history saving
                 else:
                     invalid_inputs.append(original_food)
+
             except requests.exceptions.RequestException as e:
+                print(f"Error fetching data: {e}")
                 messages.error(request, "There was an error fetching nutrition data.")
                 return render(request, 'home.html', {
                     'api': "oops! There was an error",
                     'query': query
                 })
 
-    if query and not data:
-        suggestion_list = []
-        for food in invalid_inputs:
-            matches = get_close_matches(food.lower(), VALID_FOODS, n=2, cutoff=0.5)
-            suggestion_list.extend(matches)
+        if query and not data:
+            # Find suggestions for invalid foods
+            suggestion_list = []
+            for food in invalid_inputs:
+                matches = get_close_matches(food.lower(), VALID_FOODS, n=2, cutoff=0.5)
+                suggestion_list.extend(matches)
 
-        messages.info(request, "We couldn't find some foods. Try these suggestions!")
-        return render(request, 'home.html', {
-            'api': "invalid",
-            'query': query,
-            'suggestions': list(set(suggestion_list))
-        })
+            messages.info(request, "We couldn't find some foods. Try these suggestions!")
+            return render(request, 'home.html', {
+                'api': "invalid",
+                'query': query,
+                'suggestions': list(set(suggestion_list))
+            })
 
     return render(request, 'home.html', {
         'api': data,
