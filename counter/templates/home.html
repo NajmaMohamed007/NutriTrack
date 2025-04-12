@@ -316,34 +316,34 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <div class="nav-links ms-auto">
-                        <!-- Common Links -->
-                        <a href="{% url 'home' %}"><i class="fas fa-home"></i> Home</a>
-                        <a href="{% url 'about' %}"><i class="fas fa-info-circle"></i> About</a>
-                        <a href="{% url 'tips' %}"><i class="fas fa-lightbulb"></i> Tips</a>
-                        <a href="{% url 'calculator' %}"><i class="fas fa-calculator"></i> Calculator</a>
-                        
-                        <!-- Authentication Links -->
-                        {% if user.is_authenticated %}
-                            <!-- Show these when user is logged in -->
-                            <div class="dropdown" style="display: inline-block;">
-                                <a href="#" class="dropdown-toggle" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="fas fa-user-circle"></i> {{ user.username }}
-                                </a>
-                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                                    <li><a class="dropdown-item" href="{% url 'profile_setup' %}"><i class="fas fa-user-edit"></i> Profile</a></li>
-                                    <li><a class="dropdown-item" href="{% url 'dashboard' %}"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-                                    <li><hr class="dropdown-divider"></li>
-                                    <li><a class="dropdown-item" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
-                                </ul>
-                            </div>
-                        {% else %}
-                            <!-- Show these when user is not logged in -->
-                            <a href="{% url 'login' %}" class="login-link"><i class="fas fa-sign-in-alt"></i> Login</a>
-                            <a href="{% url 'signup' %}" class="signup-link" style="background-color: var(--primary-pink); border-radius: 20px;">
-                                <i class="fas fa-user-plus"></i> Sign Up
-                            </a>
-                        {% endif %}
-                    </div>
+    <!-- Common Links -->
+    <a href="{% url 'home' %}"><i class="fas fa-home"></i> Home</a>
+    <a href="{% url 'about' %}"><i class="fas fa-info-circle"></i> About</a>
+    <a href="{% url 'tips' %}"><i class="fas fa-lightbulb"></i> Tips</a>
+    <a href="{% url 'calculator' %}"><i class="fas fa-calculator"></i> Calculator</a>
+    
+    <!-- Authentication Links -->
+    {% if user.is_authenticated %}
+        <!-- Show these when user is logged in -->
+        <div class="dropdown" style="display: inline-block;">
+            <a href="#" class="dropdown-toggle" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fas fa-user-circle"></i> {{ user.username }}
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                <li><a class="dropdown-item" href="{% url 'profile_setup' %}"><i class="fas fa-user-edit"></i> Profile</a></li>
+                <li><a class="dropdown-item" href="{% url 'dashboard' %}"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </div>
+    {% else %}
+        <!-- Show these when user is not logged in -->
+        <a href="{% url 'login' %}" class="login-link"><i class="fas fa-sign-in-alt"></i> Login</a>
+        <a href="{% url 'signup' %}" class="signup-link" style="background-color: var(--primary-pink); border-radius: 20px;">
+            <i class="fas fa-user-plus"></i> Sign Up
+        </a>
+    {% endif %}
+</div>
                 </div>
             </div>
         </nav>
@@ -380,6 +380,19 @@
                     <i class="fas fa-exclamation-triangle"></i> Oh no! Something went wrong. Please try again later.
                 </div>
             {% else %}
+                <!-- Hidden nutrition data for JavaScript calculations -->
+                <div id="nutrition-data" style="display: none;">
+                    {
+                        "calories": {{ api.0.calories }},
+                        "carbs": {{ api.0.carbohydrates_total_g }},
+                        "protein": {{ api.0.protein_g }},
+                        "fat": {{ api.0.fat_total_g }},
+                        "fiber": {{ api.0.fiber_g }},
+                        "sugar": {{ api.0.sugar_g }},
+                        "sodium": {{ api.0.sodium_mg }}
+                    }
+                </div>
+                
                 <!-- CUTE RESULTS SECTION -->
                 <div class="animate__animated animate__fadeIn">
                     <div class="d-flex justify-content-center align-items-center mb-4">
@@ -400,6 +413,32 @@
                         <img src="{% static 'images/healthy.png' %}" alt="Low calorie food" class="food-image animate__animated animate__bounce">
                         <div class="alert alert-success animate__animated animate__fadeIn">
                             <i class="fas fa-check-circle"></i> Great choice! This is a low-calorie option.
+                        </div>
+                    {% endif %}
+
+                    <!-- Sugar Warning -->
+                    {% if api.0.sugar_g > 25 %}
+                        <div class="alert alert-danger animate__animated animate__fadeIn">
+                            <i class="fas fa-exclamation-triangle"></i> Warning: This food is high in sugar ({{ api.0.sugar_g }}g per 100g). 
+                            High sugar intake can be harmful for people with diabetes or other health conditions.
+                        </div>
+                    {% elif api.0.sugar_g > 15 %}
+                        <div class="alert alert-warning animate__animated animate__fadeIn">
+                            <i class="fas fa-exclamation-circle"></i> Moderate sugar content ({{ api.0.sugar_g }}g per 100g). 
+                            Consider limiting portion size if you're watching your sugar intake.
+                        </div>
+                    {% endif %}
+
+                    <!-- Sodium Warning -->
+                    {% if api.0.sodium_mg > 500 %}
+                        <div class="alert alert-danger animate__animated animate__fadeIn">
+                            <i class="fas fa-exclamation-triangle"></i> Warning: This food is high in sodium ({{ api.0.sodium_mg }}mg per 100g). 
+                            High sodium intake can increase blood pressure and may be harmful for people with heart conditions.
+                        </div>
+                    {% elif api.0.sodium_mg > 300 %}
+                        <div class="alert alert-warning animate__animated animate__fadeIn">
+                            <i class="fas fa-exclamation-circle"></i> Moderate sodium content ({{ api.0.sodium_mg }}mg per 100g). 
+                            People with hypertension should consume in moderation.
                         </div>
                     {% endif %}
 
@@ -475,29 +514,31 @@
     <script>
         // Portion size calculator
         function calculatePortion() {
-            // Get nutrition data from hidden div or data attributes
+            // Get nutrition data from hidden div
             const nutritionData = JSON.parse(document.getElementById('nutrition-data').textContent);
             const portionSize = parseFloat(document.getElementById('portionSize').value);
             
             if (isNaN(portionSize)) {
-    throw new Error("Please enter a valid number");
-}
+                alert("Please enter a valid number");
+                return;
+            }
             
             const multiplier = portionSize / 100;
             document.getElementById('portionAmount').textContent = portionSize;
             
             const calculatedValues = {
-            "Calories": (nutritionData.calories || 0) * multiplier,
-            "Carbs": (nutritionData.carbs || 0) * multiplier,
-            "Protein": (nutritionData.protein || 0) * multiplier,
-            "Fat": (nutritionData.fat || 0) * multiplier,
-            "Fiber": (nutritionData.fiber || 0) * multiplier,
-            "Sugar": (nutritionData.sugar || 0) * multiplier
+                "Calories": (nutritionData.calories || 0) * multiplier,
+                "Carbs": (nutritionData.carbs || 0) * multiplier,
+                "Protein": (nutritionData.protein || 0) * multiplier,
+                "Fat": (nutritionData.fat || 0) * multiplier,
+                "Fiber": (nutritionData.fiber || 0) * multiplier,
+                "Sugar": (nutritionData.sugar || 0) * multiplier,
+                "Sodium": (nutritionData.sodium || 0) * multiplier
             };
             
             let html = '';
             for (const [key, value] of Object.entries(calculatedValues)) {
-                html += `<li><span class="nutrition-label">${key}:</span> <span class="nutrition-value">${value.toFixed(1)}${key === 'Calories' ? '' : 'g'}</span></li>`;
+                html += `<li><span class="nutrition-label">${key}:</span> <span class="nutrition-value">${value.toFixed(1)}${key === 'Calories' ? '' : (key === 'Sodium' ? 'mg' : 'g')}</span></li>`;
             }
             
             document.getElementById('portionNutrition').innerHTML = html;
@@ -514,4 +555,3 @@
             }
         });
     </script>
-    
