@@ -316,10 +316,33 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <div class="nav-links ms-auto">
+                        <!-- Common Links -->
                         <a href="{% url 'home' %}"><i class="fas fa-home"></i> Home</a>
                         <a href="{% url 'about' %}"><i class="fas fa-info-circle"></i> About</a>
                         <a href="{% url 'tips' %}"><i class="fas fa-lightbulb"></i> Tips</a>
                         <a href="{% url 'calculator' %}"><i class="fas fa-calculator"></i> Calculator</a>
+                        
+                        <!-- Authentication Links -->
+                        {% if user.is_authenticated %}
+                            <!-- Show these when user is logged in -->
+                            <div class="dropdown" style="display: inline-block;">
+                                <a href="#" class="dropdown-toggle" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-user-circle"></i> {{ user.username }}
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                    <li><a class="dropdown-item" href="{% url 'profile_setup' %}"><i class="fas fa-user-edit"></i> Profile</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'dashboard' %}"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                                </ul>
+                            </div>
+                        {% else %}
+                            <!-- Show these when user is not logged in -->
+                            <a href="{% url 'login' %}" class="login-link"><i class="fas fa-sign-in-alt"></i> Login</a>
+                            <a href="{% url 'signup' %}" class="signup-link" style="background-color: var(--primary-pink); border-radius: 20px;">
+                                <i class="fas fa-user-plus"></i> Sign Up
+                            </a>
+                        {% endif %}
                     </div>
                 </div>
             </div>

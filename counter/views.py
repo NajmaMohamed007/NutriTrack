@@ -3,19 +3,27 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .forms import CustomUserCreationForm, ProfileForm
+from django import forms
 import requests
 from django.conf import settings
 import urllib.parse
 from difflib import get_close_matches
 
-
-# Sample valid food terms
+# Sample valid food terms (adjust this list as needed)
 VALID_FOODS = [
     "apple", "banana", "chicken breast", "pasta", "rice", "broccoli",
     "salmon", "beef", "carrot", "cheese", "fries", "brisket", "yogurt",
     "pizza", "lettuce", "grapes", "oatmeal", "egg", "cucumber", "potato"
 ]
 
+# Calculator Form
+class CalculatorForm(forms.Form):
+    age = forms.IntegerField(label="Age", min_value=1)
+    weight = forms.FloatField(label="Weight (kg)", min_value=1)
+    height = forms.FloatField(label="Height (cm)", min_value=1)
+    gender = forms.ChoiceField(label="Gender", choices=[('male', 'Male'), ('female', 'Female')])
+
+# Signup View
 def signup_view(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST, request.FILES)
@@ -28,11 +36,11 @@ def signup_view(request):
         form = CustomUserCreationForm()
     return render(request, 'registration/signup.html', {'form': form})
 
-
+# Login View
 def login_view(request):
     if request.method == 'POST':
-        username = request.POST.get('username')  # Using .get() to avoid KeyError
-        password = request.POST.get('password')  # Using .get() to avoid KeyError
+        username = request.POST.get('username')
+        password = request.POST.get('password')
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
@@ -41,12 +49,12 @@ def login_view(request):
             messages.error(request, "Invalid username or password.")
     return render(request, 'registration/login.html')
 
-@login_required
+# Logout View
 def logout_view(request):
     logout(request)
     return redirect('home')
 
-@login_required
+# Profile Setup View
 def profile_setup_view(request):
     if request.method == 'POST':
         form = ProfileForm(request.POST, request.FILES, instance=request.user)
@@ -58,21 +66,21 @@ def profile_setup_view(request):
         form = ProfileForm(instance=request.user)
     return render(request, 'profile/setup.html', {'form': form})
 
-@login_required
+# Dashboard View
 def dashboard_view(request):
     return render(request, 'dashboard.html', {'user': request.user})
 
+# Home Page View
 def home_page_view(request):
     return render(request, 'home_page.html')
 
-@login_required
+# Home View (for food search and suggestions)
 def home_view(request):
     data = []
     query = ""
     invalid_inputs = []
     suggestions = []
 
-    # Get query from POST or GET request
     if request.method == "POST":
         query = request.POST.get('query', '').strip()
     else:
@@ -81,7 +89,6 @@ def home_view(request):
     if query:
         foods = query.split(",")
         
-        # Iterate over foods to get their nutrition information
         for food in foods:
             original_food = food.strip()
             encoded_food = urllib.parse.quote(original_food)
@@ -90,10 +97,9 @@ def home_view(request):
 
             try:
                 response = requests.get(api_url, headers=headers)
-                response.raise_for_status()  # Raise an exception for HTTP errors
+                response.raise_for_status()
                 result = response.json()
 
-                print(f"API response for {original_food}: {result}")  # Print the response for debugging
                 if result:
                     data.extend(result)
                 else:
@@ -101,14 +107,14 @@ def home_view(request):
 
             except requests.exceptions.RequestException as e:
                 print(f"Error fetching data: {e}")
-                messages.error(request, "There was an error fetching nutrition data.")
+                messages.error(request, "There was an error fetching nutrition data. Please try again.")
                 return render(request, 'home.html', {
-                    'api': "oops! There was an error",
-                    'query': query
+                    'api': None,  # No data returned on error
+                    'query': query,
+                    'error_message': str(e)  # Display the actual error message to help users
                 })
 
         if query and not data:
-            # Find suggestions for invalid foods
             suggestion_list = []
             for food in invalid_inputs:
                 matches = get_close_matches(food.lower(), VALID_FOODS, n=2, cutoff=0.5)
@@ -116,7 +122,7 @@ def home_view(request):
 
             messages.info(request, "We couldn't find some foods. Try these suggestions!")
             return render(request, 'home.html', {
-                'api': "invalid",
+                'api': None,
                 'query': query,
                 'suggestions': list(set(suggestion_list))
             })
@@ -126,21 +132,51 @@ def home_view(request):
         'query': query
     })
 
+# About View
 def about_view(request):
     return render(request, 'about.html')
 
+# Tips View
 def tips_view(request):
     return render(request, 'tips.html')
 
-@login_required
+# Calculator View (for BMI and BMR calculation) - NO LOGIN REQUIRED
 def calculator_view(request):
-    # Pre-fill with user data if available
+    # Pre-fill with user data if available (optional, can be skipped if no need for pre-fill)
     user_data = {
-        'age': request.user.age,
-        'weight': request.user.weight,
-        'height': request.user.height,
-        'gender': request.user.gender
+        'age': request.user.age if request.user.is_authenticated else "",
+        'weight': request.user.weight if request.user.is_authenticated else "",
+        'height': request.user.height if request.user.is_authenticated else "",
+        'gender': request.user.gender if request.user.is_authenticated else ""
     }
-    return render(request, 'calculator.html', {'user_data': user_data})
 
-# Password reset views would go here (use Django's built-in views)
+    if request.method == 'POST':
+        form = CalculatorForm(request.POST)
+        if form.is_valid():
+            age = form.cleaned_data['age']
+            weight = form.cleaned_data['weight']
+            height = form.cleaned_data['height']
+            gender = form.cleaned_data['gender']
+
+            # Calculate BMI
+            bmi = weight / ((height / 100) ** 2)
+
+            # Calculate BMR using Mifflin-St Jeor equation
+            if gender == 'male':
+                bmr = 10 * weight + 6.25 * height - 5 * age + 5
+            else:
+                bmr = 10 * weight + 6.25 * height - 5 * age - 161
+
+            messages.success(request, f"BMI: {bmi:.2f}, BMR: {bmr:.2f}")
+            return render(request, 'calculator.html', {
+                'form': form,
+                'user_data': user_data,
+                'bmi': bmi,
+                'bmr': bmr
+            })
+    else:
+        form = CalculatorForm(initial=user_data)
+
+    return render(request, 'calculator.html', {'form': form, 'user_data': user_data})
+
+# Password Reset Views would go here (use Django's built-in views)
