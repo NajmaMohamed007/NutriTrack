@@ -1,5 +1,5 @@
 from django.urls import path
-from . import views  # Import your views
+from . import views 
 
 urlpatterns = [
     # Redirect the root path to your home page

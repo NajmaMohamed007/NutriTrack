@@ -9,11 +9,12 @@ class CustomUser(AbstractUser):
     height = models.FloatField(help_text="Height in cm", null=True, blank=True)
     weight = models.FloatField(help_text="Weight in kg", null=True, blank=True)
     gender = models.CharField(
-        max_length=10,
+        max_length=20,  # Increased to accommodate 'prefer_not_to_say'
         choices=[
             ('male', 'Male'),
             ('female', 'Female'),
-            ('other', 'Other')
+            ('other', 'Other'),
+            ('prefer_not_to_say', 'Prefer not to say')
         ],
         null=True,
         blank=True
@@ -30,11 +31,15 @@ class Profile(models.Model):
     weight = models.FloatField(null=True, blank=True)
     height = models.FloatField(null=True, blank=True)
     gender = models.CharField(
-        max_length=10,
+        max_length=20,  # Also increased here for consistency
         choices=[
             ('male', 'Male'),
-            ('female', 'Female')
-        ]
+            ('female', 'Female'),
+            ('other', 'Other'),
+            ('prefer_not_to_say', 'Prefer not to say')
+        ],
+        null=True,
+        blank=True
     )
     profile_picture = models.ImageField(upload_to='profile_pics/', null=True, blank=True)
 

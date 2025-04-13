@@ -40,12 +40,14 @@ def login_view(request):
         username = request.POST.get('username')
         password = request.POST.get('password')
         user = authenticate(request, username=username, password=password)
+        
         if user is not None:
             login(request, user)
             return redirect('dashboard')
         else:
-            messages.error(request, "Invalid username or password.")
-    return render(request, 'registration/login.html')
+            messages.error(request, 'Invalid username or password')
+    
+    return render(request, 'registration/login.html')  # or 'counter/login.html'
 
 def logout_view(request):
     logout(request)
@@ -65,15 +67,11 @@ def profile_setup_view(request):
         if form.is_valid():
             form.save()
             messages.success(request, "Profile updated successfully!")
-            return redirect('dashboard')
     else:
         form = ProfileForm(instance=profile)
     
     return render(request, 'counter/profile/setup.html', {'form': form})
 
-# Dashboard View
-def dashboard_view(request):
-    return render(request, 'dashboard.html', {'user': request.user})
 
 # Home Page View
 def home_page_view(request):
@@ -136,6 +134,10 @@ def home_view(request):
         'api': data,
         'query': query
     })
+
+@login_required
+def dashboard_view(request):
+    return render(request, 'counter/dashboard.html')
 
 # About View
 def about_view(request):

@@ -79,15 +79,15 @@
         }
         
         .text-logo {
-    font-family: "Sofia", cursive;
-    font-size: 4rem;
-    color: var(--primary-pink);
-    text-shadow: 
-        0 0 5px var(--primary-pink),
-        0 0 10px var(--primary-pink),
-        0 0 20px var(--primary-pink);
-    margin: 30px 0;
-}
+            font-family: "Sofia", cursive;
+            font-size: 4rem;
+            color: var(--primary-pink);
+            text-shadow: 
+                0 0 5px var(--primary-pink),
+                0 0 10px var(--primary-pink),
+                0 0 20px var(--primary-pink);
+            margin: 30px 0;
+        }
         
         .inputstyle {
             border: 3px solid var(--secondary-pink);
@@ -304,49 +304,51 @@
 </head>
 
 <body>
-        <!-- CUTE NAVBAR -->
-        <nav class="navbar navbar-expand-lg">
-            <div class="container-fluid">
-                <a href="{% url 'home' %}" class="nav-logo d-flex align-items-center">
-                    <img src="{% static 'images/logo.png' %}" alt="Nutri Track Logo" style="height: 40px; margin-right: 10px;">
-                    ✨ Nutri Track ✨
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                    <i class="fas fa-bars" style="color: white;"></i>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <div class="nav-links ms-auto">
-    <!-- Common Links -->
-    <a href="{% url 'home' %}"><i class="fas fa-home"></i> Home</a>
-    <a href="{% url 'about' %}"><i class="fas fa-info-circle"></i> About</a>
-    <a href="{% url 'tips' %}"><i class="fas fa-lightbulb"></i> Tips</a>
-    <a href="{% url 'calculator' %}"><i class="fas fa-calculator"></i> Calculator</a>
-    
-    <!-- Authentication Links -->
-    {% if user.is_authenticated %}
-        <!-- Show these when user is logged in -->
-        <div class="dropdown" style="display: inline-block;">
-            <a href="#" class="dropdown-toggle" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="fas fa-user-circle"></i> {{ user.username }}
+    <!-- CUTE NAVBAR -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a href="{% url 'home' %}" class="nav-logo d-flex align-items-center">
+                <img src="{% static 'images/logo.png' %}" alt="Nutri Track Logo" style="height: 40px; margin-right: 10px;">
+                ✨ Nutri Track ✨
             </a>
-            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                <li><a class="dropdown-item" href="{% url 'profile_setup' %}"><i class="fas fa-user-edit"></i> Profile</a></li>
-                <li><a class="dropdown-item" href="{% url 'dashboard' %}"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
-            </ul>
-        </div>
-    {% else %}
-        <!-- Show these when user is not logged in -->
-        <a href="{% url 'login' %}" class="login-link"><i class="fas fa-sign-in-alt"></i> Login</a>
-        <a href="{% url 'signup' %}" class="signup-link" style="background-color: var(--primary-pink); border-radius: 20px;">
-            <i class="fas fa-user-plus"></i> Sign Up
-        </a>
-    {% endif %}
-</div>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fas fa-bars" style="color: white;"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="nav-links ms-auto">
+                    <a href="{% url 'home' %}"><i class="fas fa-home"></i> Home</a>
+                    <a href="{% url 'about' %}"><i class="fas fa-info-circle"></i> About</a>
+                    <a href="{% url 'tips' %}"><i class="fas fa-lightbulb"></i> Tips</a>
+                    <a href="{% url 'calculator' %}"><i class="fas fa-calculator"></i> Calculator</a>
+                    
+                    {% if user.is_authenticated %}
+                        <div class="dropdown" style="display: inline-block;">
+                            <a href="#" class="dropdown-toggle" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-user-circle"></i> {{ user.username }}
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                <li><a class="dropdown-item" href="{% url 'profile_setup' %}"><i class="fas fa-user-edit"></i> Profile</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <form method="post" action="{% url 'logout' %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="dropdown-item" style="background: none; border: none; width: 100%; text-align: left;">
+                                            <i class="fas fa-sign-out-alt"></i> Logout
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="login-link"><i class="fas fa-sign-in-alt"></i> Login</a>
+                        <a href="{% url 'signup' %}" class="signup-link" style="background-color: var(--primary-pink); border-radius: 20px;">
+                            <i class="fas fa-user-plus"></i> Sign Up
+                        </a>
+                    {% endif %}
                 </div>
             </div>
-        </nav>
+        </div>
+    </nav>
 
     <div class="container text-center py-4">
         <!-- CUTE TITLE -->
@@ -357,14 +359,19 @@
 
         <!-- CUTE SEARCH FORM -->
         <div class="search-section animate__animated animate__fadeIn">
-            <form method="POST" class="mb-2">
+            <form method="POST" action="{% url 'home' %}" class="mb-2" id="search-form">
                 {% csrf_token %}
                 <div class="input-group input-group-lg">
                     <input type="text" name="query" class="form-control inputstyle" 
                            placeholder="🍎 Search for any food..." required
-                           aria-label="Search for food" aria-describedby="search-button">
+                           aria-label="Search for food" aria-describedby="search-button"
+                           value="{{ request.POST.query }}">
                     <button class="btn whoop" type="submit" id="search-button">
-                        <i class="fas fa-search"></i> Analyze
+                        <i class="fas fa-search"></i> 
+                        <span id="search-text">Analyze</span>
+                        <span id="search-loading" style="display:none;">
+                            <i class="fas fa-spinner fa-spin"></i> Searching...
+                        </span>
                     </button>
                 </div>
             </form>
@@ -374,22 +381,32 @@
             </p>
         </div>
 
+        <!-- Error Messages -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} mt-3 animate__animated animate__shakeX">
+                    <i class="fas fa-exclamation-triangle"></i> {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <!-- SEARCH RESULTS -->
         {% if api %}
-            {% if api == "oops! There was an error" %}
+            {% if api == "error" %}
                 <div class="alert alert-danger mt-3 animate__animated animate__shakeX">
                     <i class="fas fa-exclamation-triangle"></i> Oh no! Something went wrong. Please try again later.
                 </div>
-            {% else %}
+            {% elif api.0 %}
                 <!-- Hidden nutrition data for JavaScript calculations -->
                 <div id="nutrition-data" style="display: none;">
                     {
-                        "calories": {{ api.0.calories }},
-                        "carbs": {{ api.0.carbohydrates_total_g }},
-                        "protein": {{ api.0.protein_g }},
-                        "fat": {{ api.0.fat_total_g }},
-                        "fiber": {{ api.0.fiber_g }},
-                        "sugar": {{ api.0.sugar_g }},
-                        "sodium": {{ api.0.sodium_mg }}
+                        "calories": {{ api.0.calories|default:0 }},
+                        "carbs": {{ api.0.carbohydrates_total_g|default:0 }},
+                        "protein": {{ api.0.protein_g|default:0 }},
+                        "fat": {{ api.0.fat_total_g|default:0 }},
+                        "fiber": {{ api.0.fiber_g|default:0 }},
+                        "sugar": {{ api.0.sugar_g|default:0 }},
+                        "sodium": {{ api.0.sodium_mg|default:0 }}
                     }
                 </div>
                 
@@ -397,7 +414,7 @@
                 <div class="animate__animated animate__fadeIn">
                     <div class="d-flex justify-content-center align-items-center mb-4">
                         <h2 class="display-4 mb-0 me-3">
-                            {{ api.0.name | capfirst }}
+                            {{ api.0.name|capfirst }}
                         </h2>
                         <span class="badge rounded-pill" style="background-color: var(--primary-pink); font-size: 1.2rem;">
                             {{ api.0.calories }} Calories
@@ -506,52 +523,80 @@
                         </div>
                     </div>
                 </div>
+            {% else %}
+                <div class="alert alert-warning mt-3 animate__animated animate__shakeX">
+                    <i class="fas fa-exclamation-circle"></i> No results found for "{{ request.POST.query }}"
+                </div>
             {% endif %}
         {% endif %}
     </div>
 
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p class="mb-0">© 2023 Nutri Track | Made with <i class="fas fa-heart" style="color: var(--primary-pink);"></i></p>
+        </div>
+    </footer>
+
+    <!-- Add Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        // Portion size calculator
-        function calculatePortion() {
-            // Get nutrition data from hidden div
-            const nutritionData = JSON.parse(document.getElementById('nutrition-data').textContent);
-            const portionSize = parseFloat(document.getElementById('portionSize').value);
-            
-            if (isNaN(portionSize)) {
-                alert("Please enter a valid number");
-                return;
-            }
-            
-            const multiplier = portionSize / 100;
-            document.getElementById('portionAmount').textContent = portionSize;
-            
-            const calculatedValues = {
-                "Calories": (nutritionData.calories || 0) * multiplier,
-                "Carbs": (nutritionData.carbs || 0) * multiplier,
-                "Protein": (nutritionData.protein || 0) * multiplier,
-                "Fat": (nutritionData.fat || 0) * multiplier,
-                "Fiber": (nutritionData.fiber || 0) * multiplier,
-                "Sugar": (nutritionData.sugar || 0) * multiplier,
-                "Sodium": (nutritionData.sodium || 0) * multiplier
-            };
-            
-            let html = '';
-            for (const [key, value] of Object.entries(calculatedValues)) {
-                html += `<li><span class="nutrition-label">${key}:</span> <span class="nutrition-value">${value.toFixed(1)}${key === 'Calories' ? '' : (key === 'Sodium' ? 'mg' : 'g')}</span></li>`;
-            }
-            
-            document.getElementById('portionNutrition').innerHTML = html;
-            document.getElementById('portionResults').style.display = 'block';
+    // Enhanced search functionality
+    document.getElementById('search-form').addEventListener('submit', function(e) {
+        const query = document.querySelector('input[name="query"]').value.trim();
+        if (!query) {
+            e.preventDefault();
+            alert('Please enter a food to search for');
+            return;
         }
         
-        // Animate search button
-        document.addEventListener('DOMContentLoaded', function() {
-            const searchBtn = document.querySelector('.whoop');
-            if (searchBtn) {
-                setTimeout(() => {
-                    searchBtn.classList.add('animate__animated', 'animate__pulse', 'animate__infinite');
-                }, 1000);
-            }
-        });
+        // Show loading state
+        document.getElementById('search-text').style.display = 'none';
+        document.getElementById('search-loading').style.display = 'inline-block';
+    });
+
+    // Portion calculator function
+    function calculatePortion() {
+        const nutritionData = JSON.parse(document.getElementById('nutrition-data').textContent);
+        const portionSize = parseFloat(document.getElementById('portionSize').value);
+        
+        if (isNaN(portionSize)) {
+            alert("Please enter a valid number");
+            return;
+        }
+        
+        const multiplier = portionSize / 100;
+        document.getElementById('portionAmount').textContent = portionSize;
+        
+        const calculatedValues = {
+            "Calories": (nutritionData.calories || 0) * multiplier,
+            "Carbs": (nutritionData.carbs || 0) * multiplier,
+            "Protein": (nutritionData.protein || 0) * multiplier,
+            "Fat": (nutritionData.fat || 0) * multiplier,
+            "Fiber": (nutritionData.fiber || 0) * multiplier,
+            "Sugar": (nutritionData.sugar || 0) * multiplier,
+            "Sodium": (nutritionData.sodium || 0) * multiplier
+        };
+        
+        let html = '';
+        for (const [key, value] of Object.entries(calculatedValues)) {
+            html += `<li><span class="nutrition-label">${key}:</span> <span class="nutrition-value">${value.toFixed(1)}${key === 'Calories' ? '' : (key === 'Sodium' ? 'mg' : 'g')}</span></li>`;
+        }
+        
+        document.getElementById('portionNutrition').innerHTML = html;
+        document.getElementById('portionResults').style.display = 'block';
+    }
+    
+    // Animate search button
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchBtn = document.querySelector('.whoop');
+        if (searchBtn) {
+            setTimeout(() => {
+                searchBtn.classList.add('animate__animated', 'animate__pulse', 'animate__infinite');
+            }, 1000);
+        }
+    });
     </script>
+</body>
+</html>
