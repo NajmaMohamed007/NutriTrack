@@ -49,20 +49,18 @@
         }
         
         .calculator-title {
-            .calculator-title {
-    font-family: "Sofia", cursive;
-    font-size: 3.5rem;
-    background: linear-gradient(135deg, var(--primary-pink) 0%, var(--dark-pink) 100%);
-    background-clip: text; /* Standard property */
-    -webkit-background-clip: text; /* Vendor prefix for WebKit browsers */
-    -webkit-text-fill-color: transparent;
-    -moz-background-clip: text; /* Vendor prefix for Firefox */
-    -moz-text-fill-color: transparent;
-    text-shadow: 0 2px 4px rgba(214, 51, 132, 0.2);
-    margin-bottom: 0.5rem;
-    position: relative;
-    display: inline-block;
-}
+            font-family: "Sofia", cursive;
+            font-size: 3.5rem;
+            background: linear-gradient(135deg, var(--primary-pink) 0%, var(--dark-pink) 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            -moz-background-clip: text;
+            -moz-text-fill-color: transparent;
+            text-shadow: 0 2px 4px rgba(214, 51, 132, 0.2);
+            margin-bottom: 0.5rem;
+            position: relative;
+            display: inline-block;
         }
         
         .calculator-title::after {
@@ -93,6 +91,7 @@
             backdrop-filter: blur(5px);
             position: relative;
             overflow: hidden;
+            margin-bottom: 2rem;
         }
         
         .calculator-card::before {
@@ -238,6 +237,68 @@
             text-align: center;
         }
         
+        /* Goal Adjustment Section */
+        .goal-adjustment {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 25px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(214, 51, 132, 0.15);
+            border: 2px solid var(--white);
+            margin-top: 2rem;
+        }
+        
+        .goal-option {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        
+        .goal-option:hover {
+            background-color: rgba(255, 182, 216, 0.2);
+        }
+        
+        .goal-option.active {
+            border-color: var(--primary-pink);
+            background-color: rgba(255, 102, 163, 0.1);
+        }
+        
+        .goal-icon {
+            font-size: 1.5rem;
+            margin-right: 1rem;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background-color: var(--secondary-pink);
+            color: white;
+        }
+        
+        .goal-details {
+            flex: 1;
+        }
+        
+        .goal-title {
+            font-weight: bold;
+            margin-bottom: 0.25rem;
+        }
+        
+        .goal-description {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        .adjusted-calories {
+            font-weight: bold;
+            color: var(--dark-pink);
+        }
+        
         /* ===== ANIMATIONS ===== */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
@@ -272,26 +333,28 @@
 </head>
 
 <body>
-   <!-- CUTE NAVBAR -->
-<nav class="navbar navbar-expand-lg" style="background-color: var(--secondary-pink); padding: 15px 30px; box-shadow: 0 4px 15px rgba(214, 51, 132, 0.1); position: sticky; top: 0; z-index: 1000;">
-    <div class="container-fluid">
-        <a href="{% url 'home' %}" class="nav-logo d-flex align-items-center" style="font-family: 'Sofia', cursive; font-size: 2.5rem; color: var(--white); text-shadow: 0 0 5px var(--primary-pink), 0 0 10px var(--primary-pink); transition: all 0.3s;">
-            <img src="{% static 'images/logo.png' %}" alt="Nutri Track Logo" style="height: 40px; margin-right: 10px;">
-            ✨ Nutri Track ✨
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <i class="fas fa-bars" style="color: white;"></i>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <div class="nav-links ms-auto">
-                <a href="{% url 'home' %}" style="color: var(--white); font-weight: bold; padding: 8px 15px; border-radius: 20px; transition: all 0.3s; margin: 0 5px;"><i class="fas fa-home"></i> Home</a>
-                <a href="{% url 'about' %}" style="color: var(--white); font-weight: bold; padding: 8px 15px; border-radius: 20px; transition: all 0.3s; margin: 0 5px;"><i class="fas fa-info-circle"></i> About</a>
-                <a href="{% url 'tips' %}" style="color: var(--white); font-weight: bold; padding: 8px 15px; border-radius: 20px; transition: all 0.3s; margin: 0 5px;"><i class="fas fa-lightbulb"></i> Tips</a>
-                <a href="{% url 'calculator' %}" style="color: var(--white); font-weight: bold; padding: 8px 15px; border-radius: 20px; transition: all 0.3s; margin: 0 5px;"><i class="fas fa-calculator"></i> Calculator</a>
+    <!-- CUTE NAVBAR -->
+    <nav class="navbar navbar-expand-lg" style="background-color: var(--secondary-pink); padding: 15px 30px; box-shadow: 0 4px 15px rgba(214, 51, 132, 0.1); position: sticky; top: 0; z-index: 1000;">
+        <div class="container-fluid">
+            <a href="{% url 'home' %}" class="nav-logo d-flex align-items-center" style="font-family: 'Sofia', cursive; font-size: 2.5rem; color: var(--white); text-shadow: 0 0 5px var(--primary-pink), 0 0 10px var(--primary-pink); transition: all 0.3s;">
+                <img src="{% static 'images/logo.png' %}" alt="Nutri Track Logo" style="height: 40px; margin-right: 10px;">
+                ✨ Nutri Track ✨
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <i class="fas fa-bars" style="color: white;"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="nav-links ms-auto">
+                    <a href="{% url 'home' %}" style="color: var(--white); font-weight: bold; padding: 8px 15px; border-radius: 20px; transition: all 0.3s; margin: 0 5px;"><i class="fas fa-home"></i> Home</a>
+                    <a href="{% url 'about' %}" style="color: var(--white); font-weight: bold; padding: 8px 15px; border-radius: 20px; transition: all 0.3s; margin: 0 5px;"><i class="fas fa-info-circle"></i> About</a>
+                    <a href="{% url 'tips' %}" style="color: var(--white); font-weight: bold; padding: 8px 15px; border-radius: 20px; transition: all 0.3s; margin: 0 5px;"><i class="fas fa-lightbulb"></i> Tips</a>
+                    <a href="{% url 'calculator' %}" style="color: var(--white); font-weight: bold; padding: 8px 15px; border-radius: 20px; transition: all 0.3s; margin: 0 5px;"><i class="fas fa-calculator"></i> Calculator</a>
+                </div>
             </div>
         </div>
-    </div>
-</nav>
+    </nav>
+
+    <div class="container py-4">
         <!-- CUTE HEADER -->
         <div class="calculator-header animate__animated animate__fadeInDown">
             <div class="d-flex justify-content-center align-items-center">
@@ -360,14 +423,62 @@
                 <div class="result-value" id="calorieResult">0 calories/day</div>
                 <div class="result-description">
                     <p>This estimate is based on the Mifflin-St Jeor equation and helps you maintain your current weight.</p>
-                    <p class="mb-0"><strong>Weight loss:</strong> Subtract 300-500 calories</p>
-                    <p><strong>Weight gain:</strong> Add 300-500 calories</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- GOAL ADJUSTMENT SECTION -->
+        <div id="goalAdjustment" class="goal-adjustment animate__animated animate__fadeIn" style="display: none;">
+            <h3 class="text-center mb-4"><i class="fas fa-bullseye me-2"></i> Adjust For Your Goals</h3>
+            
+            <div class="goal-option" onclick="selectGoal('lose', this)">
+                <div class="goal-icon">
+                    <i class="fas fa-weight-scale"></i>
+                </div>
+                <div class="goal-details">
+                    <div class="goal-title">Lose Weight</div>
+                    <div class="goal-description">Create a calorie deficit to lose 0.5-1kg per week</div>
+                </div>
+                <div class="adjusted-calories" id="loseWeightCalories"></div>
+            </div>
+            
+            <div class="goal-option active" onclick="selectGoal('maintain', this)">
+                <div class="goal-icon">
+                    <i class="fas fa-balance-scale"></i>
+                </div>
+                <div class="goal-details">
+                    <div class="goal-title">Maintain Weight</div>
+                    <div class="goal-description">Keep your current weight with balanced intake</div>
+                </div>
+                <div class="adjusted-calories" id="maintainWeightCalories"></div>
+            </div>
+            
+            <div class="goal-option" onclick="selectGoal('gain', this)">
+                <div class="goal-icon">
+                    <i class="fas fa-arrow-up-wide-short"></i>
+                </div>
+                <div class="goal-details">
+                    <div class="goal-title">Gain Weight</div>
+                    <div class="goal-description">Create a calorie surplus to build muscle</div>
+                </div>
+                <div class="adjusted-calories" id="gainWeightCalories"></div>
+            </div>
+            
+            <div class="mt-4">
+                <div class="alert alert-info">
+                    <i class="fas fa-lightbulb me-2"></i>
+                    <strong>Tip:</strong> 
+                    <span id="goalTip">
+                        For sustainable results, combine your calorie target with a balanced diet and regular exercise.
+                    </span>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
+        let currentTDEE = 0;
+        
         function calculateCalories() {
             // Get input values
             const age = parseFloat(document.getElementById('age').value);
@@ -391,14 +502,19 @@
             }
             
             // Calculate TDEE (Total Daily Energy Expenditure)
-            const tdee = Math.round(bmr * activity);
+            currentTDEE = Math.round(bmr * activity);
             
             // Display result with animation
             const resultElement = document.getElementById('calorieResult');
             const resultContainer = document.getElementById('resultContainer');
+            const goalAdjustment = document.getElementById('goalAdjustment');
             
-            resultElement.textContent = tdee + ' calories/day';
+            resultElement.textContent = currentTDEE + ' calories/day';
             resultContainer.style.display = 'block';
+            goalAdjustment.style.display = 'block';
+            
+            // Update goal options
+            updateGoalOptions(currentTDEE);
             
             // Add celebration effect
             resultElement.classList.add('animate__animated', 'animate__tada');
@@ -408,6 +524,34 @@
             
             // Scroll to result
             resultContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        
+        function updateGoalOptions(tdee) {
+            document.getElementById('maintainWeightCalories').textContent = tdee + ' cal';
+            document.getElementById('loseWeightCalories').textContent = (tdee - 500) + ' - ' + (tdee - 300) + ' cal';
+            document.getElementById('gainWeightCalories').textContent = (tdee + 300) + ' - ' + (tdee + 500) + ' cal';
+        }
+        
+        function selectGoal(goal, element) {
+            // Update active state
+            document.querySelectorAll('.goal-option').forEach(opt => {
+                opt.classList.remove('active');
+            });
+            element.classList.add('active');
+            
+            // Update tip based on goal
+            const goalTip = document.getElementById('goalTip');
+            switch(goal) {
+                case 'lose':
+                    goalTip.innerHTML = `Aim for a <strong>300-500 calorie deficit</strong> daily for healthy weight loss (0.5-1kg per week). Combine with cardio and strength training for best results.`;
+                    break;
+                case 'maintain':
+                    goalTip.innerHTML = `Maintain your current weight by eating <strong>${currentTDEE} calories daily</strong>. Focus on balanced nutrition and regular activity.`;
+                    break;
+                case 'gain':
+                    goalTip.innerHTML = `Aim for a <strong>300-500 calorie surplus</strong> daily for muscle growth. Focus on protein-rich foods and strength training.`;
+                    break;
+            }
         }
     </script>
 </body>

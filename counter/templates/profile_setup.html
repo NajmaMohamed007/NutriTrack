@@ -1,12 +1,94 @@
 {% extends 'home.html' %}
 
 {% block content %}
-<div class="cute-form-container">
-    <h2>✨ Complete Your Profile ✨</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="cute-btn">Save Profile</button>
-    </form>
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm" style="border-radius: 20px; border: none; background-color: #fff;">
+                <div class="card-body p-5">
+                    <h2 class="text-center mb-4">✨ Complete Your Profile ✨</h2>
+                    
+                    {% if messages %}
+                        {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        {% endfor %}
+                    {% endif %}
+                    
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <!-- Profile Picture -->
+                        <div class="mb-4 text-center">
+                            {% if form.instance.profile_picture %}
+                                <img src="{{ form.instance.profile_picture.url }}" 
+                                     class="rounded-circle mb-3" 
+                                     width="150" height="150" 
+                                     alt="Profile picture">
+                            {% else %}
+                                <div class="d-flex justify-content-center mb-3">
+                                    <div class="profile-pic-placeholder rounded-circle" 
+                                         style="width: 150px; height: 150px; background-color: #f0f0f0; display: flex; align-items: center; justify-content: center;">
+                                        <i class="fas fa-user fa-3x text-muted"></i>
+                                    </div>
+                                </div>
+                            {% endif %}
+                            {{ form.profile_picture }}
+                        </div>
+                        
+                        <!-- Form Fields -->
+                        <div class="mb-3">
+                            <label class="form-label">Bio</label>
+                            {{ form.bio }}
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Birth Date</label>
+                                {{ form.birth_date }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Location</label>
+                                {{ form.location }}
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary w-100 py-2">
+                            Save Profile
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<style>
+    .profile-pic-placeholder {
+        border: 2px dashed #ccc;
+    }
+    
+    .form-control {
+        border-radius: 10px;
+        padding: 10px 15px;
+    }
+    
+    .form-control:focus {
+        border-color: #ff66b2;
+        box-shadow: 0 0 0 0.25rem rgba(255, 102, 178, 0.25);
+    }
+    
+    .btn-primary {
+        background-color: #ff66b2;
+        border-color: #ff66b2;
+        border-radius: 10px;
+    }
+    
+    .btn-primary:hover {
+        background-color: #ff3385;
+        border-color: #ff3385;
+    }
+</style>
 {% endblock %}

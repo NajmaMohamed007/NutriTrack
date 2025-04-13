@@ -23,7 +23,6 @@ class CalculatorForm(forms.Form):
     height = forms.FloatField(label="Height (cm)", min_value=1)
     gender = forms.ChoiceField(label="Gender", choices=[('male', 'Male'), ('female', 'Female')])
 
-# Signup View
 def signup_view(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST, request.FILES)
@@ -36,7 +35,6 @@ def signup_view(request):
         form = CustomUserCreationForm()
     return render(request, 'registration/signup.html', {'form': form})
 
-# Login View
 def login_view(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -49,22 +47,29 @@ def login_view(request):
             messages.error(request, "Invalid username or password.")
     return render(request, 'registration/login.html')
 
-# Logout View
 def logout_view(request):
     logout(request)
     return redirect('home')
 
-# Profile Setup View
 def profile_setup_view(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+        
+    try:
+        profile = request.user.profile
+    except profile.DoesNotExist:
+        profile = profile.objects.create(user=request.user)
+
     if request.method == 'POST':
-        form = ProfileForm(request.POST, request.FILES, instance=request.user)
+        form = ProfileForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
             form.save()
             messages.success(request, "Profile updated successfully!")
             return redirect('dashboard')
     else:
-        form = ProfileForm(instance=request.user)
-    return render(request, 'profile/setup.html', {'form': form})
+        form = ProfileForm(instance=profile)
+    
+    return render(request, 'counter/profile/setup.html', {'form': form})
 
 # Dashboard View
 def dashboard_view(request):
