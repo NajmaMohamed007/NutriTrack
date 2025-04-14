@@ -7,6 +7,7 @@ from django import forms
 import requests
 from django.conf import settings
 import urllib.parse
+from django.template import loader  # Add this import
 from difflib import get_close_matches
 
 # Sample valid food terms (adjust this list as needed)
@@ -135,19 +136,34 @@ def home_view(request):
         'query': query
     })
 
+
 @login_required
 def dashboard_view(request):
-    return render(request, 'counter/dashboard.html')
+    print(f"DEBUG: User {request.user} authenticated")
+    # Fixed template loader usage:
+    template_path = loader.get_template('counter/dashboard.html').origin.name
+    print(f"DEBUG: Template path: {template_path}")
+    
+    return render(request, 'counter/dashboard.html', {
+        'force_visible': "THIS SHOULD APPEAR",
+        'user': request.user  # Explicitly pass user
+    })
+
+from django.http import HttpResponse
+def test_view(request):
+    return HttpResponse("RAW TEST OUTPUT - If you see this, routing works")
 
 # About View
 def about_view(request):
     return render(request, 'about.html')
 
 # Tips View
+@login_required
 def tips_view(request):
     return render(request, 'tips.html')
 
-# Calculator View (for BMI and BMR calculation) - NO LOGIN REQUIRED
+# Calculator View (for BMI and BMR calculation)
+@login_required
 def calculator_view(request):
     # Pre-fill with user data if available (optional, can be skipped if no need for pre-fill)
     user_data = {

@@ -1,67 +1,26 @@
-{% extends "base.html" %}
-{% load static %}
+{% extends "counter/base.html" %}
 
 {% block content %}
-<div class="container py-4">
-    <!-- Welcome Header -->
-    <div class="text-center mb-5 animate__animated animate__fadeInDown">
-        <h1 class="text-logo">✨ Welcome, {{ user.username }}! ✨</h1>
-        <p class="lead">Your personal nutrition dashboard</p>
+<div style="border: 5px solid red; padding: 20px; background: white;">
+    <h1 style="color: black;">DASHBOARD DEBUG</h1>
+    
+    <!-- User Info -->
+    <div style="background: #f0f0f0; padding: 10px; margin: 10px 0;">
+        <h3>User Status:</h3>
+        <p>Username: {{ user.username|default:"NOT FOUND" }}</p>
+        <p>Authenticated: {{ user.is_authenticated|yesno:"Yes,No" }}</p>
     </div>
-
-    <!-- Stats Cards -->
-    <div class="row mb-4">
-        <div class="col-md-4 mb-3">
-            <div class="activity-card h-100">
-                <i class="fas fa-apple-alt fa-3x mb-3" style="color: var(--primary-pink);"></i>
-                <h5>Today's Calories</h5>
-                <p class="display-6">0</p>
-                <small class="text-muted">of 2,000 goal</small>
-            </div>
-        </div>
-        
-        <div class="col-md-4 mb-3">
-            <div class="activity-card h-100">
-                <i class="fas fa-dumbbell fa-3x mb-3" style="color: var(--primary-pink);"></i>
-                <h5>Activity Today</h5>
-                <p class="display-6">0 min</p>
-            </div>
-        </div>
-        
-        <div class="col-md-4 mb-3">
-            <div class="activity-card h-100">
-                <i class="fas fa-glass-water fa-3x mb-3" style="color: var(--primary-pink);"></i>
-                <h5>Water Intake</h5>
-                <p class="display-6">0 L</p>
-            </div>
-        </div>
+    
+    <!-- Test Variable -->
+    <div style="background: #e0ffe0; padding: 10px; margin: 10px 0;">
+        <h3>Test Variable:</h3>
+        <p>{{ force_visible|default:"VARIABLE MISSING" }}</p>
     </div>
-
-    <!-- Quick Actions -->
-    <div class="row mt-4">
-        <div class="col-md-6 mb-3">
-            <div class="caloriescont h-100">
-                <h4><i class="fas fa-plus-circle me-2"></i> Quick Actions</h4>
-                <div class="d-grid gap-2 mt-3">
-                    <a href="{% url 'home' %}" class="btn whoop">
-                        <i class="fas fa-search"></i> Search Foods
-                    </a>
-                    <a href="{% url 'calculator' %}" class="btn whoop">
-                        <i class="fas fa-calculator"></i> Nutrition Calculator
-                    </a>
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-md-6 mb-3">
-            <div class="caloriescont h-100">
-                <h4><i class="fas fa-chart-line me-2"></i> Quick Tips</h4>
-                <div class="mt-3">
-                    <p>Track your meals regularly for better insights!</p>
-                    <a href="{% url 'tips' %}" class="btn whoop btn-sm">View All Tips</a>
-                </div>
-            </div>
-        </div>
+    
+    <!-- Template Info -->
+    <div style="background: #ffe0e0; padding: 10px; margin: 10px 0;">
+        <h3>Template Debug:</h3>
+        <p>Base template: {% if extends %}FOUND{% else %}MISSING{% endif %}</p>
     </div>
 </div>
 {% endblock %}

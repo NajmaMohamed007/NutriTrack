@@ -13,5 +13,7 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
     path('profile/setup/', views.profile_setup_view, name='profile_setup'),
     path('dashboard/', views.dashboard_view, name='dashboard'),
+    # urls.py
+path('test/', views.test_view, name='test'),
     # Other paths...
 ]

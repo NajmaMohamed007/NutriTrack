@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard | NutriTrack{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <!-- Your dashboard content here -->
+    <h1>Welcome to your dashboard!</h1>
+    {{ debug_test|default:"No content" }}
+</div>
+{% endblock %}
