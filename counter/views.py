@@ -9,6 +9,7 @@ from django.conf import settings
 import urllib.parse
 from django.template import loader  # Add this import
 from difflib import get_close_matches
+from django.core.exceptions import ObjectDoesNotExist
 
 # Sample valid food terms (adjust this list as needed)
 VALID_FOODS = [
@@ -57,17 +58,19 @@ def logout_view(request):
 def profile_setup_view(request):
     if not request.user.is_authenticated:
         return redirect('login')
-        
+    
     try:
         profile = request.user.profile
-    except profile.DoesNotExist:
-        profile = profile.objects.create(user=request.user)
+    except ObjectDoesNotExist:  # Changed this line
+        from .models import Profile  # Import your Profile model
+        profile = Profile.objects.create(user=request.user)  # Fixed this line
 
     if request.method == 'POST':
         form = ProfileForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
             form.save()
             messages.success(request, "Profile updated successfully!")
+            return redirect('dashboard')  # Added redirect after save
     else:
         form = ProfileForm(instance=profile)
     
@@ -79,6 +82,7 @@ def home_page_view(request):
     return render(request, 'home_page.html')
 
 # Home View (for food search and suggestions)
+
 def home_view(request):
     data = []
     query = ""

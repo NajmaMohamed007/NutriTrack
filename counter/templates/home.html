@@ -304,7 +304,6 @@
 </head>
 
 <body>
-    <!-- CUTE NAVBAR -->
     <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
             <a href="{% url 'home' %}" class="nav-logo d-flex align-items-center">
@@ -322,29 +321,36 @@
                     <a href="{% url 'calculator' %}"><i class="fas fa-calculator"></i> Calculator</a>
                     
                     {% if user.is_authenticated %}
-                        <div class="dropdown" style="display: inline-block;">
-                            <a href="#" class="dropdown-toggle" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fas fa-user-circle"></i> {{ user.username }}
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                                <li><a class="dropdown-item" href="{% url 'profile_setup' %}"><i class="fas fa-user-edit"></i> Profile</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li>
-                                    <form method="post" action="{% url 'logout' %}">
-                                        {% csrf_token %}
-                                        <button type="submit" class="dropdown-item" style="background: none; border: none; width: 100%; text-align: left;">
-                                            <i class="fas fa-sign-out-alt"></i> Logout
-                                        </button>
-                                    </form>
-                                </li>
-                            </ul>
-                        </div>
-                    {% else %}
-                        <a href="{% url 'login' %}" class="login-link"><i class="fas fa-sign-in-alt"></i> Login</a>
-                        <a href="{% url 'signup' %}" class="signup-link" style="background-color: var(--primary-pink); border-radius: 20px;">
-                            <i class="fas fa-user-plus"></i> Sign Up
-                        </a>
-                    {% endif %}
+    <div class="dropdown" style="display: inline-block;">
+        <a href="#" class="dropdown-toggle" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fas fa-user-circle"></i> {{ user.username }}
+        </a>
+        <!-- Dropdown menu (opens DOWN) -->
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+            <!-- PROFILE LINK -->
+            <li><a class="dropdown-item" href="{% url 'profile_setup' %}"><i class="fas fa-user-edit"></i> Profile</a></li>
+            <!-- NEW DASHBOARD LINK (added under Profile) -->
+            <li><a class="dropdown-item" href="{% url 'dashboard' %}"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+            <!-- DIVIDER -->
+            <li><hr class="dropdown-divider"></li>
+            <!-- LOGOUT OPTION -->
+            <li>
+                <form method="post" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="dropdown-item" style="background: none; border: none; width: 100%; text-align: left;">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </form>
+            </li>
+        </ul>
+    </div>
+{% else %}
+    <!-- Login/Signup links for non-authenticated users -->
+    <a href="{% url 'login' %}" class="login-link"><i class="fas fa-sign-in-alt"></i> Login</a>
+    <a href="{% url 'signup' %}" class="signup-link" style="background-color: var(--primary-pink); border-radius: 20px;">
+        <i class="fas fa-user-plus"></i> Sign Up
+    </a>
+{% endif %}
                 </div>
             </div>
         </div>
