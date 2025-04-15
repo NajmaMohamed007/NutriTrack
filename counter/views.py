@@ -55,26 +55,17 @@ def logout_view(request):
     logout(request)
     return redirect('home')
 
-def profile_setup_view(request):
-    if not request.user.is_authenticated:
-        return redirect('login')
-    
-    try:
-        profile = request.user.profile
-    except ObjectDoesNotExist:  # Changed this line
-        from .models import Profile  # Import your Profile model
-        profile = Profile.objects.create(user=request.user)  # Fixed this line
-
+def profile_setup_view(request):  # Note: exact name matching your URL pattern
     if request.method == 'POST':
-        form = ProfileForm(request.POST, request.FILES, instance=profile)
+        form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
         if form.is_valid():
             form.save()
-            messages.success(request, "Profile updated successfully!")
-            return redirect('dashboard')  # Added redirect after save
+            messages.success(request, 'Profile updated successfully!')
+            return redirect('profile_setup')  # Redirect back to same page
     else:
-        form = ProfileForm(instance=profile)
+        form = ProfileForm(instance=request.user.profile)
     
-    return render(request, 'counter/profile/setup.html', {'form': form})
+    return render(request, 'counter/profile_setup.html', {'form': form})
 
 
 # Home Page View

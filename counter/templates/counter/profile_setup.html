@@ -1,0 +1,440 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Your Profile | NutriTrack</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-pink: #ff66a3;
+            --secondary-pink: #ffb6d8;
+            --dark-pink: #d63384;
+            --light-pink: #fff5f9;
+            --white: #ffffff;
+        }
+        
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--light-pink);
+            color: #555;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+        
+        .profile-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .profile-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .profile-header h1 {
+            font-family: 'Pacifico', cursive;
+            color: var(--dark-pink);
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+        }
+        
+        .profile-header p {
+            font-size: 1.2rem;
+            color: #888;
+        }
+        
+        .profile-card {
+            background-color: var(--white);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(214, 51, 132, 0.1);
+            padding: 40px;
+            margin-bottom: 30px;
+        }
+        
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--primary-pink);
+            text-decoration: none;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+        
+        .back-button i {
+            margin-right: 8px;
+        }
+        
+        .progress-container {
+            margin-bottom: 40px;
+        }
+        
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            color: var(--dark-pink);
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background-color: #f0f0f0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background-color: var(--primary-pink);
+            width: 60%;
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+        
+        .profile-picture-section {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .profile-picture-container {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+        
+        .profile-picture {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--secondary-pink);
+        }
+        
+        .profile-picture-placeholder {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background-color: #f8f8f8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 3px dashed var(--secondary-pink);
+            color: var(--secondary-pink);
+            font-size: 3rem;
+        }
+        
+        .upload-button {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background-color: var(--primary-pink);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .upload-button:hover {
+            transform: scale(1.1);
+        }
+        
+        .upload-text {
+            font-size: 0.9rem;
+            color: #888;
+        }
+        
+        .form-section {
+            margin-bottom: 40px;
+        }
+        
+        .section-title {
+            color: var(--dark-pink);
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .section-title:after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 50px;
+            height: 3px;
+            background-color: var(--secondary-pink);
+            border-radius: 3px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #666;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #f0f0f0;
+            border-radius: 10px;
+            font-family: 'Quicksand', sans-serif;
+            transition: all 0.3s;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary-pink);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(255, 102, 163, 0.2);
+        }
+        
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 -15px;
+        }
+        
+        .form-col {
+            flex: 1;
+            padding: 0 15px;
+            min-width: 250px;
+        }
+        
+        .submit-button {
+            background-color: var(--primary-pink);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 500;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+        
+        .submit-button i {
+            margin-right: 10px;
+        }
+        
+        .submit-button:hover {
+            background-color: var(--dark-pink);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(214, 51, 132, 0.3);
+        }
+        
+        .privacy-note {
+            text-align: center;
+            color: #888;
+            font-size: 0.9rem;
+            margin-top: 30px;
+        }
+        
+        .privacy-note i {
+            color: var(--primary-pink);
+            margin-right: 5px;
+        }
+        
+        @media (max-width: 768px) {
+            .profile-container {
+                padding: 20px 15px;
+            }
+            
+            .profile-card {
+                padding: 30px 20px;
+            }
+            
+            .profile-header h1 {
+                font-size: 2.2rem;
+            }
+            
+            .form-col {
+                flex: 100%;
+                margin-bottom: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-container">
+        <div class="profile-header">
+            <h1>Complete Your Profile</h1>
+            <p>Help us personalize your NutriTrack experience ✨</p>
+        </div>
+        
+        <div class="profile-card">
+            <a href="{% url 'home' %}" class="back-button">
+                <i class="fas fa-arrow-left"></i> Back to Home
+            </a>
+            
+            <div class="progress-container">
+                <div class="progress-text">
+                    <span>Profile Completion</span>
+                    <span>60%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+            </div>
+            
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                <div class="profile-picture-section">
+                    <div class="profile-picture-container">
+                        {% if form.instance.profile_picture %}
+                            <img src="{{ form.instance.profile_picture.url }}" class="profile-picture" alt="Profile Picture">
+                        {% else %}
+                            <div class="profile-picture-placeholder">
+                                <i class="fas fa-user"></i>
+                            </div>
+                        {% endif %}
+                        <label class="upload-button">
+                            <i class="fas fa-camera"></i>
+                            {{ form.profile_picture }}
+                        </label>
+                    </div>
+                    <p class="upload-text">Click to upload a profile picture</p>
+                </div>
+                
+                <div class="form-section">
+                    <h2 class="section-title">
+                        <i class="fas fa-user-circle"></i> Personal Information
+                    </h2>
+                    
+                    <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label class="form-label">Username</label>
+                                <input type="text" class="form-control" value="{{ user.username }}" disabled>
+                            </div>
+                        </div>
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-control" value="{{ user.email }}" disabled>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h2 class="section-title">
+                        <i class="fas fa-heart"></i> About You
+                    </h2>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Bio</label>
+                        {{ form.bio }}
+                        <small class="text-muted">Tell us something about yourself</small>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label class="form-label">Birth Date</label>
+                                {{ form.birth_date }}
+                            </div>
+                        </div>
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label class="form-label">Location</label>
+                                {{ form.location }}
+                                <small class="text-muted">City, Country</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h2 class="section-title">
+                        <i class="fas fa-apple-alt"></i> Health Preferences
+                    </h2>
+                    
+                    <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label class="form-label">Dietary Restrictions</label>
+                                <select class="form-control">
+                                    <option value="">None</option>
+                                    <option value="vegetarian">Vegetarian</option>
+                                    <option value="vegan">Vegan</option>
+                                    <option value="gluten-free">Gluten-Free</option>
+                                    <option value="dairy-free">Dairy-Free</option>
+                                    <option value="keto">Keto</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label class="form-label">Allergies</label>
+                                <input type="text" class="form-control" placeholder="List any food allergies">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center">
+                    <button type="submit" class="submit-button">
+                        <i class="fas fa-save"></i> Save Profile
+                    </button>
+                </div>
+            </form>
+            
+            <p class="privacy-note">
+                <i class="fas fa-lock"></i> Your information is secure and private
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Simple animation for the progress bar
+        document.addEventListener('DOMContentLoaded', function() {
+            const progressFill = document.querySelector('.progress-fill');
+            setTimeout(() => {
+                progressFill.style.width = '60%';
+            }, 300);
+            
+            // Add focus styles to form elements
+            const formControls = document.querySelectorAll('.form-control');
+            formControls.forEach(control => {
+                control.addEventListener('focus', function() {
+                    this.parentNode.querySelector('.form-label').style.color = 'var(--dark-pink)';
+                });
+                
+                control.addEventListener('blur', function() {
+                    this.parentNode.querySelector('.form-label').style.color = '#666';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+{% endblock %}

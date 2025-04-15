@@ -1,26 +1,336 @@
 {% extends "counter/base.html" %}
+{% load static %}
 
 {% block content %}
-<div style="border: 5px solid red; padding: 20px; background: white;">
-    <h1 style="color: black;">DASHBOARD DEBUG</h1>
-    
-    <!-- User Info -->
-    <div style="background: #f0f0f0; padding: 10px; margin: 10px 0;">
-        <h3>User Status:</h3>
-        <p>Username: {{ user.username|default:"NOT FOUND" }}</p>
-        <p>Authenticated: {{ user.is_authenticated|yesno:"Yes,No" }}</p>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Pacifico&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+  :root {
+    --primary-pink: #ff66a3;
+    --secondary-pink: #ffb6d8;
+    --dark-pink: #d63384;
+    --light-pink: #fff5f9;
+    --white: #ffffff;
+  }
+  
+  body {
+    font-family: 'Quicksand', sans-serif;
+    background-color: var(--light-pink);
+    background-image: radial-gradient(circle at 10% 20%, rgba(255, 214, 235, 0.3) 0%, rgba(255, 255, 255, 0) 50%);
+  }
+  
+  .bubbly-square {
+    background-color: var(--white);
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 5px 15px rgba(214, 51, 132, 0.1);
+    transition: all 0.3s ease;
+    border: 2px solid var(--secondary-pink);
+    text-align: center;
+    margin: 0 auto;
+  }
+  
+  .bubbly-square:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(214, 51, 132, 0.15);
+  }
+  
+  .dashboard-title {
+    font-family: 'Pacifico', cursive;
+    color: var(--dark-pink);
+    text-shadow: 0 2px 4px rgba(214, 51, 132, 0.2);
+  }
+  
+  .progress-bubble {
+    height: 10px;
+    border-radius: 10px;
+    background-color: rgba(255, 102, 163, 0.2);
+    overflow: hidden;
+  }
+  
+  .progress-fill {
+    height: 100%;
+    border-radius: 10px;
+  }
+  
+  .calories-fill {
+    background-color: var(--primary-pink);
+  }
+  
+  .protein-fill {
+    background-color: #ff8e6e;
+  }
+  
+  .carbs-fill {
+    background-color: #ffcc5e;
+  }
+  
+  .fat-fill {
+    background-color: #a5d8ff;
+  }
+  
+  .food-item {
+    background-color: var(--light-pink);
+    border-radius: 15px;
+    padding: 12px;
+    margin-bottom: 10px;
+    border: 1px dashed var(--secondary-pink);
+  }
+  
+  .water-drop {
+    color: #6bb9ff;
+    filter: drop-shadow(0 2px 2px rgba(107, 185, 255, 0.3));
+  }
+  
+  .quick-action {
+    background-color: var(--white);
+    border-radius: 15px;
+    padding: 15px;
+    transition: all 0.3s;
+    border: 2px solid var(--secondary-pink);
+  }
+  
+  .quick-action:hover {
+    background-color: var(--secondary-pink);
+    transform: scale(1.05);
+  }
+  
+  .cute-icon {
+    width: 50px;
+    height: 50px;
+    background-color: var(--secondary-pink);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 15px;
+    color: var(--white);
+    font-size: 20px;
+    box-shadow: 0 3px 10px rgba(214, 51, 132, 0.2);
+  }
+</style>
+
+<div class="max-w-4xl mx-auto px-4 py-8">
+  <!-- Header -->
+  <div class="text-center mb-10">
+    <h1 class="dashboard-title text-4xl mb-2">🌸 Your Nutri Dashboard 🌸</h1>
+    <p class="text-pink-500">Hello, {{ user.username }}! Let's track some nutrition!</p>
+    <div class="mt-4 px-4 py-2 bg-pink-100 rounded-full inline-block">
+      <i class="fas fa-calendar-day text-pink-500 mr-2"></i>
+      <span class="text-pink-600">{{ current_date|date:"F j, Y" }}</span>
+    </div>
+  </div>
+
+  <!-- Nutrition Bubbles -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+    <!-- Calories -->
+    <div class="bubbly-square">
+      <div class="cute-icon">
+        <i class="fas fa-fire"></i>
+      </div>
+      <h3 class="text-lg font-bold text-pink-600 mb-1">Calories</h3>
+      <p class="text-2xl font-bold mb-3">1,850<span class="text-lg font-normal text-gray-500">/2,300</span></p>
+      <div class="progress-bubble mb-2">
+        <div class="progress-fill calories-fill" style="width: 80%"></div>
+      </div>
+      <p class="text-sm text-pink-500">80% of goal</p>
     </div>
     
-    <!-- Test Variable -->
-    <div style="background: #e0ffe0; padding: 10px; margin: 10px 0;">
-        <h3>Test Variable:</h3>
-        <p>{{ force_visible|default:"VARIABLE MISSING" }}</p>
+    <!-- Protein -->
+    <div class="bubbly-square">
+      <div class="cute-icon" style="background-color: #ff8e6e;">
+        <i class="fas fa-dumbbell"></i>
+      </div>
+      <h3 class="text-lg font-bold text-pink-600 mb-1">Protein</h3>
+      <p class="text-2xl font-bold mb-3">124<span class="text-lg font-normal text-gray-500">/150g</span></p>
+      <div class="progress-bubble mb-2">
+        <div class="progress-fill protein-fill" style="width: 83%"></div>
+      </div>
+      <p class="text-sm text-pink-500">83% of goal</p>
     </div>
     
-    <!-- Template Info -->
-    <div style="background: #ffe0e0; padding: 10px; margin: 10px 0;">
-        <h3>Template Debug:</h3>
-        <p>Base template: {% if extends %}FOUND{% else %}MISSING{% endif %}</p>
+    <!-- Carbs -->
+    <div class="bubbly-square">
+      <div class="cute-icon" style="background-color: #ffcc5e;">
+        <i class="fas fa-bread-slice"></i>
+      </div>
+      <h3 class="text-lg font-bold text-pink-600 mb-1">Carbs</h3>
+      <p class="text-2xl font-bold mb-3">210<span class="text-lg font-normal text-gray-500">/250g</span></p>
+      <div class="progress-bubble mb-2">
+        <div class="progress-fill carbs-fill" style="width: 84%"></div>
+      </div>
+      <p class="text-sm text-pink-500">84% of goal</p>
     </div>
+    
+    <!-- Fat -->
+    <div class="bubbly-square">
+      <div class="cute-icon" style="background-color: #a5d8ff;">
+        <i class="fas fa-egg"></i>
+      </div>
+      <h3 class="text-lg font-bold text-pink-600 mb-1">Fat</h3>
+      <p class="text-2xl font-bold mb-3">68<span class="text-lg font-normal text-gray-500">/80g</span></p>
+      <div class="progress-bubble mb-2">
+        <div class="progress-fill fat-fill" style="width: 85%"></div>
+      </div>
+      <p class="text-sm text-pink-500">85% of goal</p>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+    <!-- Recent Foods -->
+    <div class="lg:col-span-2 bubbly-square">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-bold text-pink-600">
+          <i class="fas fa-utensils mr-2"></i> Recent Foods
+        </h2>
+        <a href="{% url 'home' %}" class="text-pink-500 hover:text-pink-700 text-sm">
+          <i class="fas fa-plus mr-1"></i> Add More
+        </a>
+      </div>
+      
+      <div class="space-y-3">
+        <!-- Food Item 1 -->
+        <div class="food-item">
+          <div class="flex justify-between items-center">
+            <div class="text-left">
+              <h4 class="font-bold text-pink-600">Grilled Chicken</h4>
+              <p class="text-sm text-gray-500">Lunch • 250g</p>
+            </div>
+            <div class="text-right">
+              <p class="font-bold">320 kcal</p>
+              <p class="text-xs text-gray-500">45P • 2C • 12F</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Food Item 2 -->
+        <div class="food-item">
+          <div class="flex justify-between items-center">
+            <div class="text-left">
+              <h4 class="font-bold text-pink-600">Brown Rice</h4>
+              <p class="text-sm text-gray-500">Lunch • 1 cup</p>
+            </div>
+            <div class="text-right">
+              <p class="font-bold">215 kcal</p>
+              <p class="text-xs text-gray-500">5P • 45C • 2F</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Food Item 3 -->
+        <div class="food-item">
+          <div class="flex justify-between items-center">
+            <div class="text-left">
+              <h4 class="font-bold text-pink-600">Greek Yogurt</h4>
+              <p class="text-sm text-gray-500">Snack • 200g</p>
+            </div>
+            <div class="text-right">
+              <p class="font-bold">150 kcal</p>
+              <p class="text-xs text-gray-500">20P • 8C • 5F</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="text-center pt-2">
+          <a href="#" class="text-pink-500 hover:text-pink-700 text-sm">
+            See All <i class="fas fa-chevron-right ml-1"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Right Sidebar -->
+    <div class="space-y-5">
+      <!-- Water Tracker -->
+      <div class="bubbly-square">
+        <h2 class="text-xl font-bold text-pink-600 mb-4">
+          <i class="fas fa-tint water-drop mr-2"></i> Water Tracker
+        </h2>
+        <div class="flex items-center justify-center mb-4">
+          <div class="text-center mr-6">
+            <div class="text-4xl font-bold text-blue-400">5</div>
+            <div class="text-sm text-gray-500">glasses</div>
+          </div>
+          <div class="text-center">
+            <div class="text-2xl font-bold text-blue-400">/ 8</div>
+            <div class="text-sm text-gray-500">daily goal</div>
+          </div>
+        </div>
+        <div class="flex justify-center space-x-1 mb-4">
+          {% for i in "12345678" %}
+            <div class="w-6 h-6 rounded-full {% if forloop.counter <= 5 %}bg-blue-400{% else %}bg-gray-200{% endif %}"></div>
+          {% endfor %}
+        </div>
+        <button class="px-4 py-2 bg-blue-100 text-blue-500 rounded-full text-sm font-medium hover:bg-blue-200">
+          <i class="fas fa-plus mr-1"></i> Add Glass
+        </button>
+      </div>
+      
+      <!-- Quick Actions -->
+      <div class="bubbly-square">
+        <h2 class="text-xl font-bold text-pink-600 mb-4">
+          <i class="fas fa-bolt text-yellow-400 mr-2"></i> Quick Actions
+        </h2>
+        <div class="grid grid-cols-2 gap-3">
+          <a href="{% url 'home' %}" class="quick-action">
+            <i class="fas fa-search text-pink-500 mb-2 block text-xl"></i>
+            <span class="text-sm">Search Food</span>
+          </a>
+          <a href="#" class="quick-action">
+            <i class="fas fa-barcode text-pink-500 mb-2 block text-xl"></i>
+            <span class="text-sm">Scan Barcode</span>
+          </a>
+          <a href="#" class="quick-action">
+            <i class="fas fa-utensils text-pink-500 mb-2 block text-xl"></i>
+            <span class="text-sm">Add Meal</span>
+          </a>
+          <a href="#" class="quick-action">
+            <i class="fas fa-chart-pie text-pink-500 mb-2 block text-xl"></i>
+            <span class="text-sm">View Stats</span>
+          </a>
+        </div>
+      </div>
+      
+      <!-- Daily Tip -->
+      <div class="bubbly-square" style="background-color: var(--secondary-pink);">
+        <div class="flex items-start">
+          <div class="bg-white p-2 rounded-full mr-3">
+            <i class="fas fa-lightbulb text-pink-500"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-white mb-1">Daily Tip ✨</h3>
+            <p class="text-sm text-white">Drink water before meals to help control appetite and digestion!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Footer -->
+  <div class="text-center mt-10">
+    <p class="text-sm text-pink-400">
+      <i class="fas fa-heart"></i> NutriTrack © 2025 • 
+      <a href="#" class="hover:text-pink-600">Help</a> • 
+      <a href="#" class="hover:text-pink-600">Settings</a>
+    </p>
+  </div>
 </div>
+
+<script>
+  // Add cute bounce animation when page loads
+  document.addEventListener('DOMContentLoaded', function() {
+    const squares = document.querySelectorAll('.bubbly-square');
+    squares.forEach((square, index) => {
+      square.style.opacity = '0';
+      square.style.transform = 'translateY(20px)';
+      setTimeout(() => {
+        square.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+        square.style.opacity = '1';
+        square.style.transform = 'translateY(0)';
+      }, 100 * index);
+    });
+  });
+</script>
 {% endblock %}
