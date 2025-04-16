@@ -115,7 +115,7 @@ def profile_setup_view(request):
     else:
         form = ProfileForm(instance=profile)
     
-    return render(request, 'counter/profile/setup.html', {'form': form})
+    return render(request, 'counter/profile_setup.html', {'form': form})
 
 # Core Application Views
 def home_page_view(request):
