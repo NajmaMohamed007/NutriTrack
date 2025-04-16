@@ -144,7 +144,9 @@ AUTH_USER_MODEL = 'counter.CustomUser'
 # Add these settings for authentication
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'dashboard'
+LOGOUT_REDIRECT_URL = 'home_page'
 LOGOUT_REDIRECT_URL = 'home'
+
 
 # For profile pictures
 MEDIA_URL = '/media/'

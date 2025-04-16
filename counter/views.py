@@ -7,9 +7,11 @@ from django import forms
 import requests
 from django.conf import settings
 import urllib.parse
-from django.template import loader  # Add this import
+from django.template import loader
 from difflib import get_close_matches
 from django.core.exceptions import ObjectDoesNotExist
+from .models import FoodLog  # Added import for FoodLog model
+from django.http import HttpResponse
 
 # Sample valid food terms (adjust this list as needed)
 VALID_FOODS = [
@@ -25,6 +27,45 @@ class CalculatorForm(forms.Form):
     height = forms.FloatField(label="Height (cm)", min_value=1)
     gender = forms.ChoiceField(label="Gender", choices=[('male', 'Male'), ('female', 'Female')])
 
+# Food Logging Views
+@login_required
+def log_food(request):
+    if request.method == 'POST':
+        FoodLog.objects.create(
+            user=request.user,
+            food_name=request.POST.get('food_name'),
+            calories=float(request.POST.get('calories')),
+            protein=float(request.POST.get('protein')),
+            carbs=float(request.POST.get('carbs')),
+            fat=float(request.POST.get('fat')),
+            amount=float(request.POST.get('amount')),
+            meal_time=request.POST.get('meal_time', 'snack')  # Default to snack
+        )
+        messages.success(request, "Food logged successfully!")
+        return redirect('dashboard')
+    return redirect('home')
+
+
+def food_log_view(request):
+    # Add your view logic here to show all logged foods
+    return render(request, 'counter/food_log.html')  # Cr
+    
+
+@login_required
+def dashboard_view(request):
+    print(f"DEBUG: User {request.user} authenticated")
+    template_path = loader.get_template('counter/dashboard.html').origin.name
+    print(f"DEBUG: Template path: {template_path}")
+    
+    recent_foods = FoodLog.objects.filter(user=request.user).order_by('-date')[:3]
+    
+    return render(request, 'counter/dashboard.html', {
+        'force_visible': "THIS SHOULD APPEAR",
+        'user': request.user,
+        'recent_foods': recent_foods
+    })
+
+# Authentication Views
 def signup_view(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST, request.FILES)
@@ -49,30 +90,36 @@ def login_view(request):
         else:
             messages.error(request, 'Invalid username or password')
     
-    return render(request, 'registration/login.html')  # or 'counter/login.html'
+    return render(request, 'registration/login.html')
 
 def logout_view(request):
     logout(request)
     return redirect('home')
 
-def profile_setup_view(request):  # Note: exact name matching your URL pattern
+def profile_setup_view(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    
+    try:
+        profile = request.user.profile
+    except ObjectDoesNotExist:
+        from .models import Profile
+        profile = Profile.objects.create(user=request.user)
+
     if request.method == 'POST':
-        form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
+        form = ProfileForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Profile updated successfully!')
-            return redirect('profile_setup')  # Redirect back to same page
+            messages.success(request, "Profile updated successfully!")
+            return redirect('dashboard')
     else:
-        form = ProfileForm(instance=request.user.profile)
+        form = ProfileForm(instance=profile)
     
-    return render(request, 'counter/profile_setup.html', {'form': form})
+    return render(request, 'counter/profile/setup.html', {'form': form})
 
-
-# Home Page View
+# Core Application Views
 def home_page_view(request):
-    return render(request, 'home_page.html')
-
-# Home View (for food search and suggestions)
+    return render(request, 'counter/home_page.html')
 
 def home_view(request):
     data = []
@@ -107,10 +154,10 @@ def home_view(request):
             except requests.exceptions.RequestException as e:
                 print(f"Error fetching data: {e}")
                 messages.error(request, "There was an error fetching nutrition data. Please try again.")
-                return render(request, 'home.html', {
-                    'api': None,  # No data returned on error
+                return render(request, 'counter/home.html', {
+                    'api': None,
                     'query': query,
-                    'error_message': str(e)  # Display the actual error message to help users
+                    'error_message': str(e)
                 })
 
         if query and not data:
@@ -131,36 +178,18 @@ def home_view(request):
         'query': query
     })
 
-
-@login_required
-def dashboard_view(request):
-    print(f"DEBUG: User {request.user} authenticated")
-    # Fixed template loader usage:
-    template_path = loader.get_template('counter/dashboard.html').origin.name
-    print(f"DEBUG: Template path: {template_path}")
-    
-    return render(request, 'counter/dashboard.html', {
-        'force_visible': "THIS SHOULD APPEAR",
-        'user': request.user  # Explicitly pass user
-    })
-
-from django.http import HttpResponse
 def test_view(request):
     return HttpResponse("RAW TEST OUTPUT - If you see this, routing works")
 
-# About View
 def about_view(request):
     return render(request, 'about.html')
 
-# Tips View
 @login_required
 def tips_view(request):
     return render(request, 'tips.html')
 
-# Calculator View (for BMI and BMR calculation)
 @login_required
 def calculator_view(request):
-    # Pre-fill with user data if available (optional, can be skipped if no need for pre-fill)
     user_data = {
         'age': request.user.age if request.user.is_authenticated else "",
         'weight': request.user.weight if request.user.is_authenticated else "",
@@ -176,10 +205,7 @@ def calculator_view(request):
             height = form.cleaned_data['height']
             gender = form.cleaned_data['gender']
 
-            # Calculate BMI
             bmi = weight / ((height / 100) ** 2)
-
-            # Calculate BMR using Mifflin-St Jeor equation
             if gender == 'male':
                 bmr = 10 * weight + 6.25 * height - 5 * age + 5
             else:
@@ -196,5 +222,3 @@ def calculator_view(request):
         form = CalculatorForm(initial=user_data)
 
     return render(request, 'calculator.html', {'form': form, 'user_data': user_data})
-
-# Password Reset Views would go here (use Django's built-in views)

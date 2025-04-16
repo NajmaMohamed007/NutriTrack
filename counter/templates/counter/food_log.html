@@ -1,0 +1,43 @@
+{% extends "counter/base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2>Your Food Log</h2>
+    <div class="food-log-container">
+        {% for food in food_logs %}
+        <div class="food-log-item">
+            <div class="food-log-header">
+                <h3>{{ food.food_name }}</h3>
+                <span class="meal-time">{{ food.meal_time|title }}</span>
+            </div>
+            <div class="food-log-details">
+                <div class="detail">
+                    <span class="label">Amount:</span>
+                    <span class="value">{{ food.amount }}g</span>
+                </div>
+                <div class="detail">
+                    <span class="label">Calories:</span>
+                    <span class="value">{{ food.calories|floatformat:0 }}</span>
+                </div>
+                <div class="detail">
+                    <span class="label">Macros:</span>
+                    <span class="value">
+                        {{ food.protein|floatformat:0 }}P • 
+                        {{ food.carbs|floatformat:0 }}C • 
+                        {{ food.fat|floatformat:0 }}F
+                    </span>
+                </div>
+                <div class="detail">
+                    <span class="label">Date:</span>
+                    <span class="value">{{ food.date|date:"M d, Y" }}</span>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="no-food-logs">
+            <p>No food logs yet. Start tracking your meals!</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

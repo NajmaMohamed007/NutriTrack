@@ -526,6 +526,26 @@
                             <ul class="nutrition-list list-unstyled" id="portionNutrition">
                                 <!-- Filled by JavaScript -->
                             </ul>
+                            {% if user.is_authenticated %}
+                            <div class="mt-4">
+                                <form id="logFoodForm" method="POST" action="{% url 'log_food' %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="food_name" value="{{ api.0.name }}">
+                                    <input type="hidden" name="calories" id="logCalories">
+                                    <input type="hidden" name="protein" id="logProtein">
+                                    <input type="hidden" name="carbs" id="logCarbs">
+                                    <input type="hidden" name="fat" id="logFat">
+                                    <input type="hidden" name="amount" id="logAmount">
+                                    <button type="submit" class="btn whoop" style="background-color: #6bb9ff;">
+                                        <i class="fas fa-plus"></i> Log This Food
+                                    </button>
+                                </form>
+                            </div>
+                            {% else %}
+                            <div class="alert alert-info mt-3">
+                                <i class="fas fa-info-circle"></i> <a href="{% url 'login' %}" class="alert-link">Login</a> to track your food intake
+                            </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -584,6 +604,13 @@
             "Sugar": (nutritionData.sugar || 0) * multiplier,
             "Sodium": (nutritionData.sodium || 0) * multiplier
         };
+        
+        // Update hidden form fields for logging
+        document.getElementById('logCalories').value = calculatedValues["Calories"];
+        document.getElementById('logProtein').value = calculatedValues["Protein"];
+        document.getElementById('logCarbs').value = calculatedValues["Carbs"];
+        document.getElementById('logFat').value = calculatedValues["Fat"];
+        document.getElementById('logAmount').value = portionSize;
         
         let html = '';
         for (const [key, value] of Object.entries(calculatedValues)) {
