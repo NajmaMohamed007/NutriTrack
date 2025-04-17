@@ -102,426 +102,468 @@
       50% { opacity: 1; transform: scale(1.2); }
     }
   
-  /* Main Content */
-  .main-content {
-    flex: 1;
-    padding-top: 30px;
-    padding-bottom: 40px;
-  }
-  
-  .dashboard-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-  }
-  
-  /* Header */
-  .dashboard-header {
-    text-align: center;
-    margin-bottom: 30px;
-    animation: fadeInDown 0.8s ease;
-  }
-  
-  .dashboard-header h1 {
-    font-family: 'Pacifico', cursive;
-    color: var(--dark-pink);
-    font-size: 2.4rem;
-    margin-bottom: 8px;
-  }
-  
-  .dashboard-header p {
-    font-size: 1.1rem;
-    color: #777;
-  }
-  
-  .date-badge {
-    display: inline-block;
-    margin-top: 15px;
-    padding: 8px 16px;
-    background-color: var(--secondary-pink);
-    border-radius: 20px;
-    color: var(--dark-pink);
-    font-weight: 500;
-  }
-  
-  /* Cards */
-  .dashboard-card {
-    background-color: var(--white);
-    border-radius: 16px;
-    box-shadow: 0 5px 20px rgba(214, 51, 132, 0.08);
-    padding: 25px;
-    margin-bottom: 25px;
-    transition: all 0.3s ease;
-    border: 1px solid rgba(255, 182, 216, 0.3);
-  }
-  
-  .dashboard-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(214, 51, 132, 0.15);
-  }
-  
-  .card-title {
-    color: var(--dark-pink);
-    font-size: 1.3rem;
-    margin-bottom: 20px;
-    position: relative;
-    padding-bottom: 8px;
-    display: flex;
-    align-items: center;
-  }
-  
-  .card-title:after {
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 40px;
-    height: 3px;
-    background-color: var(--secondary-pink);
-    border-radius: 3px;
-  }
-  
-  .card-title i {
-    margin-right: 10px;
-    font-size: 1.1rem;
-  }
-  
-  /* Nutrition Bubbles */
-  .nutrition-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
-    margin-bottom: 30px;
-  }
-  
-  .nutrition-card {
-    text-align: center;
-    padding: 20px;
-    animation: fadeIn 0.6s ease;
-  }
-  
-  .nutrition-icon {
-    width: 60px;
-    height: 60px;
-    background-color: var(--secondary-pink);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 15px;
-    color: var(--white);
-    font-size: 24px;
-    box-shadow: 0 3px 10px rgba(214, 51, 132, 0.2);
-    transition: all 0.3s ease;
-  }
-  
-  .nutrition-card:hover .nutrition-icon {
-    transform: scale(1.1);
-    background-color: var(--primary-pink);
-  }
-  
-  .nutrition-value {
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: var(--dark-pink);
-    margin-bottom: 5px;
-  }
-  
-  .nutrition-goal {
-    font-size: 0.9rem;
-    color: #777;
-    margin-bottom: 10px;
-  }
-  
-  .progress-container {
-    margin-bottom: 10px;
-  }
-  
-  .progress-text {
-    font-size: 0.85rem;
-    color: var(--dark-pink);
-    margin-bottom: 5px;
-  }
-  
-  .progress-bar {
-    height: 8px;
-    background-color: #f0f0f0;
-    border-radius: 8px;
-    overflow: hidden;
-  }
-  
-  .progress-fill {
-    height: 100%;
-    border-radius: 8px;
-    transition: width 0.6s ease;
-  }
-  
-  .calories-fill {
-    background-color: var(--primary-pink);
-  }
-  
-  .protein-fill {
-    background-color: #ff8e6e;
-  }
-  
-  .carbs-fill {
-    background-color: #ffcc5e;
-  }
-  
-  .fat-fill {
-    background-color: #a5d8ff;
-  }
-  
-  /* Food Items */
-  .food-list {
-    margin-top: 20px;
-  }
-  
-  .food-item {
-    background-color: var(--light-pink);
-    border-radius: 12px;
-    padding: 15px;
-    margin-bottom: 12px;
-    border: 1px dashed var(--secondary-pink);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: all 0.3s ease;
-  }
-  
-  .food-item:hover {
-    transform: translateX(5px);
-    box-shadow: 0 3px 10px rgba(214, 51, 132, 0.1);
-  }
-  
-  .food-info h4 {
-    font-weight: 600;
-    color: var(--dark-pink);
-    margin-bottom: 3px;
-  }
-  
-  .food-info p {
-    font-size: 0.85rem;
-    color: #777;
-  }
-  
-  .food-macros {
-    text-align: right;
-  }
-  
-  .food-macros .calories {
-    font-weight: 700;
-    color: var(--dark-pink);
-  }
-  
-  .food-macros .macros {
-    font-size: 0.8rem;
-    color: #888;
-  }
-  
-  /* Water Tracker */
-  .water-tracker {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .water-stats {
-    display: flex;
-    align-items: center;
-    margin-bottom: 15px;
-  }
-  
-  .water-count {
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: #6bb9ff;
-    margin-right: 20px;
-  }
-  
-  .water-goal {
-    font-size: 1.5rem;
-    color: #6bb9ff;
-  }
-  
-  .water-drops {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 20px;
-  }
-  
-  .water-drop {
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    background-color: #6bb9ff;
-    opacity: 0.3;
-    transition: all 0.3s ease;
-  }
-  
-  .water-drop.filled {
-    opacity: 1;
-    transform: scale(1.1);
-  }
-  
-  .water-button {
-    background-color: #e6f2ff;
-    color: #6bb9ff;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 20px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-  
-  .water-button:hover {
-    background-color: #6bb9ff;
-    color: white;
-  }
-  
-  /* Quick Actions */
-  .actions-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
-  }
-  
-  .action-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 15px;
-    border-radius: 12px;
-    background-color: var(--white);
-    border: 1px solid rgba(255, 182, 216, 0.5);
-    transition: all 0.3s ease;
-    cursor: pointer;
-  }
-  
-  .action-item:hover {
-    background-color: var(--secondary-pink);
-    transform: scale(1.05);
-  }
-  
-  .action-item i {
-    font-size: 1.5rem;
-    color: var(--primary-pink);
-    margin-bottom: 10px;
-  }
-  
-  .action-item span {
-    font-size: 0.9rem;
-    font-weight: 500;
-    color: var(--dark-pink);
-  }
-  
-  /* Daily Tip */
-  .daily-tip {
-    background-color: var(--secondary-pink);
-    padding: 15px;
-    border-radius: 12px;
-    display: flex;
-    align-items: flex-start;
-  }
-  
-  .tip-icon {
-    background-color: white;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: 12px;
-    color: var(--primary-pink);
-  }
-  
-  .tip-content h3 {
-    color: white;
-    font-weight: 600;
-    margin-bottom: 5px;
-  }
-  
-  .tip-content p {
-    color: white;
-    font-size: 0.9rem;
-    opacity: 0.9;
-  }
-  
-  /* Footer */
-  .dashboard-footer {
-    text-align: center;
-    margin-top: 40px;
-    padding-top: 20px;
-    border-top: 1px solid rgba(214, 51, 132, 0.1);
-  }
-  
-  .footer-links {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-top: 10px;
-  }
-  
-  .footer-links a {
-    color: var(--primary-pink);
-    text-decoration: none;
-    font-size: 0.9rem;
-    transition: all 0.3s;
-  }
-  
-  .footer-links a:hover {
-    color: var(--dark-pink);
-  }
-  
-  /* Animations */
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  
-  @keyframes fadeInDown {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  
-  @keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-  }
-  
-  /* Responsive */
-  @media (max-width: 768px) {
-    .nutrition-grid {
-      grid-template-columns: repeat(2, 1fr);
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      padding-top: 30px;
+      padding-bottom: 40px;
+    }
+    
+    .dashboard-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    /* Header */
+    .dashboard-header {
+      text-align: center;
+      margin-bottom: 30px;
+      animation: fadeInDown 0.8s ease;
     }
     
     .dashboard-header h1 {
-      font-size: 2rem;
+      font-family: 'Pacifico', cursive;
+      color: var(--dark-pink);
+      font-size: 2.4rem;
+      margin-bottom: 8px;
     }
     
-    .actions-grid {
-      grid-template-columns: 1fr;
+    .dashboard-header p {
+      font-size: 1.1rem;
+      color: #777;
     }
-  }
-  
-  @media (max-width: 576px) {
+    
+    .date-badge {
+      display: inline-block;
+      margin-top: 15px;
+      padding: 8px 16px;
+      background-color: var(--secondary-pink);
+      border-radius: 20px;
+      color: var(--dark-pink);
+      font-weight: 500;
+    }
+    
+    /* Cards */
+    .dashboard-card {
+      background-color: var(--white);
+      border-radius: 16px;
+      box-shadow: 0 5px 20px rgba(214, 51, 132, 0.08);
+      padding: 25px;
+      margin-bottom: 25px;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 182, 216, 0.3);
+    }
+    
+    .dashboard-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(214, 51, 132, 0.15);
+    }
+    
+    .card-title {
+      color: var(--dark-pink);
+      font-size: 1.3rem;
+      margin-bottom: 20px;
+      position: relative;
+      padding-bottom: 8px;
+      display: flex;
+      align-items: center;
+    }
+    
+    .card-title:after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 40px;
+      height: 3px;
+      background-color: var(--secondary-pink);
+      border-radius: 3px;
+    }
+    
+    .card-title i {
+      margin-right: 10px;
+      font-size: 1.1rem;
+    }
+    
+    /* Nutrition Bubbles */
     .nutrition-grid {
-      grid-template-columns: 1fr;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
     }
     
-    .dashboard-header h1 {
+    .nutrition-card {
+      text-align: center;
+      padding: 20px;
+      animation: fadeIn 0.6s ease;
+    }
+    
+    .nutrition-icon {
+      width: 60px;
+      height: 60px;
+      background-color: var(--secondary-pink);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 15px;
+      color: var(--white);
+      font-size: 24px;
+      box-shadow: 0 3px 10px rgba(214, 51, 132, 0.2);
+      transition: all 0.3s ease;
+    }
+    
+    .nutrition-card:hover .nutrition-icon {
+      transform: scale(1.1);
+      background-color: var(--primary-pink);
+    }
+    
+    .nutrition-value {
       font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--dark-pink);
+      margin-bottom: 5px;
     }
     
-    .logo-header img {
-      height: 50px;
+    .nutrition-goal {
+      font-size: 0.9rem;
+      color: #777;
+      margin-bottom: 10px;
     }
-  }
+    
+    .progress-container {
+      margin-bottom: 10px;
+    }
+    
+    .progress-text {
+      font-size: 0.85rem;
+      color: var(--dark-pink);
+      margin-bottom: 5px;
+    }
+    
+    .progress-bar {
+      height: 8px;
+      background-color: #f0f0f0;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      border-radius: 8px;
+      transition: width 0.6s ease;
+    }
+    
+    .calories-fill {
+      background-color: var(--primary-pink);
+    }
+    
+    .protein-fill {
+      background-color: #ff8e6e;
+    }
+    
+    .carbs-fill {
+      background-color: #ffcc5e;
+    }
+    
+    .fat-fill {
+      background-color: #a5d8ff;
+    }
+    
+    /* Food Items */
+    .food-list {
+      margin-top: 20px;
+    }
+    
+    .food-item {
+      background-color: var(--light-pink);
+      border-radius: 12px;
+      padding: 15px;
+      margin-bottom: 12px;
+      border: 1px dashed var(--secondary-pink);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.3s ease;
+    }
+    
+    .food-item:hover {
+      transform: translateX(5px);
+      box-shadow: 0 3px 10px rgba(214, 51, 132, 0.1);
+    }
+    
+    .food-info h4 {
+      font-weight: 600;
+      color: var(--dark-pink);
+      margin-bottom: 3px;
+    }
+    
+    .food-info p {
+      font-size: 0.85rem;
+      color: #777;
+    }
+    
+    .food-macros {
+      text-align: right;
+    }
+    
+    .food-macros .calories {
+      font-weight: 700;
+      color: var(--dark-pink);
+    }
+    
+    .food-macros .macros {
+      font-size: 0.8rem;
+      color: #888;
+    }
+    
+    /* Water Tracker */
+    .water-tracker {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .water-stats {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    
+    .water-count {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #6bb9ff;
+      margin-right: 20px;
+    }
+    
+    .water-goal {
+      font-size: 1.5rem;
+      color: #6bb9ff;
+    }
+    
+    .water-drops {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    
+    .water-drop {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background-color: #6bb9ff;
+      opacity: 0.3;
+      transition: all 0.3s ease;
+    }
+    
+    .water-drop.filled {
+      opacity: 1;
+      transform: scale(1.1);
+    }
+    
+    .water-button {
+      background-color: #e6f2ff;
+      color: #6bb9ff;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .water-button:hover {
+      background-color: #6bb9ff;
+      color: white;
+    }
+    
+    /* Quick Actions */
+    .actions-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+    }
+    
+    .action-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 15px;
+      border-radius: 12px;
+      background-color: var(--white);
+      border: 1px solid rgba(255, 182, 216, 0.5);
+      transition: all 0.3s ease;
+      text-decoration: none;
+      color: inherit;
+    }
+    
+    .action-item:hover {
+      background-color: var(--secondary-pink);
+      transform: scale(1.05);
+      text-decoration: none;
+    }
+    
+    .action-item i {
+      font-size: 1.5rem;
+      color: var(--primary-pink);
+      margin-bottom: 10px;
+    }
+    
+    .action-item span {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--dark-pink);
+      text-align: center;
+    }
+    
+    /* Daily Tip */
+    .daily-tip {
+      background-color: var(--secondary-pink);
+      padding: 15px;
+      border-radius: 12px;
+      display: flex;
+      align-items: flex-start;
+    }
+    
+    .tip-icon {
+      background-color: white;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 12px;
+      color: var(--primary-pink);
+    }
+    
+    .tip-content h3 {
+      color: white;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+    
+    .tip-content p {
+      color: white;
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+    
+    /* Footer */
+    .dashboard-footer {
+      text-align: center;
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(214, 51, 132, 0.1);
+    }
+    
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 10px;
+    }
+    
+    .footer-links a {
+      color: var(--primary-pink);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: all 0.3s;
+    }
+    
+    .footer-links a:hover {
+      color: var(--dark-pink);
+    }
+    
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .nutrition-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .dashboard-header h1 {
+        font-size: 2rem;
+      }
+      
+      .actions-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    @media (max-width: 576px) {
+      .nutrition-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .dashboard-header h1 {
+        font-size: 1.8rem;
+      }
+      
+      .logo-header img {
+        height: 50px;
+      }
+    }
+
+    /* Utility classes */
+    .flex {
+      display: flex;
+    }
+    .justify-between {
+      justify-content: space-between;
+    }
+    .items-center {
+      align-items: center;
+    }
+    .text-center {
+      text-align: center;
+    }
+    .mb-4 {
+      margin-bottom: 1rem;
+    }
+    .py-3 {
+      padding-top: 0.75rem;
+      padding-bottom: 0.75rem;
+    }
+    .pt-2 {
+      padding-top: 0.5rem;
+    }
+    .text-sm {
+      font-size: 0.875rem;
+    }
+    .mr-1 {
+      margin-right: 0.25rem;
+    }
+    .ml-1 {
+      margin-left: 0.25rem;
+    }
+    .pink-text {
+      color: var(--primary-pink);
+    }
+    .pink-text:hover {
+      color: var(--dark-pink);
+    }
 </style>
 
 <!-- Logo Header -->
@@ -551,12 +593,12 @@
           <i class="fas fa-fire"></i>
         </div>
         <h3>Calories</h3>
-        <div class="nutrition-value">1,850</div>
-        <div class="nutrition-goal">/ 2,300 daily goal</div>
+        <div class="nutrition-value">{{ total_calories|default:"0" }}</div>
+        <div class="nutrition-goal">/ {{ calorie_goal|default:"2000" }} daily goal</div>
         <div class="progress-container">
-          <div class="progress-text">80% of goal</div>
+          <div class="progress-text">{{ calorie_percentage|default:"0" }}% of goal</div>
           <div class="progress-bar">
-            <div class="progress-fill calories-fill" style="width: 80%"></div>
+            <div class="progress-fill calories-fill" style="--percentage: {{ calorie_percentage|default:'0' }}%; width: var(--percentage)"></div>
           </div>
         </div>
       </div>
@@ -567,12 +609,12 @@
           <i class="fas fa-dumbbell"></i>
         </div>
         <h3>Protein</h3>
-        <div class="nutrition-value">124g</div>
-        <div class="nutrition-goal">/ 150g daily goal</div>
+        <div class="nutrition-value">{{ total_protein|default:"0" }}g</div>
+        <div class="nutrition-goal">/ {{ protein_goal|default:"50" }}g daily goal</div>
         <div class="progress-container">
-          <div class="progress-text">83% of goal</div>
+          <div class="progress-text">{{ protein_percentage|default:"0" }}% of goal</div>
           <div class="progress-bar">
-            <div class="progress-fill protein-fill" style="width: 83%"></div>
+            <div class="progress-fill protein-fill" style="--percentage: {{ protein_percentage|default:'0' }}%; width: var(--percentage)"></div>
           </div>
         </div>
       </div>
@@ -583,12 +625,12 @@
           <i class="fas fa-bread-slice"></i>
         </div>
         <h3>Carbs</h3>
-        <div class="nutrition-value">210g</div>
-        <div class="nutrition-goal">/ 250g daily goal</div>
+        <div class="nutrition-value">{{ total_carbs|default:"0" }}g</div>
+        <div class="nutrition-goal">/ {{ carb_goal|default:"300" }}g daily goal</div>
         <div class="progress-container">
-          <div class="progress-text">84% of goal</div>
+          <div class="progress-text">{{ carb_percentage|default:"0" }}% of goal</div>
           <div class="progress-bar">
-            <div class="progress-fill carbs-fill" style="width: 84%"></div>
+            <div class="progress-fill carbs-fill" style="--percentage: {{ carb_percentage|default:'0' }}%; width: var(--percentage)"></div>
           </div>
         </div>
       </div>
@@ -599,62 +641,62 @@
           <i class="fas fa-egg"></i>
         </div>
         <h3>Fat</h3>
-        <div class="nutrition-value">68g</div>
-        <div class="nutrition-goal">/ 80g daily goal</div>
+        <div class="nutrition-value">{{ total_fat|default:"0" }}g</div>
+        <div class="nutrition-goal">/ {{ fat_goal|default:"70" }}g daily goal</div>
         <div class="progress-container">
-          <div class="progress-text">85% of goal</div>
+          <div class="progress-text">{{ fat_percentage|default:"0" }}% of goal</div>
           <div class="progress-bar">
-            <div class="progress-fill fat-fill" style="width: 85%"></div>
+            <div class="progress-fill fat-fill" style="--percentage: {{ fat_percentage|default:'0' }}%; width: var(--percentage)"></div>
           </div>
         </div>
       </div>
     </div>
     
     <!-- Main Content -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+    <div style="display: grid; grid-template-columns: 1fr; gap: 1.25rem;">
       <!-- Recent Foods -->
-      <div class="lg:col-span-2 dashboard-card">
-        <div class="flex justify-between items-center mb-4">
-          <h2 class="card-title">
-            <i class="fas fa-utensils"></i> Recent Foods
-          </h2>
-          <a href="{% url 'home' %}" class="text-pink-500 hover:text-pink-700 text-sm">
-            <i class="fas fa-plus mr-1"></i> Add More
-          </a>
-        </div>
-        
-        <div class="food-list">
-          {% for food in recent_foods %}
-          <div class="food-item">
-            <div class="food-info">
-              <h4>{{ food.food_name }}</h4>
-              <p>{{ food.meal_time|title }} • {{ food.amount }}g</p>
-            </div>
-            <div class="food-macros">
-              <div class="calories">{{ food.calories|floatformat:0 }} kcal</div>
-              <div class="macros">{{ food.protein|floatformat:0 }}P • {{ food.carbs|floatformat:0 }}C • {{ food.fat|floatformat:0 }}F</div>
-            </div>
-          </div>
-          {% empty %}
-          <div class="text-center py-3">
-            <p>No foods logged yet. Search for foods to get started!</p>
-          </div>
-          {% endfor %}
-          
-          {% if recent_foods %}
-          <div class="text-center pt-2">
-            <a href="{% url 'food_log' %}" class="text-pink-500 hover:text-pink-700 text-sm">
-                See All <i class="fas fa-chevron-right ml-1"></i>
-              </a>
-              See All <i class="fas fa-chevron-right ml-1"></i>
+      <div style="grid-column: span 2;">
+        <div class="dashboard-card">
+          <div class="flex justify-between items-center mb-4">
+            <h2 class="card-title">
+              <i class="fas fa-utensils"></i> Recent Foods
+            </h2>
+            <a href="{% url 'home' %}" class="pink-text text-sm">
+              <i class="fas fa-plus mr-1"></i> Add More
             </a>
           </div>
-          {% endif %}
+          
+          <div class="food-list">
+            {% for food in recent_foods %}
+            <div class="food-item">
+              <div class="food-info">
+                <h4>{{ food.food_name }}</h4>
+                <p>{{ food.meal_time|title }} • {{ food.amount }}g</p>
+              </div>
+              <div class="food-macros">
+                <div class="calories">{{ food.calories|floatformat:0 }} kcal</div>
+                <div class="macros">{{ food.protein|floatformat:0 }}P • {{ food.carbs|floatformat:0 }}C • {{ food.fat|floatformat:0 }}F</div>
+              </div>
+            </div>
+            {% empty %}
+            <div class="text-center py-3">
+              <p>No foods logged yet. Search for foods to get started!</p>
+            </div>
+            {% endfor %}
+            
+            {% if recent_foods %}
+            <div class="text-center pt-2">
+              <a href="{% url 'food_log' %}" class="pink-text text-sm">
+                See All <i class="fas fa-chevron-right ml-1"></i>
+              </a>
+            </div>
+            {% endif %}
+          </div>
         </div>
       </div>
       
       <!-- Right Sidebar -->
-      <div class="space-y-5">
+      <div style="display: flex; flex-direction: column; gap: 1.25rem;">
         <!-- Water Tracker -->
         <div class="dashboard-card">
           <h2 class="card-title">
@@ -663,19 +705,22 @@
           
           <div class="water-tracker">
             <div class="water-stats">
-              <div class="water-count">5</div>
+              <div class="water-count">{{ water_glasses|default:"0" }}</div>
               <div class="water-goal">/ 8</div>
             </div>
             
             <div class="water-drops">
               {% for i in "12345678" %}
-                <div class="water-drop {% if forloop.counter <= 5 %}filled{% endif %}"></div>
+                <div class="water-drop {% if forloop.counter <= water_glasses %}filled{% endif %}"></div>
               {% endfor %}
             </div>
             
-            <button class="water-button">
-              <i class="fas fa-plus mr-1"></i> Add Glass
-            </button>
+            <form method="POST" action="{% url 'log_water' %}">
+              {% csrf_token %}
+              <button type="submit" class="water-button">
+                <i class="fas fa-plus mr-1"></i> Add Glass
+              </button>
+            </form>
           </div>
         </div>
         
@@ -686,22 +731,25 @@
           </h2>
           
           <div class="actions-grid">
-            <div class="action-item">
+            <a href="{% url 'home' %}" class="action-item">
               <i class="fas fa-search"></i>
               <span>Search Food</span>
-            </div>
-            <div class="action-item">
-              <i class="fas fa-barcode"></i>
-              <span>Scan Barcode</span>
-            </div>
-            <div class="action-item">
-              <i class="fas fa-utensils"></i>
-              <span>Add Meal</span>
-            </div>
-            <div class="action-item">
+            </a>
+            
+            <a href="{% url 'calculator' %}" class="action-item">
+              <i class="fas fa-calculator"></i>
+              <span>Count Your Daily Calories</span>
+            </a>
+            
+            <a href="{% url 'tips' %}" class="action-item">
+              <i class="fas fa-lightbulb"></i>
+              <span>Check Tips</span>
+            </a>
+            
+            <a href="{% url 'food_log' %}" class="action-item">
               <i class="fas fa-chart-pie"></i>
               <span>View Stats</span>
-            </div>
+            </a>
           </div>
         </div>
         
@@ -720,13 +768,12 @@
     
     <!-- Footer -->
     <div class="dashboard-footer">
-      <p class="text-sm text-pink-500">
+      <p class="text-sm pink-text">
         <i class="fas fa-heart"></i> NutriTrack © 2025
       </p>
       <div class="footer-links">
         <a href="#">Help</a>
         <a href="#">Settings</a>
-        <a href="#">Privacy</a>
       </div>
     </div>
   </div>
@@ -769,24 +816,6 @@
           this.style.transform = 'scale(1.1)';
         }
       });
-    });
-    
-    // Click to add water
-    const waterButton = document.querySelector('.water-button');
-    let waterCount = 5;
-    
-    waterButton.addEventListener('click', function() {
-      if (waterCount < 8) {
-        waterCount++;
-        document.querySelector('.water-count').textContent = waterCount;
-        waterDrops[waterCount-1].classList.add('filled');
-        
-        // Pulse animation for the adxded drop
-        waterDrops[waterCount-1].style.animation = 'pulse 0.5s';
-        setTimeout(() => {
-          waterDrops[waterCount-1].style.animation = '';
-        }, 500);
-      }
     });
   });
 </script>

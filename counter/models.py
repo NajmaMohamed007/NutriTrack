@@ -81,3 +81,11 @@ def create_or_update_user_profile(sender, instance, created, **kwargs):
     else:
         if hasattr(instance, 'profile'):
             instance.profile.save()
+
+
+class WaterIntake(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-date']

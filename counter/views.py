@@ -12,6 +12,8 @@ from difflib import get_close_matches
 from django.core.exceptions import ObjectDoesNotExist
 from .models import FoodLog  # Added import for FoodLog model
 from django.http import HttpResponse
+from django.utils import timezone
+from .models import WaterIntake  # Make sure WaterIntake model is imported
 
 # Sample valid food terms (adjust this list as needed)
 VALID_FOODS = [
@@ -53,17 +55,56 @@ def food_log_view(request):
 
 @login_required
 def dashboard_view(request):
-    print(f"DEBUG: User {request.user} authenticated")
-    template_path = loader.get_template('counter/dashboard.html').origin.name
-    print(f"DEBUG: Template path: {template_path}")
+    # Calculate totals
+    today = timezone.now().date()
+    foods = FoodLog.objects.filter(user=request.user, date__date=today)
     
-    recent_foods = FoodLog.objects.filter(user=request.user).order_by('-date')[:3]
+    totals = {
+        'calories': sum(f.calories for f in foods),
+        'protein': sum(f.protein for f in foods),
+        'carbs': sum(f.carbs for f in foods),
+        'fat': sum(f.fat for f in foods),
+        'water': request.user.waterintake_set.filter(date=today).count()
+    }
+    
+    # Get goals from user profile
+    try:
+        profile = request.user.profile
+        goals = {
+            'calories': profile.calorie_goal,
+            'protein': profile.protein_goal,
+            'carbs': profile.carb_goal,
+            'fat': profile.fat_goal
+        }
+    except:
+        goals = {
+            'calories': 2000,
+            'protein': 50,
+            'carbs': 300,
+            'fat': 70
+        }
+    
+    # Calculate percentages
+    percentages = {
+        'calories': min(100, int((totals['calories'] / goals['calories']) * 100)) if goals['calories'] else 0,
+        # Add other macros as needed...
+    }
     
     return render(request, 'counter/dashboard.html', {
-        'force_visible': "THIS SHOULD APPEAR",
-        'user': request.user,
-        'recent_foods': recent_foods
+        'total_calories': totals['calories'],
+        'calorie_goal': goals['calories'],
+        'calorie_percentage': percentages['calories'],
+        # Add other macros similarly
+        'water_glasses': totals['water'],
+        'recent_foods': FoodLog.objects.filter(user=request.user).order_by('-date')[:3]
     })
+
+@login_required
+def log_water(request):
+    if request.method == 'POST':
+        WaterIntake.objects.create(user=request.user)
+        messages.success(request, "Water logged successfully!")
+    return redirect('dashboard')
 
 # Authentication Views
 def signup_view(request):
