@@ -160,7 +160,7 @@ def profile_setup_view(request):
 
 # Core Application Views
 def home_page_view(request):
-    return render(request, 'counter/home_page.html')
+    return render(request, 'home_page.html')
 
 def home_view(request):
     data = []
