@@ -133,6 +133,24 @@
             padding: 20px 0;
             margin-top: auto;
         }
+
+        /* Dropdown styles */
+        .dropdown-toggle {
+            cursor: pointer;
+        }
+        .dropdown-menu {
+            border-radius: 15px;
+            border: 2px solid var(--secondary-pink);
+            box-shadow: 0 5px 15px rgba(214, 51, 132, 0.2);
+        }
+        .dropdown-item {
+            padding: 8px 15px;
+            color: var(--dark-pink);
+        }
+        .dropdown-item:hover {
+            background-color: var(--light-pink);
+            color: var(--dark-pink);
+        }
     </style>
 </head>
 <body>
@@ -152,6 +170,27 @@
                     <a href="{% url 'about' %}"><i class="fas fa-info-circle"></i> About</a>
                     <a href="{% url 'tips' %}"><i class="fas fa-lightbulb"></i> Tips</a>
                     <a href="{% url 'calculator' %}"><i class="fas fa-calculator"></i> Calculator</a>
+                    
+                    {% if user.is_authenticated %}
+                    <div class="dropdown" style="display: inline-block;">
+                        <a href="#" class="dropdown-toggle nav-link" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="color: white;">
+                            <i class="fas fa-user-circle"></i> {{ user.username }}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                            <li><a class="dropdown-item" href="{% url 'profile_setup' %}"><i class="fas fa-user-edit"></i> Profile</a></li>
+                            <li><a class="dropdown-item" href="{% url 'dashboard' %}"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form method="post" action="{% url 'logout' %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="dropdown-item" style="background: none; border: none; width: 100%; text-align: left;">
+                                        <i class="fas fa-sign-out-alt"></i> Logout
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -178,6 +217,16 @@
         <div class="tip-card">
             <h5><i class="fas fa-search"></i> Read Labels</h5>
             <p>Watch out for hidden sugars and sodium in packaged food. A quick scan can go a long way.</p>
+        </div>
+
+        <div class="tip-card">
+            <h5><i class="fas fa-apple-alt"></i> Portion Control</h5>
+            <p>Use smaller plates to naturally reduce portion sizes without feeling deprived.</p>
+        </div>
+
+        <div class="tip-card">
+            <h5><i class="fas fa-bed"></i> Get Enough Sleep</h5>
+            <p>Poor sleep can disrupt hunger hormones and lead to weight gain. Aim for 7-9 hours nightly.</p>
         </div>
 
         <div class="text-center">
