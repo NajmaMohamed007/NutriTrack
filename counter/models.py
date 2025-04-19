@@ -49,7 +49,14 @@ class Profile(models.Model):
         null=True,
         blank=True
     )
+    calorie_goal = models.PositiveIntegerField(default=2000)
+    protein_goal = models.PositiveIntegerField(default=50)
+    carb_goal = models.PositiveIntegerField(default=300)
+    fat_goal = models.PositiveIntegerField(default=70)
+    sodium_goal = models.PositiveIntegerField(default=2300)  # Default 2300mg (FDA recommendation)
+    sugar_goal = models.PositiveIntegerField(default=25)     # Default 25g (WHO recommendation)
     profile_picture = models.ImageField(upload_to='profile_pics/', null=True, blank=True)
+    water_goal = models.PositiveIntegerField(default=8)      # Default 8 glasses
 
     def __str__(self):
         return self.user.username
@@ -61,6 +68,8 @@ class FoodLog(models.Model):
     protein = models.FloatField()
     carbs = models.FloatField()
     fat = models.FloatField()
+    sodium = models.PositiveIntegerField(default=0)  # in milligrams
+    sugar = models.PositiveIntegerField(default=0)   # in grams
     amount = models.FloatField(help_text="Amount in grams")
     meal_time = models.CharField(max_length=20, choices=MEAL_TIME_CHOICES, default='snack')
     date = models.DateTimeField(auto_now_add=True)
@@ -73,6 +82,16 @@ class FoodLog(models.Model):
     def __str__(self):
         return f"{self.food_name} ({self.amount}g) - {self.user.username}"
 
+class WaterIntake(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-date']
+
+    def __str__(self):
+        return f"Water intake at {self.date}"
+
 # Automatically create and save Profile when a CustomUser is created
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_or_update_user_profile(sender, instance, created, **kwargs):
@@ -81,11 +100,3 @@ def create_or_update_user_profile(sender, instance, created, **kwargs):
     else:
         if hasattr(instance, 'profile'):
             instance.profile.save()
-
-
-class WaterIntake(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    date = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        ordering = ['-date']

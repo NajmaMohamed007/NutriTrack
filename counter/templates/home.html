@@ -420,18 +420,7 @@
                             {{ api.0.calories }} Calories
                         </span>
                     </div>
-                    
-                    {% if api.0.calories > 500 %}
-                        <img src="{% static 'images/shocked.png' %}" alt="High calorie warning" class="food-image animate__animated animate__bounce">
-                        <div class="alert alert-warning animate__animated animate__fadeIn">
-                            <i class="fas fa-exclamation-circle"></i> This food is high in calories! Consider smaller portions.
                         </div>
-                    {% elif api.0.calories < 100 %}
-                        <img src="{% static 'images/healthy.png' %}" alt="Low calorie food" class="food-image animate__animated animate__bounce">
-                        <div class="alert alert-success animate__animated animate__fadeIn">
-                            <i class="fas fa-check-circle"></i> Great choice! This is a low-calorie option.
-                        </div>
-                    {% endif %}
 
                     <!-- Sugar Warning -->
                     {% if api.0.sugar_g > 25 %}

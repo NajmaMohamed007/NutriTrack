@@ -18,6 +18,7 @@ urlpatterns = [
      path('food-log/', views.food_log_view, name='food_log'),
     path('admin/', admin.site.urls),
     path('log-water/', views.log_water, name='log_water'),
+    path('update-goal/', views.update_goal, name='update_goal'),
     
     # Remove this line as it causes recursion:
     # path('', include('counter.urls')),

@@ -564,6 +564,77 @@
     .pink-text:hover {
       color: var(--dark-pink);
     }
+
+    /* Goal Adjustment Styles */
+    .goal-form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .goal-adjuster {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    
+    .goal-input {
+      width: 70px;
+      text-align: center;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 3px;
+      font-size: 0.9rem;
+    }
+    
+    .goal-minus, .goal-plus {
+      width: 25px;
+      height: 25px;
+      border: none;
+      border-radius: 50%;
+      background-color: var(--secondary-pink);
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .goal-minus:hover, .goal-plus:hover {
+      background-color: var(--primary-pink);
+      transform: scale(1.1);
+    }
+    
+    .goal-save {
+      background-color: var(--light-pink);
+      border: 1px solid var(--secondary-pink);
+      border-radius: 15px;
+      padding: 3px 10px;
+      font-size: 0.8rem;
+      color: var(--dark-pink);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .goal-save:hover {
+      background-color: var(--secondary-pink);
+      color: white;
+    }
+
+    /* Added CSS for goal save feedback */
+    .goal-save {
+      transition: all 0.3s ease;
+    }
+
+    .goal-save.success {
+      background-color: #4CAF50 !important;
+      color: white;
+    }
+
+    .goal-save.error {
+      background-color: #f44336 !important;
+      color: white;
+    }
 </style>
 
 <!-- Logo Header -->
@@ -572,7 +643,7 @@
       <img src="{% static 'images/logo.png' %}" alt="Nutri Track Logo">
       <span class="logo-text">Nutri Track</span>
     </a>
-  </div>
+</div>
 
 <div class="main-content">
   <div class="dashboard-container">
@@ -581,7 +652,7 @@
       <h1>Your Nutri Dashboard</h1>
       <p>Hello, {{ user.username }}! Let's track your nutrition journey 🌸</p>
       <div class="date-badge">
-        <i class="fas fa-calendar-day"></i> {{ current_date|date:"F j, Y" }}
+        <i class="fas fa-calendar-day"></i> {{ today|date:"F j, Y" }}
       </div>
     </div>
     
@@ -593,10 +664,22 @@
           <i class="fas fa-fire"></i>
         </div>
         <h3>Calories</h3>
-        <div class="nutrition-value">{{ total_calories|default:"0" }}</div>
-        <div class="nutrition-goal">/ {{ calorie_goal|default:"2000" }} daily goal</div>
+        <div class="nutrition-value">{{ totals.calories|default:"0" }}</div>
+        <div class="nutrition-goal">
+          <form method="POST" action="{% url 'update_goal' %}" class="goal-form">
+            {% csrf_token %}
+            <input type="hidden" name="goal_type" value="calories">
+            <div class="goal-adjuster">
+              <button type="button" class="goal-minus" onclick="adjustGoal(this, -100)">−</button>
+              <input type="number" name="goal_value" value="{{ goals.calories|default:'2000' }}" 
+                     min="0" class="goal-input">
+              <button type="button" class="goal-plus" onclick="adjustGoal(this, 100)">+</button>
+            </div>
+            <button type="submit" class="goal-save">Update</button>
+          </form>
+        </div>
         <div class="progress-container">
-          <div class="progress-text">{{ calorie_percentage|default:"0" }}% of goal</div>
+          <div class="progress-text">{{ percentages.calories|default:"0" }}% of goal</div>
           <div class="progress-bar">
             <div class="progress-fill calories-fill" style="--percentage: {{ calorie_percentage|default:'0' }}%; width: var(--percentage)"></div>
           </div>
@@ -609,10 +692,22 @@
           <i class="fas fa-dumbbell"></i>
         </div>
         <h3>Protein</h3>
-        <div class="nutrition-value">{{ total_protein|default:"0" }}g</div>
-        <div class="nutrition-goal">/ {{ protein_goal|default:"50" }}g daily goal</div>
+        <div class="nutrition-value">{{ totals.protein|default:"0" }}g</div>
+        <div class="nutrition-goal">
+          <form method="POST" action="{% url 'update_goal' %}" class="goal-form">
+            {% csrf_token %}
+            <input type="hidden" name="goal_type" value="protein">
+            <div class="goal-adjuster">
+              <button type="button" class="goal-minus" onclick="adjustGoal(this, -5)">−</button>
+              <input type="number" name="goal_value" value="{{ goals.protein|default:'50' }}" 
+                     min="0" class="goal-input">
+              <button type="button" class="goal-plus" onclick="adjustGoal(this, 5)">+</button>
+            </div>
+            <button type="submit" class="goal-save">Update</button>
+          </form>
+        </div>
         <div class="progress-container">
-          <div class="progress-text">{{ protein_percentage|default:"0" }}% of goal</div>
+          <div class="progress-text">{{ percentages.protein|default:"0" }}% of goal</div>
           <div class="progress-bar">
             <div class="progress-fill protein-fill" style="--percentage: {{ protein_percentage|default:'0' }}%; width: var(--percentage)"></div>
           </div>
@@ -625,10 +720,22 @@
           <i class="fas fa-bread-slice"></i>
         </div>
         <h3>Carbs</h3>
-        <div class="nutrition-value">{{ total_carbs|default:"0" }}g</div>
-        <div class="nutrition-goal">/ {{ carb_goal|default:"300" }}g daily goal</div>
+        <div class="nutrition-value">{{ totals.carbs|default:"0" }}g</div>
+        <div class="nutrition-goal">
+          <form method="POST" action="{% url 'update_goal' %}" class="goal-form">
+            {% csrf_token %}
+            <input type="hidden" name="goal_type" value="carbs">
+            <div class="goal-adjuster">
+              <button type="button" class="goal-minus" onclick="adjustGoal(this, -5)">−</button>
+              <input type="number" name="goal_value" value="{{ goals.carbs|default:'300' }}" 
+                     min="0" class="goal-input">
+              <button type="button" class="goal-plus" onclick="adjustGoal(this, 5)">+</button>
+            </div>
+            <button type="submit" class="goal-save">Update</button>
+          </form>
+        </div>
         <div class="progress-container">
-          <div class="progress-text">{{ carb_percentage|default:"0" }}% of goal</div>
+          <div class="progress-text">{{ percentages.carbs|default:"0" }}% of goal</div>
           <div class="progress-bar">
             <div class="progress-fill carbs-fill" style="--percentage: {{ carb_percentage|default:'0' }}%; width: var(--percentage)"></div>
           </div>
@@ -641,15 +748,90 @@
           <i class="fas fa-egg"></i>
         </div>
         <h3>Fat</h3>
-        <div class="nutrition-value">{{ total_fat|default:"0" }}g</div>
-        <div class="nutrition-goal">/ {{ fat_goal|default:"70" }}g daily goal</div>
+        <div class="nutrition-value">{{ totals.fat|default:"0" }}g</div>
+        <div class="nutrition-goal">
+          <form method="POST" action="{% url 'update_goal' %}" class="goal-form">
+            {% csrf_token %}
+            <input type="hidden" name="goal_type" value="fat">
+            <div class="goal-adjuster">
+              <button type="button" class="goal-minus" onclick="adjustGoal(this, -5)">−</button>
+              <input type="number" name="goal_value" value="{{ goals.fat|default:'70' }}" 
+                     min="0" class="goal-input">
+              <button type="button" class="goal-plus" onclick="adjustGoal(this, 5)">+</button>
+            </div>
+            <button type="submit" class="goal-save">Update</button>
+          </form>
+        </div>
         <div class="progress-container">
-          <div class="progress-text">{{ fat_percentage|default:"0" }}% of goal</div>
+          <div class="progress-text">{{ percentages.fat|default:"0" }}% of goal</div>
           <div class="progress-bar">
             <div class="progress-fill fat-fill" style="--percentage: {{ fat_percentage|default:'0' }}%; width: var(--percentage)"></div>
           </div>
         </div>
       </div>
+    </div>
+
+    <!-- New Health Trackers Row -->
+    <div class="nutrition-grid" style="margin-top: -15px;">
+      <!-- Sodium Tracker -->
+      <div class="dashboard-card nutrition-card">
+        <div class="nutrition-icon" style="background-color: #9d65c9;">
+          <i class="fas fa-mortar-pestle"></i>
+        </div>
+        <h3>Sodium</h3>
+        <div class="nutrition-value">{{ totals.sodium|default:"0" }}mg</div>
+        <div class="nutrition-goal">
+          <form method="POST" action="{% url 'update_goal' %}" class="goal-form">
+            {% csrf_token %}
+            <input type="hidden" name="goal_type" value="sodium">
+            <div class="goal-adjuster">
+              <button type="button" class="goal-minus" onclick="adjustGoal(this, -100)">−</button>
+              <input type="number" name="goal_value" value="{{ goals.sodium|default:'2300' }}" 
+                     min="0" class="goal-input">
+              <button type="button" class="goal-plus" onclick="adjustGoal(this, 100)">+</button>
+            </div>
+            <button type="submit" class="goal-save">Update</button>
+          </form>
+        </div>
+        <div class="progress-container">
+          <div class="progress-text">{{ percentages.sodium|default:"0" }}% of goal</div>
+          <div class="progress-bar">
+            <div class="progress-fill sodium-fill" style="--percentage: {{ percentages.sodium|default:'0' }}%; width: var(--percentage)"></div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Sugar Tracker -->
+      <div class="dashboard-card nutrition-card">
+        <div class="nutrition-icon" style="background-color: #ff9e7d;">
+          <i class="fas fa-candy-cane"></i>
+        </div>
+        <h3>Sugar</h3>
+        <div class="nutrition-value">{{ totals.sugar|default:"0" }}g</div>
+        <div class="nutrition-goal">
+          <form method="POST" action="{% url 'update_goal' %}" class="goal-form">
+            {% csrf_token %}
+            <input type="hidden" name="goal_type" value="sugar">
+            <div class="goal-adjuster">
+              <button type="button" class="goal-minus" onclick="adjustGoal(this, -5)">−</button>
+              <input type="number" name="goal_value" value="{{ goals.sugar|default:'25' }}" 
+                     min="0" class="goal-input">
+              <button type="button" class="goal-plus" onclick="adjustGoal(this, 5)">+</button>
+            </div>
+            <button type="submit" class="goal-save">Update</button>
+          </form>
+        </div>
+        <div class="progress-container">
+          <div class="progress-text">{{ percentages.sugar|default:"0" }}% of goal</div>
+          <div class="progress-bar">
+            <div class="progress-fill sugar-fill" style="--percentage: {{ percentages.sugar|default:'0' }}%; width: var(--percentage)"></div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Empty card for spacing -->
+      <div class="nutrition-card" style="visibility: hidden;"></div>
+      <div class="nutrition-card" style="visibility: hidden;"></div>
     </div>
     
     <!-- Main Content -->
@@ -705,13 +887,13 @@
           
           <div class="water-tracker">
             <div class="water-stats">
-              <div class="water-count">{{ water_glasses|default:"0" }}</div>
+              <div class="water-count">{{ totals.water|default:"0" }}</div>
               <div class="water-goal">/ 8</div>
             </div>
             
             <div class="water-drops">
               {% for i in "12345678" %}
-                <div class="water-drop {% if forloop.counter <= water_glasses %}filled{% endif %}"></div>
+                <div class="water-drop {% if forloop.counter <= totals.water %}filled{% endif %}"></div>
               {% endfor %}
             </div>
             
@@ -817,6 +999,58 @@
         }
       });
     });
+
+    // Handle goal form submissions
+    document.querySelectorAll('.goal-form').forEach(form => {
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        
+        fetch(this.action, {
+          method: 'POST',
+          body: formData,
+          headers: {
+            'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+          }
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.status === 'success') {
+            // Show visual feedback
+            const saveBtn = this.querySelector('.goal-save');
+            saveBtn.textContent = '✓ Updated';
+            saveBtn.style.backgroundColor = '#4CAF50'; // Green color
+            
+            // Revert after 2 seconds
+            setTimeout(() => {
+              saveBtn.textContent = 'Update';
+              saveBtn.style.backgroundColor = '';
+            }, 2000);
+            
+            // Update the progress bar (optional)
+            const progressFill = this.closest('.nutrition-card').querySelector('.progress-fill');
+            const goalValue = parseInt(this.querySelector('.goal-input').value);
+            const currentValue = parseInt(this.closest('.nutrition-card').querySelector('.nutrition-value').textContent);
+            const percentage = Math.min(100, (currentValue / goalValue) * 100);
+            progressFill.style.width = `${percentage}%`;
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert('Failed to update goal');
+        });
+      });
+    });
   });
+
+  // New function for goal adjustment
+  function adjustGoal(button, change) {
+    const form = button.closest('.goal-form');
+    const input = form.querySelector('.goal-input');
+    let value = parseInt(input.value) || 0;
+    value += change;
+    if (value < 0) value = 0;
+    input.value = value;
+  }
 </script>
 {% endblock %}

@@ -13,7 +13,13 @@ from django.core.exceptions import ObjectDoesNotExist
 from .models import FoodLog  # Added import for FoodLog model
 from django.http import HttpResponse
 from django.utils import timezone
-from .models import WaterIntake  # Make sure WaterIntake model is imported
+from .models import WaterIntake 
+from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
+from django.shortcuts import render
+from django.utils import timezone
+from .models import FoodLog  
 
 # Sample valid food terms (adjust this list as needed)
 VALID_FOODS = [
@@ -64,6 +70,8 @@ def dashboard_view(request):
         'protein': sum(f.protein for f in foods),
         'carbs': sum(f.carbs for f in foods),
         'fat': sum(f.fat for f in foods),
+        'sodium': sum(f.sodium for f in foods),  # Add sodium tracking
+        'sugar': sum(f.sugar for f in foods),    # Add sugar tracking
         'water': request.user.waterintake_set.filter(date=today).count()
     }
     
@@ -74,30 +82,38 @@ def dashboard_view(request):
             'calories': profile.calorie_goal,
             'protein': profile.protein_goal,
             'carbs': profile.carb_goal,
-            'fat': profile.fat_goal
+            'fat': profile.fat_goal,
+            'sodium': profile.sodium_goal,  # Add sodium goal
+            'sugar': profile.sugar_goal     # Add sugar goal
         }
     except:
         goals = {
             'calories': 2000,
             'protein': 50,
             'carbs': 300,
-            'fat': 70
+            'fat': 70,
+            'sodium': 2300,  # Default sodium goal (mg)
+            'sugar': 25      # Default sugar goal (g)
         }
     
     # Calculate percentages
     percentages = {
         'calories': min(100, int((totals['calories'] / goals['calories']) * 100)) if goals['calories'] else 0,
-        # Add other macros as needed...
+        'protein': min(100, int((totals['protein'] / goals['protein']) * 100)) if goals['protein'] else 0,
+        'carbs': min(100, int((totals['carbs'] / goals['carbs']) * 100)) if goals['carbs'] else 0,
+        'fat': min(100, int((totals['fat'] / goals['fat']) * 100)) if goals['fat'] else 0,
+        'sodium': min(100, int((totals['sodium'] / goals['sodium']) * 100)) if goals['sodium'] else 0,  # Sodium percentage
+        'sugar': min(100, int((totals['sugar'] / goals['sugar']) * 100)) if goals['sugar'] else 0      # Sugar percentage
     }
     
     return render(request, 'counter/dashboard.html', {
-        'total_calories': totals['calories'],
-        'calorie_goal': goals['calories'],
-        'calorie_percentage': percentages['calories'],
-        # Add other macros similarly
-        'water_glasses': totals['water'],
+        'totals': totals,
+        'goals': goals,
+        'percentages': percentages,
+        'today': today,
         'recent_foods': FoodLog.objects.filter(user=request.user).order_by('-date')[:3]
     })
+    
 
 @login_required
 def log_water(request):
@@ -263,3 +279,55 @@ def calculator_view(request):
         form = CalculatorForm(initial=user_data)
 
     return render(request, 'calculator.html', {'form': form, 'user_data': user_data})
+
+@login_required
+@require_POST
+def update_goal(request):
+    goal_type = request.POST.get('goal_type')
+    goal_value = request.POST.get('goal_value')
+    
+    if not goal_type or not goal_value:
+        return JsonResponse({
+            'status': 'error',
+            'message': 'Missing parameters'
+        }, status=400)
+    
+    try:
+        profile = request.user.profile
+        goal_value = int(goal_value)
+        
+        # Update the appropriate goal field
+        if goal_type == 'calories':
+            profile.calorie_goal = goal_value
+        elif goal_type == 'protein':
+            profile.protein_goal = goal_value
+        elif goal_type == 'carbs':
+            profile.carb_goal = goal_value
+        elif goal_type == 'fat':
+            profile.fat_goal = goal_value
+        elif goal_type == 'sodium':
+            profile.sodium_goal = goal_value
+        elif goal_type == 'sugar':
+            profile.sugar_goal = goal_value
+        else:
+            return JsonResponse({
+                'status': 'error',
+                'message': 'Invalid goal type'
+            }, status=400)
+            
+        profile.save()
+        return JsonResponse({
+            'status': 'success',
+            'new_goal': goal_value  # Send back the new value
+        })
+        
+    except ValueError:
+        return JsonResponse({
+            'status': 'error',
+            'message': 'Please enter a valid number'
+        }, status=400)
+    except Exception as e:
+        return JsonResponse({
+            'status': 'error',
+            'message': str(e)
+        }, status=500)
