@@ -4,7 +4,7 @@ from django.contrib import admin
 
 
 urlpatterns = [
-    path('', views.home_page_view, name='home_page'),  # Landing page (home_page.html)
+    path('', views.home_page_view, name='home_page'),  # Landing page 
     path('home/', views.home_view, name='home'), 
     path('about/', views.about_view, name='about'),
     path('tips/', views.tips_view, name='tips'),
@@ -20,6 +20,4 @@ urlpatterns = [
     path('log-water/', views.log_water, name='log_water'),
     path('update-goal/', views.update_goal, name='update_goal'),
     
-    # Remove this line as it causes recursion:
-    # path('', include('counter.urls')),
 ]

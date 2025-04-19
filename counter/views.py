@@ -10,7 +10,7 @@ import urllib.parse
 from django.template import loader
 from difflib import get_close_matches
 from django.core.exceptions import ObjectDoesNotExist
-from .models import FoodLog  # Added import for FoodLog model
+from .models import FoodLog 
 from django.http import HttpResponse
 from django.utils import timezone
 from .models import WaterIntake 
@@ -21,21 +21,21 @@ from django.shortcuts import render
 from django.utils import timezone
 from .models import FoodLog  
 
-# Sample valid food terms (adjust this list as needed)
+
 VALID_FOODS = [
     "apple", "banana", "chicken breast", "pasta", "rice", "broccoli",
     "salmon", "beef", "carrot", "cheese", "fries", "brisket", "yogurt",
     "pizza", "lettuce", "grapes", "oatmeal", "egg", "cucumber", "potato"
 ]
 
-# Calculator Form
+# Calculator 
 class CalculatorForm(forms.Form):
     age = forms.IntegerField(label="Age", min_value=1)
     weight = forms.FloatField(label="Weight (kg)", min_value=1)
     height = forms.FloatField(label="Height (cm)", min_value=1)
     gender = forms.ChoiceField(label="Gender", choices=[('male', 'Male'), ('female', 'Female')])
 
-# Food Logging Views
+# Foodd Log
 @login_required
 def log_food(request):
     if request.method == 'POST':
@@ -47,7 +47,7 @@ def log_food(request):
             carbs=float(request.POST.get('carbs')),
             fat=float(request.POST.get('fat')),
             amount=float(request.POST.get('amount')),
-            meal_time=request.POST.get('meal_time', 'snack')  # Default to snack
+            meal_time=request.POST.get('meal_time', 'snack')
         )
         messages.success(request, "Food logged successfully!")
         return redirect('dashboard')
@@ -55,13 +55,11 @@ def log_food(request):
 
 
 def food_log_view(request):
-    # Add your view logic here to show all logged foods
-    return render(request, 'counter/food_log.html')  # Cr
+    return render(request, 'counter/food_log.html') 
     
 
 @login_required
 def dashboard_view(request):
-    # Calculate totals
     today = timezone.now().date()
     foods = FoodLog.objects.filter(user=request.user, date__date=today)
     
@@ -70,12 +68,11 @@ def dashboard_view(request):
         'protein': sum(f.protein for f in foods),
         'carbs': sum(f.carbs for f in foods),
         'fat': sum(f.fat for f in foods),
-        'sodium': sum(f.sodium for f in foods),  # Add sodium tracking
-        'sugar': sum(f.sugar for f in foods),    # Add sugar tracking
+        'sodium': sum(f.sodium for f in foods),
+        'sugar': sum(f.sugar for f in foods),
         'water': request.user.waterintake_set.filter(date=today).count()
     }
     
-    # Get goals from user profile
     try:
         profile = request.user.profile
         goals = {
@@ -83,8 +80,8 @@ def dashboard_view(request):
             'protein': profile.protein_goal,
             'carbs': profile.carb_goal,
             'fat': profile.fat_goal,
-            'sodium': profile.sodium_goal,  # Add sodium goal
-            'sugar': profile.sugar_goal     # Add sugar goal
+            'sodium': profile.sodium_goal, 
+            'sugar': profile.sugar_goal  
         }
     except:
         goals = {
@@ -92,18 +89,18 @@ def dashboard_view(request):
             'protein': 50,
             'carbs': 300,
             'fat': 70,
-            'sodium': 2300,  # Default sodium goal (mg)
-            'sugar': 25      # Default sugar goal (g)
+            'sodium': 2300, 
+            'sugar': 25 
         }
     
-    # Calculate percentages
+    # calculate percent
     percentages = {
         'calories': min(100, int((totals['calories'] / goals['calories']) * 100)) if goals['calories'] else 0,
         'protein': min(100, int((totals['protein'] / goals['protein']) * 100)) if goals['protein'] else 0,
         'carbs': min(100, int((totals['carbs'] / goals['carbs']) * 100)) if goals['carbs'] else 0,
         'fat': min(100, int((totals['fat'] / goals['fat']) * 100)) if goals['fat'] else 0,
-        'sodium': min(100, int((totals['sodium'] / goals['sodium']) * 100)) if goals['sodium'] else 0,  # Sodium percentage
-        'sugar': min(100, int((totals['sugar'] / goals['sugar']) * 100)) if goals['sugar'] else 0      # Sugar percentage
+        'sodium': min(100, int((totals['sodium'] / goals['sodium']) * 100)) if goals['sodium'] else 0,  
+        'sugar': min(100, int((totals['sugar'] / goals['sugar']) * 100)) if goals['sugar'] else 0  
     }
     
     return render(request, 'counter/dashboard.html', {
@@ -118,10 +115,7 @@ def dashboard_view(request):
 @login_required
 def log_water(request):
     if request.method == 'POST':
-        # Create new water intake
         WaterIntake.objects.create(user=request.user)
-        
-        # Get count for today
         today = timezone.now().date()
         water_count = request.user.waterintake_set.filter(date__date=today).count()
         
@@ -133,7 +127,7 @@ def log_water(request):
         return redirect('dashboard')
     return JsonResponse({'status': 'error'}, status=400)
 
-# Authentication Views
+# authentication
 def signup_view(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST, request.FILES)
@@ -185,7 +179,6 @@ def profile_setup_view(request):
     
     return render(request, 'counter/profile_setup.html', {'form': form})
 
-# Core Application Views
 def home_page_view(request):
     return render(request, 'home_page.html')
 
@@ -307,7 +300,6 @@ def update_goal(request):
         profile = request.user.profile
         goal_value = int(goal_value)
         
-        # Update the appropriate goal field
         if goal_type == 'calories':
             profile.calorie_goal = goal_value
         elif goal_type == 'protein':
@@ -329,7 +321,7 @@ def update_goal(request):
         profile.save()
         return JsonResponse({
             'status': 'success',
-            'new_goal': goal_value  # Send back the new value
+            'new_goal': goal_value
         })
         
     except ValueError:

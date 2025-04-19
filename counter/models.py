@@ -4,7 +4,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.conf import settings
 
-# Meal time choices for FoodLog model
+# meal time
 MEAL_TIME_CHOICES = [
     ('breakfast', 'Breakfast'),
     ('lunch', 'Lunch'),
@@ -53,10 +53,10 @@ class Profile(models.Model):
     protein_goal = models.PositiveIntegerField(default=50)
     carb_goal = models.PositiveIntegerField(default=300)
     fat_goal = models.PositiveIntegerField(default=70)
-    sodium_goal = models.PositiveIntegerField(default=2300)  # Default 2300mg (FDA recommendation)
-    sugar_goal = models.PositiveIntegerField(default=25)     # Default 25g (WHO recommendation)
+    sodium_goal = models.PositiveIntegerField(default=2300)  
+    sugar_goal = models.PositiveIntegerField(default=25)  
     profile_picture = models.ImageField(upload_to='profile_pics/', null=True, blank=True)
-    water_goal = models.PositiveIntegerField(default=8)      # Default 8 glasses
+    water_goal = models.PositiveIntegerField(default=8) 
 
     def __str__(self):
         return self.user.username
@@ -68,14 +68,14 @@ class FoodLog(models.Model):
     protein = models.FloatField()
     carbs = models.FloatField()
     fat = models.FloatField()
-    sodium = models.PositiveIntegerField(default=0)  # in milligrams
-    sugar = models.PositiveIntegerField(default=0)   # in grams
+    sodium = models.PositiveIntegerField(default=0) 
+    sugar = models.PositiveIntegerField(default=0) 
     amount = models.FloatField(help_text="Amount in grams")
     meal_time = models.CharField(max_length=20, choices=MEAL_TIME_CHOICES, default='snack')
     date = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        ordering = ['-date']  # Newest entries first by default
+        ordering = ['-date']
         verbose_name = 'Food Log'
         verbose_name_plural = 'Food Logs'
 
@@ -92,7 +92,7 @@ class WaterIntake(models.Model):
     def __str__(self):
         return f"Water intake at {self.date}"
 
-# Automatically create and save Profile when a CustomUser is created
+
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_or_update_user_profile(sender, instance, created, **kwargs):
     if created:

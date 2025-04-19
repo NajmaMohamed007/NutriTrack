@@ -13,25 +13,17 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 import os
 
-# Add your Nutrition API key here for secure access
 NUTRITION_API_KEY = 'afOS7OCePWnFhZJcVhJhag==YWgVwbaWh1rNIOO7'
 
-
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# Quick-start development settings - unsuitable for production
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-d^n(^b5n%_l(afOS7OCePWnFhZJcVhJhag==YWgVwbaWh1rNIOO7'
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
-# Application definition
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -40,7 +32,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'counter',  # Add the 'counter' app here
+    'counter',
 ]
 
 MIDDLEWARE = [
@@ -58,7 +50,7 @@ ROOT_URLCONF = 'NutriTrack.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],  # Ensure templates directory is included
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -74,9 +66,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'NutriTrack.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -84,9 +73,6 @@ DATABASES = {
     }
 }
 
-
-# Password validation
-# https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -103,10 +89,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
-# Internationalization
-# https://docs.djangoproject.com/en/5.1/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -116,39 +98,27 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.1/howto/static-files/
-
 STATIC_URL = '/static/'
 
-# Define where Django should look for static files in development
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
 
-# Only needed for production; remove or comment out during development
-# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Additional settings for the 'counter' app
-COUNTER_DEFAULT_VALUE = 0  # Default starting value for counter
+
+COUNTER_DEFAULT_VALUE = 0  
 
 AUTH_USER_MODEL = 'counter.CustomUser'
 
-
-# Add these settings for authentication
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'dashboard'
 LOGOUT_REDIRECT_URL = 'home_page'
 LOGOUT_REDIRECT_URL = 'home'
 
 
-# For profile pictures
+#profile pictures
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
