@@ -118,9 +118,20 @@ def dashboard_view(request):
 @login_required
 def log_water(request):
     if request.method == 'POST':
+        # Create new water intake
         WaterIntake.objects.create(user=request.user)
-        messages.success(request, "Water logged successfully!")
-    return redirect('dashboard')
+        
+        # Get count for today
+        today = timezone.now().date()
+        water_count = request.user.waterintake_set.filter(date__date=today).count()
+        
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return JsonResponse({
+                'status': 'success', 
+                'water_count': water_count
+            })
+        return redirect('dashboard')
+    return JsonResponse({'status': 'error'}, status=400)
 
 # Authentication Views
 def signup_view(request):

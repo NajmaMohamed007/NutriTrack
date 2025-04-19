@@ -868,8 +868,6 @@
             
             {% if recent_foods %}
             <div class="text-center pt-2">
-              <a href="{% url 'food_log' %}" class="pink-text text-sm">
-                See All <i class="fas fa-chevron-right ml-1"></i>
               </a>
             </div>
             {% endif %}
@@ -1041,7 +1039,76 @@
         });
       });
     });
-  });
+
+    document.addEventListener('DOMContentLoaded', function() {
+    const waterForm = document.getElementById('water-tracker-form');
+    
+    if (waterForm) {
+        waterForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const form = this;
+            const waterButton = form.querySelector('.water-button');
+            const originalText = waterButton.innerHTML;
+            
+            // Show loading state
+            waterButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            waterButton.disabled = true;
+
+            fetch(form.action, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => {
+                if (!response.ok) throw new Error('Network error');
+                return response.json();
+            })
+            .then(data => {
+                console.log("Received data:", data); // Debug log
+                
+                if (data.status === 'success') {
+                    // Update counter
+                    const waterCountElement = document.querySelector('.water-count');
+                    if (waterCountElement) {
+                        waterCountElement.textContent = data.water_count;
+                    }
+                    
+                    // Update all water drops
+                    const waterDrops = document.querySelectorAll('.water-drop');
+                    waterDrops.forEach((drop, index) => {
+                        const isFilled = index < data.water_count;
+                        drop.classList.toggle('filled', isFilled);
+                        drop.style.opacity = isFilled ? '1' : '0.3';
+                        drop.style.transform = isFilled ? 'scale(1.1)' : 'scale(1)';
+                    });
+                    
+                    // Show success feedback
+                    waterButton.innerHTML = '<i class="fas fa-check"></i>';
+                    waterButton.style.backgroundColor = '#4CAF50';
+                } else {
+                    throw new Error('Server returned error status');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                waterButton.innerHTML = '<i class="fas fa-times"></i>';
+                waterButton.style.backgroundColor = '#f44336';
+            })
+            .finally(() => {
+                setTimeout(() => {
+                    waterButton.innerHTML = originalText;
+                    waterButton.style.backgroundColor = '';
+                    waterButton.disabled = false;
+                }, 2000);
+            });
+        });
+    }
+});
+});
+
 
   // New function for goal adjustment
   function adjustGoal(button, change) {
