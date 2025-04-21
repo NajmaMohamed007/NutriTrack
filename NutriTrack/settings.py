@@ -22,7 +22,7 @@ SECRET_KEY = 'django-insecure-d^n(^b5n%_l(afOS7OCePWnFhZJcVhJhag==YWgVwbaWh1rNIO
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ALLOWED_HOSTS = ['nutritrack-ldbr.onrender.com', '127.0.0.1', 'localhost']
 
 
 INSTALLED_APPS = [
