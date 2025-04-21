@@ -307,7 +307,6 @@
     <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
             <a href="{% url 'home' %}" class="nav-logo d-flex align-items-center">
-                <img src="{% static 'images/logo.png' %}" alt="Nutri Track Logo" style="height: 40px; margin-right: 10px;">
                 ✨ Nutri Track ✨
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -466,29 +465,29 @@
                     </div>
 
                     <!-- CUTE WORKOUT SECTION -->
-                    <h3 class="mt-5 mb-4 animate__animated animate__fadeIn"><i class="fas fa-fire me-2"></i> To burn {{ api.0.calories }} calories:</h3>
-                    <div class="activity-section">
-                        <div class="activity-card animate__animated animate__fadeIn animate__delay-1s">
-                            <img src="{% static 'images/running.png' %}" alt="Jogging" loading="lazy">
-                            <h5>Jogging</h5>
-                            <p>{{ api.0.calories|div:378|mul:60|floatformat:0 }} minutes</p>
-                        </div>
-                        <div class="activity-card animate__animated animate__fadeIn animate__delay-2s">
-                            <img src="{% static 'images/yoga.png' %}" alt="Power Yoga" loading="lazy">
-                            <h5>Power Yoga</h5>
-                            <p>{{ api.0.calories|div:223|mul:60|floatformat:0 }} minutes</p>
-                        </div>
-                        <div class="activity-card animate__animated animate__fadeIn animate__delay-3s">
-                            <img src="{% static 'images/weightlifter.png' %}" alt="Gym Workout" loading="lazy">
-                            <h5>Weightlifting</h5>
-                            <p>{{ api.0.calories|div:483|mul:60|floatformat:0 }} minutes</p>
-                        </div>
-                        <div class="activity-card animate__animated animate__fadeIn animate__delay-4s">
-                            <img src="{% static 'images/walking.png' %}" alt="Brisk Walking" loading="lazy">
-                            <h5>Brisk Walking</h5>
-                            <p>{{ api.0.calories|div:294|mul:60|floatformat:0 }} minutes</p>
-                        </div>
-                    </div>
+<h3 class="mt-5 mb-4 animate__animated animate__fadeIn"><i class="fas fa-fire me-2"></i> To burn {{ api.0.calories }} calories:</h3>
+<div class="activity-section">
+    <div class="activity-card animate__animated animate__fadeIn animate__delay-1s">
+        <i class="fas fa-running fa-3x"></i>
+        <h5>Jogging</h5>
+        <p>{{ api.0.calories|div:378|mul:60|floatformat:0 }} minutes</p>
+    </div>
+    <div class="activity-card animate__animated animate__fadeIn animate__delay-2s">
+        <i class="fas fa-spa fa-3x"></i>
+        <h5>Power Yoga</h5>
+        <p>{{ api.0.calories|div:223|mul:60|floatformat:0 }} minutes</p>
+    </div>
+    <div class="activity-card animate__animated animate__fadeIn animate__delay-3s">
+        <i class="fas fa-dumbbell fa-3x"></i>
+        <h5>Weightlifting</h5>
+        <p>{{ api.0.calories|div:483|mul:60|floatformat:0 }} minutes</p>
+    </div>
+    <div class="activity-card animate__animated animate__fadeIn animate__delay-4s">
+        <i class="fas fa-walking fa-3x"></i>
+        <h5>Brisk Walking</h5>
+        <p>{{ api.0.calories|div:294|mul:60|floatformat:0 }} minutes</p>
+    </div>
+</div>
                     
                     <!-- PORTION SIZE CALCULATOR -->
                     <div class="caloriescont mt-4 animate__animated animate__fadeIn">
