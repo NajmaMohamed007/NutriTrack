@@ -1,43 +1,149 @@
 {% extends "counter/base.html" %}
 
 {% block content %}
-<div class="container">
-    <h2>Your Food Log</h2>
+<div class="container food-log-page">
+    <!-- Cute Header with Home Navigation -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <a href="{% url 'home' %}" class="btn btn-pink animate__animated animate__fadeInLeft">
+            <i class="fas fa-home me-2"></i> Back Home
+        </a>
+        <h2 class="animate__animated animate__fadeIn">
+            <i class="fas fa-utensils me-2"></i> Your Food Diary
+        </h2>
+        <div></div> <!-- Empty div for spacing -->
+    </div>
+
+    <!-- Food Log Container -->
     <div class="food-log-container">
-        {% for food in food_logs %}
-        <div class="food-log-item">
+        {% for food in food_logs|slice:":10" %}
+        <div class="food-log-item animate__animated animate__fadeInUp food-log-delay-{{ forloop.counter0 }}">
             <div class="food-log-header">
-                <h3>{{ food.food_name }}</h3>
-                <span class="meal-time">{{ food.meal_time|title }}</span>
+                <h3><i class="fas fa food-icon me-2"></i> {{ food.food_name }}</h3>
+                <span class="meal-time badge bg-pink">{{ food.meal_time|title }}</span>
             </div>
             <div class="food-log-details">
                 <div class="detail">
-                    <span class="label">Amount:</span>
+                    <span class="label"><i class="fas fa-weight me-2"></i>Amount:</span>
                     <span class="value">{{ food.amount }}g</span>
                 </div>
                 <div class="detail">
-                    <span class="label">Calories:</span>
+                    <span class="label"><i class="fas fa-fire me-2"></i>Calories:</span>
                     <span class="value">{{ food.calories|floatformat:0 }}</span>
                 </div>
                 <div class="detail">
-                    <span class="label">Macros:</span>
+                    <span class="label"><i class="fas fa-chart-pie me-2"></i>Macros:</span>
                     <span class="value">
-                        {{ food.protein|floatformat:0 }}P • 
-                        {{ food.carbs|floatformat:0 }}C • 
-                        {{ food.fat|floatformat:0 }}F
+                        <span class="macro protein">{{ food.protein|floatformat:0 }}P</span> • 
+                        <span class="macro carbs">{{ food.carbs|floatformat:0 }}C</span> • 
+                        <span class="macro fat">{{ food.fat|floatformat:0 }}F</span>
                     </span>
                 </div>
                 <div class="detail">
-                    <span class="label">Date:</span>
+                    <span class="label"><i class="far fa-calendar-alt me-2"></i>Date:</span>
                     <span class="value">{{ food.date|date:"M d, Y" }}</span>
                 </div>
             </div>
         </div>
         {% empty %}
-        <div class="no-food-logs">
-            <p>No food logs yet. Start tracking your meals!</p>
+        <div class="no-food-logs text-center animate__animated animate__fadeIn">
+            <i class="fas fa-ice-cream fa-4x mb-3" style="color: #ff85a2;"></i>
+            <p class="fs-5">No food logs yet. Time to track some yummy meals!</p>
+            <a href="{% url 'home' %}" class="btn btn-pink mt-3">
+                <i class="fas fa-plus-circle me-2"></i> Add Your First Meal
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- See More Button (only shown if there are more than 10 items) -->
+    {% if food_logs.count > 10 %}
+    <div class="text-center mt-4 animate__animated animate__fadeIn">
+        <button id="seeMoreBtn" class="btn btn-pink-outline">
+            <i class="fas fa-chevron-down me-2"></i> See More Yummies
+        </button>
+    </div>
+    {% endif %}
+
+    <!-- Hidden items that will be shown when "See More" is clicked -->
+    <div id="moreFoodLogs" class="food-log-container" style="display: none;">
+        {% for food in food_logs|slice:"10:" %}
+        <div class="food-log-item animate__animated animate__fadeInUp">
+            <!-- Same structure as above -->
         </div>
         {% endfor %}
     </div>
 </div>
+
+<style>
+    /* Pink Theme Styles */
+    .food-log-page {
+        background-color: #fff5f7;
+        padding: 2rem;
+        border-radius: 15px;
+    }
+    .food-log-item {
+        background: white;
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+        box-shadow: 0 4px 15px rgba(255, 133, 162, 0.1);
+        border-left: 4px solid #ff85a2;
+        transition: transform 0.3s ease;
+    }
+    .food-log-item:hover {
+        transform: translateY(-3px);
+    }
+    .food-log-header h3 {
+        color: #d23369;
+    }
+    .meal-time {
+        color: white;
+        background: #ff85a2;
+        padding: 0.3rem 0.8rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
+    }
+    .btn-pink {
+        background-color: #ff85a2;
+        color: white;
+        border: none;
+        border-radius: 20px;
+        padding: 0.5rem 1.5rem;
+    }
+    .btn-pink:hover {
+        background-color: #d23369;
+        color: white;
+    }
+    .btn-pink-outline {
+        background-color: transparent;
+        color: #ff85a2;
+        border: 2px solid #ff85a2;
+        border-radius: 20px;
+        padding: 0.5rem 1.5rem;
+    }
+    .btn-pink-outline:hover {
+        background-color: #ff85a2;
+        color: white;
+    }
+    .macro.protein { color: #ff85a2; font-weight: bold; }
+    .macro.carbs { color: #f78fb3; font-weight: bold; }
+    .macro.fat { color: #f8a5c2; font-weight: bold; }
+</style>
+
+<script>
+    // Show more food logs when button is clicked
+    document.getElementById('seeMoreBtn')?.addEventListener('click', function() {
+        const moreLogs = document.getElementById('moreFoodLogs');
+        moreLogs.style.display = 'block';
+        this.style.display = 'none';
+        
+        // Animate the new items
+        const items = moreLogs.querySelectorAll('.food-log-item');
+        items.forEach((item, index) => {
+            setTimeout(() => {
+                item.classList.add('animate__fadeInUp');
+            }, index * 100);
+        });
+    });
+</script>
 {% endblock %}

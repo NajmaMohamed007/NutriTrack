@@ -53,9 +53,14 @@ def log_food(request):
         return redirect('dashboard')
     return redirect('home')
 
-
 def food_log_view(request):
-    return render(request, 'counter/food_log.html') 
+    # Get food logs for the current user, ordered by date (newest first)
+    food_logs = FoodLog.objects.filter(user=request.user).order_by('-date')
+    
+    context = {
+        'food_logs': food_logs
+    }
+    return render(request, 'counter/food_log.html', context)
     
 
 @login_required
