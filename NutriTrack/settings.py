@@ -82,11 +82,11 @@ USE_I18N = True
 USE_TZ = True
 
 # Static files (CSS, JavaScript, images)
-STATIC_URL = '/Static/'
+STATIC_URL = '/static/'
 
 # The directory where static files should be collected in production
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'Static'),
+    os.path.join(BASE_DIR, 'static'),
 ]
 
 # This is where the static files will be stored after running collectstatic
