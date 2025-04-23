@@ -9,6 +9,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Complete Your Profile | NutriTrack</title>
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <style>
         :root {
             --primary-pink: #ff66a3;
@@ -31,56 +33,64 @@
         
         /* Navigation Bar */
         .navbar {
-            background-color: var(--dark-pink);
-            padding: 12px 0;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-        }
+    background-color: var(--secondary-pink);
+    padding: 10px 30px;
+    box-shadow: 0 4px 15px rgba(214, 51, 132, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
         
         .nav-logo {
-            color: white;
-            font-size: 1.4rem;
-            font-weight: 700;
+            font-family: "Sofia", cursive;
+            font-size: 2.5rem;
+            color: var(--white);
+            text-shadow: 0 0 5px var(--primary-pink), 0 0 10px var(--primary-pink);
+            transition: all 0.3s;
             text-decoration: none;
-            font-family: 'Pacifico', cursive;
-            display: flex;
-            align-items: center;
         }
-        
-        .nav-logo img {
-            height: 36px;
-            margin-right: 10px;
-            transition: transform 0.3s;
+        .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.nav-links a,
+.nav-links .dropdown {
+    display: flex;
+    align-items: center;
+}
+
+        .nav-logo:hover {
+            transform: scale(1.05);
         }
         
         .nav-links a {
-            color: white;
-            text-decoration: none;
-            margin-left: 20px;
-            font-weight: 500;
+            color: var(--white);
+            font-weight: bold;
+            padding: 8px 15px;
+            border-radius: 20px;
             transition: all 0.3s;
-            padding: 8px 12px;
-            border-radius: 5px;
-            font-size: 0.95rem;
+            margin: 0 5px;
+            text-decoration: none;
         }
         
         .nav-links a:hover {
-            color: var(--secondary-pink);
+            background-color: rgba(255,255,255,0.2);
             transform: translateY(-2px);
-        }
-        
-        .nav-links a i {
-            margin-right: 6px;
-            font-size: 0.9rem;
+            text-shadow: 0 0 5px rgba(255,255,255,0.5);
         }
         
         /* Main Content */
         .main-content {
             flex: 1;
-            padding-top: 80px;
+            padding-top: 30px;
             padding-bottom: 40px;
         }
         
@@ -90,9 +100,11 @@
             padding: 0 20px;
         }
         
+        /* Header */
         .profile-header {
             text-align: center;
             margin-bottom: 30px;
+            animation: fadeInDown 0.8s ease;
         }
         
         .profile-header h1 {
@@ -107,26 +119,41 @@
             color: #777;
         }
         
+        /* Card */
         .profile-card {
             background-color: var(--white);
             border-radius: 16px;
             box-shadow: 0 5px 20px rgba(214, 51, 132, 0.08);
-            padding: 30px;
-            margin-bottom: 20px;
+            padding: 25px;
+            margin-bottom: 25px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 182, 216, 0.3);
+            animation: fadeIn 0.6s ease;
         }
         
+        .profile-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(214, 51, 132, 0.15);
+        }
+        
+        /* Back Button */
         .back-button {
             display: inline-flex;
             align-items: center;
             color: var(--primary-pink);
             text-decoration: none;
-            margin-bottom: 15px;
-            font-weight: 500;
-            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+        
+        .back-button:hover {
+            color: var(--dark-pink);
+            transform: translateX(-3px);
         }
         
         .back-button i {
-            margin-right: 6px;
+            margin-right: 8px;
         }
         
         /* Progress Bar */
@@ -137,24 +164,24 @@
         .progress-text {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 6px;
-            font-size: 0.85rem;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
             color: var(--dark-pink);
         }
         
         .progress-bar {
-            height: 8px;
+            height: 10px;
             background-color: #f0f0f0;
-            border-radius: 8px;
+            border-radius: 10px;
             overflow: hidden;
         }
         
         .progress-fill {
             height: 100%;
-            background-color: var(--primary-pink);
-            width: 60%;
-            border-radius: 8px;
-            transition: width 0.4s ease;
+            background: linear-gradient(90deg, var(--primary-pink), var(--secondary-pink));
+            border-radius: 10px;
+            transition: width 0.6s ease;
+            width: 0;
         }
         
         /* Form Styles */
@@ -165,9 +192,11 @@
         .section-title {
             color: var(--dark-pink);
             font-size: 1.3rem;
-            margin-bottom: 16px;
+            margin-bottom: 20px;
             position: relative;
             padding-bottom: 8px;
+            display: flex;
+            align-items: center;
         }
         
         .section-title:after {
@@ -192,30 +221,31 @@
         
         .form-label {
             display: block;
-            margin-bottom: 6px;
-            font-weight: 500;
-            color: #666;
-            font-size: 0.9rem;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark-pink);
+            font-size: 0.95rem;
         }
         
         .form-control {
             width: 100%;
-            padding: 10px 14px;
+            padding: 12px 16px;
             border: 2px solid #f0f0f0;
-            border-radius: 8px;
+            border-radius: 12px;
             font-family: 'Quicksand', sans-serif;
-            font-size: 0.95rem;
+            font-size: 1rem;
             transition: all 0.3s;
+            background-color: var(--light-pink);
         }
         
         .form-control:focus {
             border-color: var(--primary-pink);
             outline: none;
-            box-shadow: 0 0 0 3px rgba(255, 102, 163, 0.15);
+            box-shadow: 0 0 0 3px rgba(255, 102, 163, 0.2);
         }
         
         textarea.form-control {
-            min-height: 100px;
+            min-height: 120px;
             resize: vertical;
         }
         
@@ -236,68 +266,72 @@
             background-color: var(--primary-pink);
             color: white;
             border: none;
-            padding: 12px 25px;
-            font-size: 1rem;
-            border-radius: 8px;
+            padding: 14px 30px;
+            font-size: 1.1rem;
+            border-radius: 30px;
             cursor: pointer;
             font-family: 'Quicksand', sans-serif;
-            font-weight: 500;
+            font-weight: 600;
             transition: all 0.3s;
             display: block;
             width: 100%;
-            max-width: 280px;
-            margin: 30px auto 0;
+            max-width: 300px;
+            margin: 40px auto 20px;
+            box-shadow: 0 4px 0 var(--dark-pink);
         }
         
         .submit-button:hover {
             background-color: var(--dark-pink);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(214, 51, 132, 0.25);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 0 var(--dark-pink);
+        }
+        
+        .submit-button:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 0 var(--dark-pink);
         }
         
         .submit-button i {
-            margin-right: 8px;
+            margin-right: 10px;
         }
         
-        /* Footer Note */
+        /* Privacy Note */
         .privacy-note {
             text-align: center;
             color: #888;
             font-size: 0.85rem;
-            margin-top: 25px;
+            margin-top: 20px;
         }
         
         .privacy-note i {
             color: var(--primary-pink);
             margin-right: 5px;
-            font-size: 0.9rem;
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
         /* Responsive Adjustments */
         @media (max-width: 768px) {
-            .profile-container {
-                padding: 0 15px;
-            }
-            
             .profile-header h1 {
                 font-size: 2rem;
             }
             
-            .profile-header p {
-                font-size: 1rem;
-            }
-            
             .profile-card {
-                padding: 25px 20px;
+                padding: 20px;
             }
             
             .form-row {
                 flex-direction: column;
                 gap: 15px;
-            }
-            
-            .form-col {
-                width: 100%;
             }
             
             .submit-button {
@@ -306,215 +340,69 @@
         }
         
         @media (max-width: 576px) {
-            .nav-logo {
-                font-size: 1.2rem;
-            }
-            
-            .nav-logo img {
-                height: 30px;
-            }
-            
             .profile-header h1 {
                 font-size: 1.8rem;
+            }
+            
+            .navbar {
+                padding: 15px;
             }
         }
     </style>
 </head>
 <body>
-  <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Nutri Track</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-  <style>
-    :root {
-      --dark-pink: #c2185b;
-      --primary-pink: #f06292;
-      --secondary-pink: #ffb6c1;
-    }
-
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      padding-top: 64px; /* So content isn’t hidden behind the fixed navbar */
-    }
-
-    .navbar {
-      width: 100%;
-      background-color: var(--dark-pink);
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: 1000;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .navbar-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 20px;
-      height: 64px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-    }
-
-    .navbar-logo {
-      display: flex;
-      align-items: center;
-      color: white;
-      text-decoration: none;
-      font-family: 'Pacifico', cursive;
-      font-size: 1.4rem;
-    }
-
-    .logo-img {
-      height: 36px;
-      margin-right: 10px;
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .nav-links a,
-    .dropdown-toggle {
-      color: white;
-      text-decoration: none;
-      font-weight: 500;
-      padding: 8px 12px;
-      transition: 0.3s;
-      cursor: pointer;
-    }
-
-    .nav-links a:hover,
-    .dropdown-toggle:hover {
-      background-color: rgba(255, 255, 255, 0.1);
-      border-radius: 5px;
-    }
-
-    .signup-btn {
-      background-color: var(--primary-pink);
-      border-radius: 20px;
-      padding: 8px 16px;
-    }
-
-    .dropdown {
-      position: relative;
-    }
-
-    .dropdown-menu {
-      display: none;
-      position: absolute;
-      top: 40px;
-      right: 0;
-      background-color: white;
-      color: black;
-      min-width: 160px;
-      box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
-      z-index: 1;
-      border-radius: 5px;
-    }
-
-    .dropdown-menu a,
-    .dropdown-menu button {
-      color: black;
-      padding: 10px 16px;
-      text-decoration: none;
-      display: block;
-      width: 100%;
-      text-align: left;
-      background: none;
-      border: none;
-      font: inherit;
-      cursor: pointer;
-    }
-
-    .dropdown-menu a:hover,
-    .dropdown-menu button:hover {
-      background-color: var(--secondary-pink);
-    }
-
-    .dropdown:hover .dropdown-menu {
-      display: block;
-    }
-
-    .nav-icon {
-      display: none;
-      font-size: 24px;
-      color: white;
-      cursor: pointer;
-    }
-
-    .nav-toggle {
-      display: none;
-    }
-
-    @media screen and (max-width: 768px) {
-      .nav-links {
-        display: none;
-        flex-direction: column;
-        background-color: var(--dark-pink);
-        width: 100%;
-        padding: 10px 0;
-      }
-
-      .nav-toggle:checked + .nav-icon + .nav-links {
-        display: flex;
-      }
-
-      .nav-icon {
-        display: block;
-      }
-    }
-  </style>
-</head>
-<body>
-
+    <!-- Navigation -->
 <nav class="navbar">
-  <div class="navbar-container">
-    <a href="{% url 'home' %}" class="navbar-logo">
-      Nutri Track
-    </a>
+    <div class="nav-container" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;">
+        <!-- Logo -->
+        <a href="{% url 'home' %}" class="nav-logo">
+            ✨ Nutri Track ✨
+        </a>
 
-    <input type="checkbox" id="nav-toggle" class="nav-toggle">
-    <label for="nav-toggle" class="nav-icon"><i class="fas fa-bars"></i></label>
+        <!-- Toggler for mobile (optional JS needed for dropdown to work) -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" style="background: none; border: none;">
+            <i class="fas fa-bars" style="font-size: 1.5rem; color: white;"></i>
+        </button>
 
-    <div class="nav-links">
-      <a href="{% url 'home' %}"><i class="fas fa-home"></i> Home</a>
-      <a href="{% url 'about' %}"><i class="fas fa-info-circle"></i> About</a>
-      <a href="{% url 'tips' %}"><i class="fas fa-lightbulb"></i> Tips</a>
-      <a href="{% url 'calculator' %}"><i class="fas fa-calculator"></i> Calculator</a>
+        <!-- Links -->
+        <div class="nav-links collapse navbar-collapse" id="navbarNav" style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: flex-end; align-items: center;">
+            <a href="{% url 'home' %}"><i class="fas fa-home"></i> Home</a>
+            <a href="{% url 'about' %}"><i class="fas fa-info-circle"></i> About</a>
+            <a href="{% url 'tips' %}"><i class="fas fa-lightbulb"></i> Tips</a>
+            <a href="{% url 'calculator' %}"><i class="fas fa-calculator"></i> Calculator</a>
 
-      {% if user.is_authenticated %}
-        <div class="dropdown">
-          <span class="dropdown-toggle"><i class="fas fa-user-circle"></i> {{ user.username }}</span>
-          <div class="dropdown-menu">
-            <a href="{% url 'profile_setup' %}"><i class="fas fa-user-edit"></i> Profile</a>
-            <a href="{% url 'dashboard' %}"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-            <form method="post" action="{% url 'logout' %}">
-              {% csrf_token %}
-              <button type="submit"><i class="fas fa-sign-out-alt"></i> Logout</button>
-            </form>
-          </div>
-        </div>
-      {% else %}
-        <a href="{% url 'login' %}"><i class="fas fa-sign-in-alt"></i> Login</a>
-        <a href="{% url 'signup' %}" class="signup-btn"><i class="fas fa-user-plus"></i> Sign Up</a>
-      
-
-
-          {% endif %}
-      
+            {% if user.is_authenticated %}
+            <div class="user-dropdown" style="position: relative;">
+                <button class="user-button" style="background: none; border: none; color: white; font-weight: bold; display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                    <i class="fas fa-user-circle"></i> {{ user.username }}
+                    <i class="fas fa-chevron-down" style="font-size: 0.8rem;"></i>
+                </button>
+                <div class="dropdown-menu" style="position: absolute; top: 100%; right: 0; background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); padding: 10px; min-width: 180px; display: none; z-index: 1001;">
+                    <a class="dropdown-item" href="{% url 'profile_setup' %}" style="display: flex; align-items: center; padding: 8px 12px; color: #555; text-decoration: none; border-radius: 8px;">
+                        <i class="fas fa-user-edit" style="margin-right: 8px;"></i> Profile
+                    </a>
+                    <a class="dropdown-item" href="{% url 'dashboard' %}" style="display: flex; align-items: center; padding: 8px 12px; color: #555; text-decoration: none; border-radius: 8px;">
+                        <i class="fas fa-tachometer-alt" style="margin-right: 8px;"></i> Dashboard
+                    </a>
+                    <form method="post" action="{% url 'logout' %}" style="margin-top: 10px;">
+                        {% csrf_token %}
+                        <button type="submit" class="dropdown-item" style="display: flex; align-items: center; padding: 8px 12px; color: #d63384; border: none; background: none; width: 100%; text-align: left; border-radius: 8px;">
+                            <i class="fas fa-sign-out-alt" style="margin-right: 8px;"></i> Logout
+                        </button>
+                    </form>
                 </div>
             </div>
+
+            {% else %}
+                <a href="{% url 'login' %}" class="login-link"><i class="fas fa-sign-in-alt"></i> Login</a>
+                <a href="{% url 'signup' %}" class="signup-link" style="background-color: var(--primary-pink); padding: 8px 16px; border-radius: 20px;">
+                    <i class="fas fa-user-plus"></i> Sign Up
+                </a>
+            {% endif %}
         </div>
-    </nav>
+    </div>
+</nav>
+
 
     <!-- Main Content -->
     <main class="main-content">
@@ -525,24 +413,15 @@
             </div>
             
             <div class="profile-card">
-                <a href="{% url 'home' %}" class="back-button">
-                    <i class="fas fa-arrow-left"></i> Back to Home
+                <a href="{% url 'dashboard' %}" class="back-button animate__animated animate__fadeInLeft">
+                    <i class="fas fa-arrow-left"></i> Back to Dashboard
                 </a>
                 
-                <div class="progress-container">
-                    <div class="progress-text">
-                        <span>Profile Completion</span>
-                        <span>60%</span>
-                    </div>
-                    <div class="progress-bar">
-                        <div class="progress-fill"></div>
-                    </div>
-                </div>
                 
-                <form method="POST">
+                <form method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
                     
-                    <div class="form-section">
+                    <div class="form-section animate__animated animate__fadeIn">
                         <h2 class="section-title">
                             <i class="fas fa-user-circle"></i> Personal Information
                         </h2>
@@ -561,108 +440,158 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    
-                    <div class="form-section">
-                        <h2 class="section-title">
-                            <i class="fas fa-heart"></i> About You
-                        </h2>
                         
                         <div class="form-group">
-                            <label class="form-label">Bio</label>
-                            <textarea class="form-control" name="bio" placeholder="Tell us about yourself...">{{ form.bio.value|default:'' }}</textarea>
-                        </div>
-                        
-                        <div class="form-row">
-                            <div class="form-col">
-                                <div class="form-group">
-                                    <label class="form-label">Birth Date</label>
-                                    <input type="date" class="form-control" name="birth_date" value="{{ form.birth_date.value|date:'Y-m-d' }}" required>
-                                </div>
-                            </div>
-                            <div class="form-col">
-                                <div class="form-group">
-                                    <label class="form-label">Location</label>
-                                    <input type="text" class="form-control" name="location" value="{{ form.location.value|default:'' }}" placeholder="City, Country" required>
-                                </div>
-                            </div>
+                            <label class="form-label">Profile Picture</label>
+                            <input type="file" class="form-control" name="profile_picture" accept="image/*">
                         </div>
                     </div>
                     
-                    <div class="form-section">
+                    <div class="form-section animate__animated animate__fadeIn animate__delay-1s">
                         <h2 class="section-title">
-                            <i class="fas fa-apple-alt"></i> Health Preferences
+                            <i class="fas fa-heartbeat"></i> Health Details
                         </h2>
                         
                         <div class="form-row">
                             <div class="form-col">
                                 <div class="form-group">
-                                    <label class="form-label">Dietary Restrictions</label>
-                                    <select class="form-control" name="dietary_restrictions">
-                                        <option value="">None</option>
-                                        <option value="vegetarian" {% if form.dietary_restrictions.value == 'vegetarian' %}selected{% endif %}>Vegetarian</option>
-                                        <option value="vegan" {% if form.dietary_restrictions.value == 'vegan' %}selected{% endif %}>Vegan</option>
-                                        <option value="gluten-free" {% if form.dietary_restrictions.value == 'gluten-free' %}selected{% endif %}>Gluten-Free</option>
-                                        <option value="dairy-free" {% if form.dietary_restrictions.value == 'dairy-free' %}selected{% endif %}>Dairy-Free</option>
-                                        <option value="keto" {% if form.dietary_restrictions.value == 'keto' %}selected{% endif %}>Keto</option>
+                                    <label class="form-label">Age</label>
+                                    <input type="number" class="form-control" name="age" value="{{ form.age.value|default:'' }}" min="1" max="120" required>
+                                </div>
+                            </div>
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label class="form-label">Gender</label>
+                                    <select class="form-control" name="gender" required>
+                                        <option value="male" {% if form.gender.value == 'male' %}selected{% endif %}>Male</option>
+                                        <option value="female" {% if form.gender.value == 'female' %}selected{% endif %}>Female</option>
+                                        <option value="other" {% if form.gender.value == 'other' %}selected{% endif %}>Other</option>
+                                        <option value="prefer_not_to_say" {% if form.gender.value == 'prefer_not_to_say' %}selected{% endif %}>Prefer not to say</option>
                                     </select>
                                 </div>
                             </div>
+                        </div>
+                        
+                        <div class="form-row">
                             <div class="form-col">
                                 <div class="form-group">
-                                    <label class="form-label">Allergies</label>
-                                    <input type="text" class="form-control" name="allergies" value="{{ form.allergies.value|default:'' }}" placeholder="List any food allergies">
+                                    <label class="form-label">Weight (kg)</label>
+                                    <input type="number" class="form-control" name="weight" value="{{ form.weight.value|default:'' }}" step="0.1" min="1" required>
+                                </div>
+                            </div>
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label class="form-label">Height (cm)</label>
+                                    <input type="number" class="form-control" name="height" value="{{ form.height.value|default:'' }}" min="1" required>
                                 </div>
                             </div>
                         </div>
                     </div>
                     
-                    <button type="submit" class="submit-button">
+                    <div class="form-section animate__animated animate__fadeIn animate__delay-2s">
+                        <h2 class="section-title">
+                            <i class="fas fa-apple-alt"></i> Nutrition Goals
+                        </h2>
+                        
+                        <div class="form-row">
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label class="form-label">Calorie Goal</label>
+                                    <input type="number" class="form-control" name="calorie_goal" value="{{ form.calorie_goal.value|default:'2000' }}" min="1" required>
+                                </div>
+                            </div>
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label class="form-label">Protein Goal (g)</label>
+                                    <input type="number" class="form-control" name="protein_goal" value="{{ form.protein_goal.value|default:'50' }}" min="1" required>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label class="form-label">Carb Goal (g)</label>
+                                    <input type="number" class="form-control" name="carb_goal" value="{{ form.carb_goal.value|default:'300' }}" min="1" required>
+                                </div>
+                            </div>
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label class="form-label">Fat Goal (g)</label>
+                                    <input type="number" class="form-control" name="fat_goal" value="{{ form.fat_goal.value|default:'70' }}" min="1" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section animate__animated animate__fadeIn animate__delay-3s">
+                        <h2 class="section-title">
+                            <i class="fas fa-notes-medical"></i> Health Preferences
+                        </h2>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Dietary Restrictions</label>
+                            <select class="form-control" name="dietary_restrictions">
+                                <option value="">None</option>
+                                <option value="vegetarian" {% if form.dietary_restrictions.value == 'vegetarian' %}selected{% endif %}>Vegetarian</option>
+                                <option value="vegan" {% if form.dietary_restrictions.value == 'vegan' %}selected{% endif %}>Vegan</option>
+                                <option value="gluten-free" {% if form.dietary_restrictions.value == 'gluten-free' %}selected{% endif %}>Gluten-Free</option>
+                                <option value="keto" {% if form.dietary_restrictions.value == 'keto' %}selected{% endif %}>Keto</option>
+                                <option value="paleo" {% if form.dietary_restrictions.value == 'paleo' %}selected{% endif %}>Paleo</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Allergies (comma separated)</label>
+                            <input type="text" class="form-control" name="allergies" value="{{ form.allergies.value|default:'' }}" placeholder="e.g., peanuts, shellfish, dairy">
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="submit-button animate__animated animate__pulse animate__delay-4s">
                         <i class="fas fa-save"></i> Save Profile
                     </button>
+                    
+                    <p class="privacy-note animate__animated animate__fadeIn animate__delay-4s">
+                        <i class="fas fa-lock"></i> Your information is secure and private
+                    </p>
                 </form>
-                
-                <p class="privacy-note">
-                    <i class="fas fa-lock"></i> Your information is secure and private
-                </p>
             </div>
         </div>
     </main>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Animate progress bar
-            const progressFill = document.querySelector('.progress-fill');
             setTimeout(() => {
-                progressFill.style.width = '60%';
-            }, 300);
+                document.querySelector('.progress-fill').style.width = '60%';
+            }, 500);
             
-            // Enhance form controls
+            // Add focus effects to form inputs
             const formControls = document.querySelectorAll('.form-control');
             formControls.forEach(control => {
                 control.addEventListener('focus', function() {
-                    this.parentNode.querySelector('.form-label').style.color = 'var(--dark-pink)';
                     this.style.borderColor = 'var(--primary-pink)';
+                    this.style.boxShadow = '0 0 0 3px rgba(255, 102, 163, 0.2)';
+                    this.parentNode.querySelector('.form-label').style.color = 'var(--dark-pink)';
                 });
                 
                 control.addEventListener('blur', function() {
-                    this.parentNode.querySelector('.form-label').style.color = '#666';
                     this.style.borderColor = '#f0f0f0';
+                    this.style.boxShadow = 'none';
+                    this.parentNode.querySelector('.form-label').style.color = '#555';
                 });
             });
             
-            // Add date picker enhancements if needed
-            const dateInput = document.querySelector('input[type="date"]');
-            if (dateInput) {
-                dateInput.addEventListener('focus', function() {
-                    this.type = 'date';
-                });
-                
-                if (!dateInput.value) {
-                    dateInput.type = 'text';
-                    dateInput.placeholder = 'YYYY-MM-DD';
-                }
-            }
+            // Add pulse animation to submit button on hover
+            const submitBtn = document.querySelector('.submit-button');
+            submitBtn.addEventListener('mouseenter', function() {
+                this.classList.add('animate__pulse');
+            });
+            
+            submitBtn.addEventListener('mouseleave', function() {
+                this.classList.remove('animate__pulse');
+            });
         });
     </script>
 </body>

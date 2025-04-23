@@ -367,7 +367,7 @@
                            value="{{ request.POST.query }}">
                     <button class="btn whoop" type="submit" id="search-button">
                         <i class="fas fa-search"></i> 
-                        <span id="search-text">Analyze</span>
+                        <span id="search-text">Analyse</span>
                         <span id="search-loading" style="display:none;">
                             <i class="fas fa-spinner fa-spin"></i> Searching...
                         </span>
@@ -523,6 +523,8 @@
                                     <input type="hidden" name="protein" id="logProtein">
                                     <input type="hidden" name="carbs" id="logCarbs">
                                     <input type="hidden" name="fat" id="logFat">
+                                    <input type="hidden" name="sodium" id="logSodium">  
+                                    <input type="hidden" name="sugar" id="logSugar">   
                                     <input type="hidden" name="amount" id="logAmount">
                                     <button type="submit" class="btn whoop" style="background-color: #6bb9ff;">
                                         <i class="fas fa-plus"></i> Log This Food
@@ -598,6 +600,8 @@
         document.getElementById('logProtein').value = calculatedValues["Protein"];
         document.getElementById('logCarbs').value = calculatedValues["Carbs"];
         document.getElementById('logFat').value = calculatedValues["Fat"];
+        document.getElementById('logSodium').value = calculatedValues["Sodium"];
+        document.getElementById('logSugar').value = calculatedValues["Sugar"];  
         document.getElementById('logAmount').value = portionSize;
         
         let html = '';

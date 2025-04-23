@@ -46,6 +46,8 @@ def log_food(request):
             protein=float(request.POST.get('protein')),
             carbs=float(request.POST.get('carbs')),
             fat=float(request.POST.get('fat')),
+            sodium=float(request.POST.get('sodium', 0)),  # Add this line
+            sugar=float(request.POST.get('sugar', 0)),    # Add this line
             amount=float(request.POST.get('amount')),
             meal_time=request.POST.get('meal_time', 'snack')
         )
@@ -68,6 +70,9 @@ def dashboard_view(request):
     today = timezone.now().date()
     foods = FoodLog.objects.filter(user=request.user, date__date=today)
     
+    # Get water intake for today
+    water_intakes = WaterIntake.objects.filter(user=request.user, date__date=today)
+    
     totals = {
         'calories': sum(f.calories for f in foods),
         'protein': sum(f.protein for f in foods),
@@ -75,8 +80,9 @@ def dashboard_view(request):
         'fat': sum(f.fat for f in foods),
         'sodium': sum(f.sodium for f in foods),
         'sugar': sum(f.sugar for f in foods),
-        'water': request.user.waterintake_set.filter(date=today).count()
+        'water': water_intakes.count()  # Use the count of water intake records
     }
+    # ... rest of the view ...
     
     try:
         profile = request.user.profile
