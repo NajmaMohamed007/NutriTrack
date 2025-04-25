@@ -6,9 +6,9 @@ register = template.Library()
 def div(value, arg):
     try:
         result = float(value) / float(arg)
-        return round(result, 2)  # Optional rounding
+        return round(result, 2)  
     except (ValueError, ZeroDivisionError, TypeError):
-        return 0  # Or return "N/A", depending on your needs
+        return 0  
 
 @register.filter
 def mul(value, arg):

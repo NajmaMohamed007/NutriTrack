@@ -81,10 +81,9 @@ USE_I18N = True
 
 USE_TZ = True
 
-# Static files (CSS, JavaScript, images)
+
 STATIC_URL = '/static/'
 
-# The directory where static files should be collected in production
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]

@@ -31,7 +31,7 @@
             flex-direction: column;
         }
         
-        /* Navigation Bar */
+
         .navbar {
     background-color: var(--secondary-pink);
     padding: 10px 30px;
@@ -87,7 +87,7 @@
             text-shadow: 0 0 5px rgba(255,255,255,0.5);
         }
         
-        /* Main Content */
+
         .main-content {
             flex: 1;
             padding-top: 30px;
@@ -100,7 +100,7 @@
             padding: 0 20px;
         }
         
-        /* Header */
+
         .profile-header {
             text-align: center;
             margin-bottom: 30px;
@@ -119,7 +119,7 @@
             color: #777;
         }
         
-        /* Card */
+
         .profile-card {
             background-color: var(--white);
             border-radius: 16px;
@@ -136,7 +136,7 @@
             box-shadow: 0 8px 25px rgba(214, 51, 132, 0.15);
         }
         
-        /* Back Button */
+
         .back-button {
             display: inline-flex;
             align-items: center;
@@ -156,7 +156,7 @@
             margin-right: 8px;
         }
         
-        /* Progress Bar */
+
         .progress-container {
             margin-bottom: 30px;
         }
@@ -184,7 +184,7 @@
             width: 0;
         }
         
-        /* Form Styles */
+
         .form-section {
             margin-bottom: 30px;
         }
@@ -261,7 +261,7 @@
             min-width: 200px;
         }
         
-        /* Submit Button */
+
         .submit-button {
             background-color: var(--primary-pink);
             color: white;
@@ -295,7 +295,6 @@
             margin-right: 10px;
         }
         
-        /* Privacy Note */
         .privacy-note {
             text-align: center;
             color: #888;
@@ -308,7 +307,7 @@
             margin-right: 5px;
         }
         
-        /* Animations */
+
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
@@ -319,7 +318,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
         
-        /* Responsive Adjustments */
         @media (max-width: 768px) {
             .profile-header h1 {
                 font-size: 2rem;
@@ -351,7 +349,7 @@
     </style>
 </head>
 <body>
-    <!-- Navigation -->
+
 <nav class="navbar">
     <div class="nav-container" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;">
         <!-- Logo -->
@@ -359,12 +357,11 @@
             ✨ Nutri Track ✨
         </a>
 
-        <!-- Toggler for mobile (optional JS needed for dropdown to work) -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" style="background: none; border: none;">
             <i class="fas fa-bars" style="font-size: 1.5rem; color: white;"></i>
         </button>
 
-        <!-- Links -->
+
         <div class="nav-links collapse navbar-collapse" id="navbarNav" style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: flex-end; align-items: center;">
             <a href="{% url 'home' %}"><i class="fas fa-home"></i> Home</a>
             <a href="{% url 'about' %}"><i class="fas fa-info-circle"></i> About</a>
@@ -404,7 +401,7 @@
 </nav>
 
 
-    <!-- Main Content -->
+    <!-- Main  -->
     <main class="main-content">
         <div class="profile-container">
             <div class="profile-header">
@@ -562,12 +559,12 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Animate progress bar
+
             setTimeout(() => {
                 document.querySelector('.progress-fill').style.width = '60%';
             }, 500);
             
-            // Add focus effects to form inputs
+
             const formControls = document.querySelectorAll('.form-control');
             formControls.forEach(control => {
                 control.addEventListener('focus', function() {
@@ -583,7 +580,7 @@
                 });
             });
             
-            // Add pulse animation to submit button on hover
+
             const submitBtn = document.querySelector('.submit-button');
             submitBtn.addEventListener('mouseenter', function() {
                 this.classList.add('animate__pulse');

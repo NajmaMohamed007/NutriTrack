@@ -25,7 +25,7 @@
       flex-direction: column;
     }
     
-    /* Cute Logo Header */
+    /*Logo Header */
     .logo-header {
       text-align: center;
       padding: 15px 0;
@@ -102,7 +102,7 @@
       50% { opacity: 1; transform: scale(1.2); }
     }
   
-    /* Main Content */
+    /* Content */
     .main-content {
       flex: 1;
       padding-top: 30px;
@@ -115,7 +115,6 @@
       padding: 0 20px;
     }
     
-    /* Header */
     .dashboard-header {
       text-align: center;
       margin-bottom: 30px;
@@ -144,7 +143,6 @@
       font-weight: 500;
     }
     
-    /* Cards */
     .dashboard-card {
       background-color: var(--white);
       border-radius: 16px;
@@ -186,7 +184,6 @@
       font-size: 1.1rem;
     }
     
-    /* Nutrition Bubbles */
     .nutrition-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -272,7 +269,6 @@
       background-color: #a5d8ff;
     }
     
-    /* Food Items */
     .food-list {
       margin-top: 20px;
     }
@@ -319,7 +315,6 @@
       color: #888;
     }
     
-    /* Water Tracker */
     .water-tracker {
       display: flex;
       flex-direction: column;
@@ -382,7 +377,6 @@
       color: white;
     }
     
-    /* Quick Actions */
     .actions-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -421,8 +415,7 @@
       color: var(--dark-pink);
       text-align: center;
     }
-    
-    /* Daily Tip */
+
     .daily-tip {
       background-color: var(--secondary-pink);
       padding: 15px;
@@ -455,7 +448,6 @@
       opacity: 0.9;
     }
     
-    /* Footer */
     .dashboard-footer {
       text-align: center;
       margin-top: 40px;
@@ -481,7 +473,6 @@
       color: var(--dark-pink);
     }
     
-    /* Animations */
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
@@ -497,7 +488,6 @@
       50% { transform: translateY(-10px); }
     }
     
-    /* Responsive */
     @media (max-width: 768px) {
       .nutrition-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -526,7 +516,6 @@
       }
     }
 
-    /* Utility classes */
     .flex {
       display: flex;
     }
@@ -565,7 +554,6 @@
       color: var(--dark-pink);
     }
 
-    /* Goal Adjustment Styles */
     .goal-form {
       display: flex;
       flex-direction: column;
@@ -621,7 +609,6 @@
       color: white;
     }
 
-    /* Added CSS for goal save feedback */
     .goal-save {
       transition: all 0.3s ease;
     }
@@ -637,7 +624,7 @@
     }
 </style>
 
-<!-- Logo Header -->
+
 <div class="logo-header">
     <a href="{% url 'home' %}" class="logo-container">
       <span class="logo-text">Nutri Track</span>
@@ -646,7 +633,7 @@
 
 <div class="main-content">
   <div class="dashboard-container">
-    <!-- Header -->
+
     <div class="dashboard-header">
       <h1>Your Nutri Dashboard</h1>
       <p>Hello, {{ user.username }}! Let's track your nutrition journey 🌸</p>
@@ -654,10 +641,9 @@
         <i class="fas fa-calendar-day"></i> {{ today|date:"F j, Y" }}
       </div>
     </div>
-    
-    <!-- Nutrition Overview -->
+
     <div class="nutrition-grid">
-      <!-- Calories -->
+      <!-- Clories -->
       <div class="dashboard-card nutrition-card">
         <div class="nutrition-icon">
           <i class="fas fa-fire"></i>
@@ -770,9 +756,8 @@
       </div>
     </div>
 
-    <!-- New Health Trackers Row -->
     <div class="nutrition-grid" style="margin-top: -15px;">
-      <!-- Sodium Tracker -->
+      <!-- Sodium -->
       <div class="dashboard-card nutrition-card">
         <div class="nutrition-icon" style="background-color: #9d65c9;">
           <i class="fas fa-mortar-pestle"></i>
@@ -800,7 +785,7 @@
         </div>
       </div>
       
-      <!-- Sugar Tracker -->
+      <!-- Sugarr -->
       <div class="dashboard-card nutrition-card">
         <div class="nutrition-icon" style="background-color: #ff9e7d;">
           <i class="fas fa-candy-cane"></i>
@@ -828,14 +813,13 @@
         </div>
       </div>
       
-      <!-- Empty card for spacing -->
       <div class="nutrition-card" style="visibility: hidden;"></div>
       <div class="nutrition-card" style="visibility: hidden;"></div>
     </div>
     
-    <!-- Main Content -->
     <div style="display: grid; grid-template-columns: 1fr; gap: 1.25rem;">
-      <!-- Recent Foods -->
+
+      <!--New Foods -->
       <div style="grid-column: span 2;">
         <div class="dashboard-card">
           <div class="flex justify-between items-center mb-4">
@@ -874,9 +858,9 @@
         </div>
       </div>
       
-      <!-- Right Sidebar -->
       <div style="display: flex; flex-direction: column; gap: 1.25rem;">
-        <!-- Water Tracker -->
+
+        <!-- Water -->
         <div class="dashboard-card">
           <h2 class="card-title">
             <i class="fas fa-tint"></i> Water Tracker
@@ -903,7 +887,7 @@
           </div>
         </div>
         
-        <!-- Quick Actions -->
+
         <div class="dashboard-card">
           <h2 class="card-title">
             <i class="fas fa-bolt"></i> Quick Actions
@@ -932,7 +916,7 @@
           </div>
         </div>
         
-        <!-- Daily Tip -->
+
         <div class="daily-tip">
           <div class="tip-icon">
             <i class="fas fa-lightbulb"></i>
@@ -945,7 +929,7 @@
       </div>
     </div>
     
-    <!-- Footer -->
+    <!-- footer -->
     <div class="dashboard-footer">
       <p class="text-sm pink-text">
         <i class="fas fa-heart"></i> NutriTrack © 2025
@@ -960,7 +944,7 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    // Animate progress bars
+
     const progressBars = document.querySelectorAll('.progress-fill');
     progressBars.forEach(bar => {
       const width = bar.style.width;
@@ -970,7 +954,7 @@
       }, 300);
     });
     
-    // Add bounce animation to nutrition cards
+
     const nutritionCards = document.querySelectorAll('.nutrition-card');
     nutritionCards.forEach((card, index) => {
       setTimeout(() => {
@@ -981,7 +965,7 @@
       }, index * 100);
     });
     
-    // Add hover effect to water drops
+
     const waterDrops = document.querySelectorAll('.water-drop');
     waterDrops.forEach(drop => {
       drop.addEventListener('mouseover', function() {
@@ -997,7 +981,6 @@
       });
     });
 
-    // Handle goal form submissions
     document.querySelectorAll('.goal-form').forEach(form => {
       form.addEventListener('submit', function(e) {
         e.preventDefault();
@@ -1013,18 +996,16 @@
         .then(response => response.json())
         .then(data => {
           if (data.status === 'success') {
-            // Show visual feedback
+
             const saveBtn = this.querySelector('.goal-save');
             saveBtn.textContent = '✓ Updated';
-            saveBtn.style.backgroundColor = '#4CAF50'; // Green color
+            saveBtn.style.backgroundColor = '#4CAF50';
             
-            // Revert after 2 seconds
             setTimeout(() => {
               saveBtn.textContent = 'Update';
               saveBtn.style.backgroundColor = '';
             }, 2000);
             
-            // Update the progress bar (optional)
             const progressFill = this.closest('.nutrition-card').querySelector('.progress-fill');
             const goalValue = parseInt(this.querySelector('.goal-input').value);
             const currentValue = parseInt(this.closest('.nutrition-card').querySelector('.nutrition-value').textContent);
@@ -1050,7 +1031,6 @@
             const waterButton = form.querySelector('.water-button');
             const originalText = waterButton.innerHTML;
             
-            // Show loading state
             waterButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
             waterButton.disabled = true;
 
@@ -1066,16 +1046,16 @@
                 return response.json();
             })
             .then(data => {
-                console.log("Received data:", data); // Debug log
+                console.log("Received data:", data);
                 
                 if (data.status === 'success') {
-                    // Update counter
+
                     const waterCountElement = document.querySelector('.water-count');
                     if (waterCountElement) {
                         waterCountElement.textContent = data.water_count;
                     }
                     
-                    // Update all water drops
+
                     const waterDrops = document.querySelectorAll('.water-drop');
                     waterDrops.forEach((drop, index) => {
                         const isFilled = index < data.water_count;
@@ -1083,8 +1063,7 @@
                         drop.style.opacity = isFilled ? '1' : '0.3';
                         drop.style.transform = isFilled ? 'scale(1.1)' : 'scale(1)';
                     });
-                    
-                    // Show success feedback
+
                     waterButton.innerHTML = '<i class="fas fa-check"></i>';
                     waterButton.style.backgroundColor = '#4CAF50';
                 } else {
@@ -1109,7 +1088,6 @@
 });
 
 
-  // New function for goal adjustment
   function adjustGoal(button, change) {
     const form = button.closest('.goal-form');
     const input = form.querySelector('.goal-input');

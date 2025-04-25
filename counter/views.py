@@ -46,8 +46,8 @@ def log_food(request):
             protein=float(request.POST.get('protein')),
             carbs=float(request.POST.get('carbs')),
             fat=float(request.POST.get('fat')),
-            sodium=float(request.POST.get('sodium', 0)),  # Add this line
-            sugar=float(request.POST.get('sugar', 0)),    # Add this line
+            sodium=float(request.POST.get('sodium', 0)), 
+            sugar=float(request.POST.get('sugar', 0)),    
             amount=float(request.POST.get('amount')),
             meal_time=request.POST.get('meal_time', 'snack')
         )
@@ -56,7 +56,6 @@ def log_food(request):
     return redirect('home')
 
 def food_log_view(request):
-    # Get food logs for the current user, ordered by date (newest first)
     food_logs = FoodLog.objects.filter(user=request.user).order_by('-date')
     
     context = {
@@ -70,7 +69,7 @@ def dashboard_view(request):
     today = timezone.now().date()
     foods = FoodLog.objects.filter(user=request.user, date__date=today)
     
-    # Get water intake for today
+ 
     water_intakes = WaterIntake.objects.filter(user=request.user, date__date=today)
     
     totals = {
@@ -80,9 +79,9 @@ def dashboard_view(request):
         'fat': sum(f.fat for f in foods),
         'sodium': sum(f.sodium for f in foods),
         'sugar': sum(f.sugar for f in foods),
-        'water': water_intakes.count()  # Use the count of water intake records
+        'water': water_intakes.count()  
     }
-    # ... rest of the view ...
+
     
     try:
         profile = request.user.profile
@@ -104,7 +103,7 @@ def dashboard_view(request):
             'sugar': 25 
         }
     
-    # calculate percent
+    # calculate 
     percentages = {
         'calories': min(100, int((totals['calories'] / goals['calories']) * 100)) if goals['calories'] else 0,
         'protein': min(100, int((totals['protein'] / goals['protein']) * 100)) if goals['protein'] else 0,

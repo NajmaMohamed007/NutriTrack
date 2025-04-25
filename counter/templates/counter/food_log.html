@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="container food-log-page">
-    <!-- Cute Header with Home Navigation -->
+
     <div class="d-flex justify-content-between align-items-center mb-4">
         <a href="{% url 'home' %}" class="btn btn-pink animate__animated animate__fadeInLeft">
             <i class="fas fa-home me-2"></i> Back Home
@@ -10,10 +10,9 @@
         <h2 class="animate__animated animate__fadeIn">
             <i class="fas fa-utensils me-2"></i> Your Food Diary
         </h2>
-        <div></div> <!-- Empty div for spacing -->
+        <div></div> 
     </div>
 
-    <!-- Food Log Container -->
     <div class="food-log-container">
         {% for food in food_logs|slice:":10" %}
         <div class="food-log-item animate__animated animate__fadeInUp food-log-delay-{{ forloop.counter0 }}">
@@ -55,7 +54,6 @@
         {% endfor %}
     </div>
 
-    <!-- See More Button (only shown if there are more than 10 items) -->
     {% if food_logs.count > 10 %}
     <div class="text-center mt-4 animate__animated animate__fadeIn">
         <button id="seeMoreBtn" class="btn btn-pink-outline">
@@ -64,18 +62,17 @@
     </div>
     {% endif %}
 
-    <!-- Hidden items that will be shown when "See More" is clicked -->
     <div id="moreFoodLogs" class="food-log-container" style="display: none;">
         {% for food in food_logs|slice:"10:" %}
         <div class="food-log-item animate__animated animate__fadeInUp">
-            <!-- Same structure as above -->
+
         </div>
         {% endfor %}
     </div>
 </div>
 
 <style>
-    /* Pink Theme Styles */
+
     .food-log-page {
         background-color: #fff5f7;
         padding: 2rem;
@@ -131,13 +128,12 @@
 </style>
 
 <script>
-    // Show more food logs when button is clicked
     document.getElementById('seeMoreBtn')?.addEventListener('click', function() {
         const moreLogs = document.getElementById('moreFoodLogs');
         moreLogs.style.display = 'block';
         this.style.display = 'none';
         
-        // Animate the new items
+
         const items = moreLogs.querySelectorAll('.food-log-item');
         items.forEach((item, index) => {
             setTimeout(() => {

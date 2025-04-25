@@ -8,13 +8,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>✨ Nutri Track ✨</title>
     
-    <!-- CDN Links -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Playfair+Display:wght@700&family=Sofia&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     
-    <!-- Favicon -->
     <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
     
     <style>
@@ -26,7 +24,6 @@
             --white: #ffffff;
         }
         
-        /* ===== CUTE NAVBAR ===== */
         .navbar {
             background-color: var(--secondary-pink);
             padding: 15px 30px;
@@ -63,7 +60,6 @@
             text-shadow: 0 0 5px rgba(255,255,255,0.5);
         }
         
-        /* ===== CUTE BODY STYLES ===== */
         body {
             background-color: var(--light-pink);
             color: var(--dark-pink);
@@ -125,7 +121,6 @@
             box-shadow: 0 2px 0 var(--dark-pink);
         }
         
-        /* ===== SEARCH SECTION ===== */
         .search-section {
             background: rgba(255, 255, 255, 0.8);
             border-radius: 20px;
@@ -142,7 +137,6 @@
             font-style: italic;
         }
         
-        /* ===== CUTE NUTRITION CARD ===== */
         .caloriescont {
             background: linear-gradient(135deg, #ffccdd 0%, var(--secondary-pink) 100%);
             padding: 30px;
@@ -173,7 +167,6 @@
             color: var(--dark-pink);
         }
         
-        /* ===== CUTE ACTIVITY CARDS ===== */
         .activity-section {
             display: flex;
             flex-wrap: wrap;
@@ -226,7 +219,6 @@
             margin-bottom: 0;
         }
         
-        /* ===== CUTE ALERTS ===== */
         .alert {
             border-radius: 15px;
             font-size: 1.1rem;
@@ -239,7 +231,6 @@
             color: var(--dark-pink);
         }
         
-        /* ===== FOOD IMAGE ===== */
         .food-image {
             max-height: 150px;
             margin-bottom: 20px;
@@ -251,7 +242,6 @@
             transform: rotate(5deg) scale(1.05);
         }
         
-        /* ===== FOOTER ===== */
         footer {
             background-color: var(--secondary-pink);
             color: var(--white);
@@ -273,7 +263,6 @@
             transform: translateY(-2px);
         }
         
-        /* ===== RESPONSIVE ADJUSTMENTS ===== */
         @media (max-width: 768px) {
             .text-logo {
                 font-size: 2.5rem;
@@ -350,13 +339,12 @@
     </nav>
 
     <div class="container text-center py-4">
-        <!-- CUTE TITLE -->
+
         <div class="logo-container animate__animated animate__fadeInDown">
             <span class="text-logo">Track Your Nutrition</span>
             <p class="lead">Discover the nutritional value of your favorite foods!</p>
         </div>
 
-        <!-- CUTE SEARCH FORM -->
         <div class="search-section animate__animated animate__fadeIn">
             <form method="POST" action="{% url 'home' %}" class="mb-2" id="search-form">
                 {% csrf_token %}
@@ -380,7 +368,6 @@
             </p>
         </div>
 
-        <!-- Error Messages -->
         {% if messages %}
             {% for message in messages %}
                 <div class="alert alert-{{ message.tags }} mt-3 animate__animated animate__shakeX">
@@ -396,7 +383,6 @@
                     <i class="fas fa-exclamation-triangle"></i> Oh no! Something went wrong. Please try again later.
                 </div>
             {% elif api.0 %}
-                <!-- Hidden nutrition data for JavaScript calculations -->
                 <div id="nutrition-data" style="display: none;">
                     {
                         "calories": {{ api.0.calories|default:0 }},
@@ -409,7 +395,6 @@
                     }
                 </div>
                 
-                <!-- CUTE RESULTS SECTION -->
                 <div class="animate__animated animate__fadeIn">
                     <div class="d-flex justify-content-center align-items-center mb-4">
                         <h2 class="display-4 mb-0 me-3">
@@ -421,7 +406,6 @@
                     </div>
                         </div>
 
-                    <!-- Sugar Warning -->
                     {% if api.0.sugar_g > 25 %}
                         <div class="alert alert-danger animate__animated animate__fadeIn">
                             <i class="fas fa-exclamation-triangle"></i> Warning: This food is high in sugar ({{ api.0.sugar_g }}g per 100g). 
@@ -434,7 +418,6 @@
                         </div>
                     {% endif %}
 
-                    <!-- Sodium Warning -->
                     {% if api.0.sodium_mg > 500 %}
                         <div class="alert alert-danger animate__animated animate__fadeIn">
                             <i class="fas fa-exclamation-triangle"></i> Warning: This food is high in sodium ({{ api.0.sodium_mg }}mg per 100g). 
@@ -447,7 +430,6 @@
                         </div>
                     {% endif %}
 
-                    <!-- CUTE NUTRITION FACTS -->
                     <div class="caloriescont animate__animated animate__fadeInUp">
                         <h3 class="mb-4"><i class="fas fa-apple-alt me-2"></i> Nutritional Values (per 100g)</h3>
                         <ul class="nutrition-list list-unstyled">
@@ -464,15 +446,14 @@
                         </ul>
                     </div>
 
-                    <!-- CUTE WORKOUT SECTION -->
-<h3 class="mt-5 mb-4 animate__animated animate__fadeIn"><i class="fas fa-fire me-2"></i> To burn {{ api.0.calories }} calories:</h3>
-<div class="activity-section">
-    <div class="activity-card animate__animated animate__fadeIn animate__delay-1s">
-        <i class="fas fa-running fa-3x"></i>
-        <h5>Jogging</h5>
-        <p>{{ api.0.calories|div:378|mul:60|floatformat:0 }} minutes</p>
-    </div>
-    <div class="activity-card animate__animated animate__fadeIn animate__delay-2s">
+                <h3 class="mt-5 mb-4 animate__animated animate__fadeIn"><i class="fas fa-fire me-2"></i> To burn {{ api.0.calories }} calories:</h3>
+                    <div class="activity-section">
+                        <div class="activity-card animate__animated animate__fadeIn animate__delay-1s">
+                        <i class="fas fa-running fa-3x"></i>
+                         <h5>Jogging</h5>
+                            <p>{{ api.0.calories|div:378|mul:60|floatformat:0 }} minutes</p>
+                    </div>
+                 <div class="activity-card animate__animated animate__fadeIn animate__delay-2s">
         <i class="fas fa-spa fa-3x"></i>
         <h5>Power Yoga</h5>
         <p>{{ api.0.calories|div:223|mul:60|floatformat:0 }} minutes</p>
@@ -488,8 +469,7 @@
         <p>{{ api.0.calories|div:294|mul:60|floatformat:0 }} minutes</p>
     </div>
 </div>
-                    
-                    <!-- PORTION SIZE CALCULATOR -->
+        
                     <div class="caloriescont mt-4 animate__animated animate__fadeIn">
                         <h4><i class="fas fa-calculator me-2"></i> Portion Size Calculator</h4>
                         <div class="row justify-content-center mt-3">
@@ -512,7 +492,6 @@
                         <div id="portionResults" class="mt-3" style="display: none;">
                             <h5>Nutrition for <span id="portionAmount">100</span>g:</h5>
                             <ul class="nutrition-list list-unstyled" id="portionNutrition">
-                                <!-- Filled by JavaScript -->
                             </ul>
                             {% if user.is_authenticated %}
                             <div class="mt-4">
@@ -547,18 +526,15 @@
         {% endif %}
     </div>
 
-    <!-- Footer -->
     <footer>
         <div class="container">
             <p class="mb-0">© 2025 Nutri Track | Made with <i class="fas fa-heart" style="color: var(--primary-pink);"></i></p>
         </div>
     </footer>
 
-    <!-- Add Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-    // Enhanced search functionality
     document.getElementById('search-form').addEventListener('submit', function(e) {
         const query = document.querySelector('input[name="query"]').value.trim();
         if (!query) {
@@ -567,12 +543,10 @@
             return;
         }
         
-        // Show loading state
         document.getElementById('search-text').style.display = 'none';
         document.getElementById('search-loading').style.display = 'inline-block';
     });
 
-    // Portion calculator function
     function calculatePortion() {
         const nutritionData = JSON.parse(document.getElementById('nutrition-data').textContent);
         const portionSize = parseFloat(document.getElementById('portionSize').value);
@@ -595,7 +569,6 @@
             "Sodium": (nutritionData.sodium || 0) * multiplier
         };
         
-        // Update hidden form fields for logging
         document.getElementById('logCalories').value = calculatedValues["Calories"];
         document.getElementById('logProtein').value = calculatedValues["Protein"];
         document.getElementById('logCarbs').value = calculatedValues["Carbs"];
@@ -613,7 +586,6 @@
         document.getElementById('portionResults').style.display = 'block';
     }
     
-    // Animate search button
     document.addEventListener('DOMContentLoaded', function() {
         const searchBtn = document.querySelector('.whoop');
         if (searchBtn) {

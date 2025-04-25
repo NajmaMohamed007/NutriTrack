@@ -285,7 +285,6 @@
             color: #666;
         }
         
-        /* Responsive adjustments */
         @media (max-width: 768px) {
             .card-body {
                 padding: 2rem 1.5rem;
@@ -303,7 +302,7 @@
 </head>
 <body>
     <div class="signup-container">
-        <!-- Floating hearts background -->
+
         <div class="floating-hearts">
             <i class="fas fa-heart heart" style="top: 10%; left: 15%; font-size: 24px; animation-delay: 0s;"></i>
             <i class="fas fa-heart heart" style="top: 70%; left: 80%; font-size: 18px; animation-delay: 1s;"></i>
@@ -316,7 +315,7 @@
             <div class="col-md-8 col-lg-6 col-xl-5">
                 <div class="signup-card">
                     <div class="card-body p-4 p-md-5">
-                        <!-- Header -->
+
                         <div class="signup-header">
                             <div class="signup-icon">
                                 <i class="fas fa-user-plus"></i>
@@ -325,7 +324,7 @@
                             <p class="text-muted">Join our community today!</p>
                         </div>
                         
-                        <!-- Display Messages -->
+
                         {% if messages %}
                             {% for message in messages %}
                             <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
@@ -335,11 +334,11 @@
                             {% endfor %}
                         {% endif %}
                         
-                        <!-- Signup Form -->
+                        <!-- signup -->
                         <form method="POST" action="{% url 'signup' %}" enctype="multipart/form-data">
                             {% csrf_token %}
                             
-                            <!-- Username Field -->
+
                             <div class="mb-4">
                                 <label for="id_username" class="form-label">Username</label>
                                 <div class="input-group">
@@ -352,7 +351,7 @@
                                 {% endif %}
                             </div>
 
-                            <!-- Email Field -->
+                            <!-- email -->
                             <div class="mb-4">
                                 <label for="id_email" class="form-label">Email</label>
                                 <div class="input-group">
@@ -365,7 +364,7 @@
                                 {% endif %}
                             </div>
                             
-                            <!-- Password Field -->
+                            <!-- password -->
                             <div class="mb-4">
                                 <label for="id_password1" class="form-label">Password</label>
                                 <div class="input-group">
@@ -384,7 +383,6 @@
                                 {% endif %}
                             </div>
 
-                            <!-- Confirm Password Field -->
                             <div class="mb-4">
                                 <label for="id_password2" class="form-label">Confirm Password</label>
                                 <div class="input-group">
@@ -400,7 +398,7 @@
                                 {% endif %}
                             </div>
                             
-                            <!-- Profile Picture Field -->
+                           
                             <div class="mb-4">
                                 <label class="form-label">Profile Picture (Optional)</label>
                                 <div class="file-input-wrapper">
@@ -414,12 +412,12 @@
                                 </div>
                             </div>
                             
-                            <!-- Submit Button -->
+
                             <button type="submit" class="btn btn-primary w-100 mb-3">
                                 <i class="fas fa-user-plus me-2"></i> Sign Up
                             </button>
                             
-                            <!-- Login Link -->
+
                             <p class="text-center mt-4 login-link">
                                 Already have an account? 
                                 <a href="{% url 'login' %}">Login here</a>
@@ -433,7 +431,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Toggle password visibility
+
         document.querySelectorAll('.toggle-password').forEach(function(button) {
             button.addEventListener('click', function() {
                 const passwordInput = this.parentElement.querySelector('input');
@@ -451,7 +449,7 @@
             });
         });
         
-        // Add ripple effect to buttons
+
         document.querySelectorAll('.btn').forEach(button => {
             button.addEventListener('click', function(e) {
                 let x = e.clientX - e.target.getBoundingClientRect().left;
@@ -467,8 +465,8 @@
                 }, 1000);
             });
         });
-        
-        // Add more floating hearts dynamically
+
+
         function addFloatingHearts() {
             const container = document.querySelector('.floating-hearts');
             const colors = ['#ff9bb3', '#ffb6c1', '#ffc0cb', '#ffd1dc'];
@@ -485,10 +483,10 @@
             }
         }
         
-        // Call the function when the page loads
+
         window.addEventListener('load', addFloatingHearts);
         
-        // File input name display
+
         document.getElementById('id_profile_picture').addEventListener('change', function() {
             const fileName = this.files[0] ? this.files[0].name : 'No file chosen';
             document.getElementById('file-name').textContent = fileName;

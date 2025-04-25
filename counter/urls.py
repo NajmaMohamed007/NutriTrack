@@ -4,7 +4,7 @@ from django.contrib import admin
 
 
 urlpatterns = [
-    path('', views.home_page_view, name='home_page'),  # Landing page 
+    path('', views.home_page_view, name='home_page'),  # first oage
     path('home/', views.home_view, name='home'), 
     path('about/', views.about_view, name='about'),
     path('tips/', views.tips_view, name='tips'),
